@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "98770BA64353A601A86810A0B614B41549307C43",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "F0C6596D0243F138A2A9DCDF9920CF9CE2370928" : 0,
+    "98770BA64353A601A86810A0B614B41549307C43" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "9FB67771-D7FD-4600-9BE7-7DC7D6A9EC49",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "F0C6596D0243F138A2A9DCDF9920CF9CE2370928" : "Conway-Game-of-Life",
+    "98770BA64353A601A86810A0B614B41549307C43" : "Game-2\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Conway Game of Life",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Conway Game of Life.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/RainingFlamebows\/Game-2.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "98770BA64353A601A86810A0B614B41549307C43"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/dawnstar63\/Conway-Game-of-Life.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F0C6596D0243F138A2A9DCDF9920CF9CE2370928"
+    }
+  ]
+}
