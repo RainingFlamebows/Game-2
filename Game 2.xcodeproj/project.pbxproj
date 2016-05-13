@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE7DFDAB1CE6464300362588 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7DFDAA1CE6464300362588 /* Piece.swift */; };
 		EEA345941C938786007EF118 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA345931C938786007EF118 /* AppDelegate.swift */; };
 		EEA345961C938786007EF118 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = EEA345951C938786007EF118 /* GameScene.sks */; };
 		EEA345981C938786007EF118 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA345971C938786007EF118 /* GameScene.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EE7DFDAA1CE6464300362588 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		EEA345901C938786007EF118 /* Game 2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game 2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEA345931C938786007EF118 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EEA345951C938786007EF118 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -70,6 +72,7 @@
 				EEA3459E1C938786007EF118 /* Assets.xcassets */,
 				FBBF396F1CD2A306009D1311 /* Cell.swift */,
 				FBBF39711CD2A7F9009D1311 /* World.swift */,
+				EE7DFDAA1CE6464300362588 /* Piece.swift */,
 				EEA345A01C938786007EF118 /* LaunchScreen.storyboard */,
 				EEA345A31C938786007EF118 /* Info.plist */,
 			);
@@ -150,6 +153,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EEA345981C938786007EF118 /* GameScene.swift in Sources */,
+				EE7DFDAB1CE6464300362588 /* Piece.swift in Sources */,
 				FBBF39701CD2A306009D1311 /* Cell.swift in Sources */,
 				EEA3459A1C938786007EF118 /* GameViewController.swift in Sources */,
 				EEA345941C938786007EF118 /* AppDelegate.swift in Sources */,
