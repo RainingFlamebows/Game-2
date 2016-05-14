@@ -19,6 +19,7 @@ class GameScene: SKScene {
     var cellSize: CGFloat = 0
     
     let cellLayer = SKNode()
+    var previousScale = CGFloat(1.0)
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -40,8 +41,8 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        let numRows = 15
-        let numCols = 10
+        let numRows = 30
+        let numCols = 20
         
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
@@ -49,7 +50,6 @@ class GameScene: SKScene {
     
     func addSpritesForCells(numRows: Int, numCols: Int)
     {
-        world = World(widthIn: numRows, heightIn: numCols)
         gridCoord = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: CGPointMake(0,0)))
         
         let bounds = UIScreen.mainScreen().bounds
@@ -66,19 +66,11 @@ class GameScene: SKScene {
                 gridCoord[row][col] = CGPointMake(leftCornerCell, -upperCornerCell)
                 
                 var cell = SKSpriteNode()
-                if world.board[row][col].state == DEAD {
-                    cell = SKSpriteNode(imageNamed: "dead")
-                }
-                else if world.board[row][col].state == P1 {
-                    cell = SKSpriteNode(imageNamed: "player 1")
-                }
+                cell = SKSpriteNode(imageNamed: "dead")
                 cell.size = CGSize(width: cellSize, height: cellSize)
                 cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
                 cell.anchorPoint = CGPoint(x: 0, y: 1.0)
                 
-                world.board[row][col].sprite = cell
-                world.board[row][col].xCoord = leftCornerCell
-                world.board[row][col].yCoord = upperCornerCell
                 
                 cellLayer.addChild(cell)
             }
@@ -90,17 +82,28 @@ class GameScene: SKScene {
         
         for touch in touches {
 
-            // could move code below into World
-            let location = touch.locationInNode(self)
-            let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
-            let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
+//            let location = touch.locationInNode(self)
             
-            world.gridTouched(gridX, gridY: gridY)
+            let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
+            view!.addGestureRecognizer(pinch)
+
+            
         }
-        world.printBoard()
     }
     
-    
+    func pinched(sender: UIPinchGestureRecognizer) {
+        if sender.scale > previousScale {
+            
+            previousScale = sender.scale
+            let zoomIn = SKAction.scaleBy(1.05, duration: 0)
+            cellLayer.runAction(zoomIn)
+        }
+        if sender.scale < previousScale {
+            previousScale = sender.scale
+            let zoomOut = SKAction.scaleBy(0.95, duration: 0)
+            cellLayer.runAction(zoomOut)
+        }
+    }
    
     override func update(currentTime: CFTimeInterval)
     {
