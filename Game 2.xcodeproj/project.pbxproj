@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EE66DCCA1CE6EFA20039BB7F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE66DCC91CE6EFA20039BB7F /* Assets.xcassets */; };
+		EE45C9561CE6F174009B0DFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE45C9551CE6F174009B0DFF /* Assets.xcassets */; };
 		EE7DFDAB1CE6464300362588 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7DFDAA1CE6464300362588 /* Piece.swift */; };
 		EEA345941C938786007EF118 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA345931C938786007EF118 /* AppDelegate.swift */; };
 		EEA345961C938786007EF118 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = EEA345951C938786007EF118 /* GameScene.sks */; };
@@ -20,7 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EE66DCC91CE6EFA20039BB7F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../Assets.xcassets; sourceTree = "<group>"; };
+		EE45C9551CE6F174009B0DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Assets.xcassets/Assets.xcassets; sourceTree = "<group>"; };
 		EE7DFDAA1CE6464300362588 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		EEA345901C938786007EF118 /* Game 2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game 2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEA345931C938786007EF118 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -68,8 +68,8 @@
 				EEA345951C938786007EF118 /* GameScene.sks */,
 				EEA345971C938786007EF118 /* GameScene.swift */,
 				EEA345991C938786007EF118 /* GameViewController.swift */,
-				EE66DCC91CE6EFA20039BB7F /* Assets.xcassets */,
 				EEA3459B1C938786007EF118 /* Main.storyboard */,
+				EE45C9551CE6F174009B0DFF /* Assets.xcassets */,
 				FBBF396F1CD2A306009D1311 /* Cell.swift */,
 				FBBF39711CD2A7F9009D1311 /* World.swift */,
 				EE7DFDAA1CE6464300362588 /* Piece.swift */,
@@ -140,7 +140,7 @@
 			files = (
 				EEA345961C938786007EF118 /* GameScene.sks in Resources */,
 				EEA345A21C938786007EF118 /* LaunchScreen.storyboard in Resources */,
-				EE66DCCA1CE6EFA20039BB7F /* Assets.xcassets in Resources */,
+				EE45C9561CE6F174009B0DFF /* Assets.xcassets in Resources */,
 				EEA3459D1C938786007EF118 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
