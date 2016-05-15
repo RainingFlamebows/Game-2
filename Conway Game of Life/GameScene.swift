@@ -20,6 +20,7 @@ class GameScene: SKScene {
     
     let cellLayer = SKNode()
     var previousScale = CGFloat(1.0)
+    var sceneCam: SKCameraNode!
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -31,10 +32,6 @@ class GameScene: SKScene {
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
         
-        let background = SKSpriteNode(imageNamed: "background")
-        background.position = CGPoint(x: 0, y: 0)
-        background.anchorPoint = CGPoint(x: 0.0, y: 1.0)
-        addChild(background)
     }
     
     
@@ -44,8 +41,26 @@ class GameScene: SKScene {
         let numRows = 30
         let numCols = 20
         
+        sceneCam = SKCameraNode() //initialize your camera
+        //scaleAsPoint lets you zoom the camera in and out
+        sceneCam.setScale(0.25)
+        
+        camera = sceneCam  //set the scene's camera
+        addChild(sceneCam) //add camera to scene
+        
+        //position the camera on the gamescene.
+        sceneCam.position = CGPoint(x: frame.midX, y: frame.midY)
+        
+        let background = SKSpriteNode(imageNamed: "background")
+        background.position = CGPoint(x: 0, y: 0)
+        background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        sceneCam.addChild(background)
+
+        
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
+        
+        
     }
     
     func addSpritesForCells(numRows: Int, numCols: Int)
@@ -87,13 +102,25 @@ class GameScene: SKScene {
             let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
             view!.addGestureRecognizer(pinch)
 
+//            sceneCam.setScale(sceneCam.xScale*3)
+            
             
         }
     }
     
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first! as UITouch
+        let positionInScene = touch.locationInNode(self)
+        let previousPosition = touch.previousLocationInNode(self)
+        let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
+        
+        sceneCam.position = CGPoint(x: sceneCam.position.x - translation.x, y: sceneCam.position.y - translation.y)
+
+    }
+    
     func pinched(sender: UIPinchGestureRecognizer) {
+        
         if sender.scale > previousScale {
-            
             previousScale = sender.scale
             let zoomIn = SKAction.scaleBy(1.05, duration: 0)
             cellLayer.runAction(zoomIn)
