@@ -99,16 +99,17 @@ class GameScene: SKScene {
 
 //            let location = touch.locationInNode(self)
             
+            
             let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
             view!.addGestureRecognizer(pinch)
 
-//            sceneCam.setScale(sceneCam.xScale*3)
             
             
         }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        
         let touch = touches.first! as UITouch
         let positionInScene = touch.locationInNode(self)
         let previousPosition = touch.previousLocationInNode(self)
@@ -120,15 +121,21 @@ class GameScene: SKScene {
     
     func pinched(sender: UIPinchGestureRecognizer) {
         
-        if sender.scale > previousScale {
-            previousScale = sender.scale
-            let zoomIn = SKAction.scaleBy(1.05, duration: 0)
-            cellLayer.runAction(zoomIn)
-        }
-        if sender.scale < previousScale {
-            previousScale = sender.scale
-            let zoomOut = SKAction.scaleBy(0.95, duration: 0)
-            cellLayer.runAction(zoomOut)
+        if sender.numberOfTouches() == 2 {
+            let locationInView = sender.locationInView(self.view)
+            let location = self.convertPointFromView(locationInView)
+            if sender.state == .Changed {
+                let deltaScale = (sender.scale - 1.0)*2
+                let convertedScale = sender.scale - deltaScale
+                let newScale = camera!.xScale*convertedScale
+                camera!.setScale(newScale)
+                
+                let locationAfterScale = self.convertPointFromView(locationInView)
+                let locationDelta = CGPoint(x: location.x - locationAfterScale.x, y: location.y - locationAfterScale.y)
+                let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
+                camera!.position = newPoint
+                sender.scale = 1.0
+            }
         }
     }
    
