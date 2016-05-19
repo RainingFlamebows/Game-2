@@ -43,7 +43,7 @@ class GameScene: SKScene {
         
         sceneCam = SKCameraNode() //initialize your camera
         //scaleAsPoint lets you zoom the camera in and out
-        sceneCam.setScale(0.25)
+        sceneCam.setScale(1)
         
         camera = sceneCam  //set the scene's camera
         addChild(sceneCam) //add camera to scene
@@ -102,8 +102,11 @@ class GameScene: SKScene {
             
             let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
             view!.addGestureRecognizer(pinch)
-
             
+            // figures out whether cell is touched
+            let location = touch.locationInNode(self)
+            let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
+            let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
             
         }
     }
@@ -141,7 +144,6 @@ class GameScene: SKScene {
    
     override func update(currentTime: CFTimeInterval)
     {
-        /* Called before each frame is rendered */
-//        world.nextGeneration()
+        
     }
 }

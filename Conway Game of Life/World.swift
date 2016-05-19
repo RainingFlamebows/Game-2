@@ -16,6 +16,8 @@ class World {
  
     var numP1Cells: Int;
     var numP2Cells: Int;
+    
+    var mode: Int = 1   // player mode world is currently in: player 1 = 1, player 2 = 2
  
     required init?(coder aDecoder: NSCoder)
     {
