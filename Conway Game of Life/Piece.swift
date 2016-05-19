@@ -51,9 +51,18 @@ class Piece {
     // gives a list of available cells piece can move into while 
     // taking into account the location of other pieces and objects
     // then returns a list of potential places piece can move to
-    // and potential places piece can attack
     func availableMoves() {
         var moves = [()]
+        for row in column-movement...column+movement {
+            for col in row-movement...row+movement {
+                // check if cell exists at that row, col
+                // check if there's any objects at that location
+                // check if there is a piece at that location
+            }
+        }
+    }
+    
+    func availableAttacks() {
         var attacks = [()]
         for row in column-range...column+range {
             for col in row-range...row+range {
