@@ -13,8 +13,8 @@ class GameScene: SKScene {
     var world: World!
     var gridCoord = [[CGPointMake(0,0)]]
     
-    let margin: CGFloat = 20
-    let upperSpace: CGFloat = 100
+    let margin: CGFloat = 20    // distance between left and right edges of grid and screen edges
+    let upperSpace: CGFloat = 50
     let spaceBetwCells: CGFloat = 1.4
     var cellSize: CGFloat = 0
     
@@ -107,6 +107,11 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
             let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
+            
+            //attempt to make cells turn dark grey when tapped by user (to let user know which cell they're selecting)
+//            let tappedCell = world.gridTouched(gridX, gridY: gridY)
+//            world.board[tappedCell.0][tappedCell.1].updateState(SELECTED)
+            
             
         }
     }

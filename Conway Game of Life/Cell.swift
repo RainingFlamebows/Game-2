@@ -8,9 +8,8 @@
 
 import SpriteKit
 
-let DEAD = 0;
-let P1 = 1; // cell is owned by player 1
-let P2 = 2; // cell is owned by player 2
+let DEFAULT = 0;
+let SELECTED = 1; // cell is owned by player 1
 
 struct Cell {
     // possible states of the cell
@@ -26,7 +25,7 @@ struct Cell {
     init(xIn: CGFloat, yIn: CGFloat) {
         xCoord = xIn;
         yCoord = yIn;
-        state = DEAD;
+        state = DEFAULT;
     }
     
     /* updated init that incorporates SKSpriteNode */
@@ -46,14 +45,11 @@ struct Cell {
     
     mutating func updateState(newState: Int) {
         state = newState;
-        if (state == 0) {
+        if (state == DEFAULT) {
             sprite.texture = SKTexture(imageNamed: "dead")
         }
-        else if (state == 1) {
-            sprite.texture = SKTexture(imageNamed: "player 1")
-        }
-        else if (state == 2) {
-            sprite.texture = SKTexture(imageNamed: "player 2")
+        else if (state == SELECTED) {
+            sprite.texture = SKTexture(imageNamed: "selected cell")
         }
         else {
             print("ERROR: invalid state for Cell.swift > updateState() function")

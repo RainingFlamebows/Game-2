@@ -38,74 +38,10 @@ class World {
 
     }
     
-    /*
-    * For debugging purposes only: prints out entire board in ascii
-    * _ = dead cell, 1 = player 1 cell, 2 = player 2 cell
-    */
-    func printBoard() {
-        for row in 0...width-1 {
-            
-            var rowText = ""
-            for col in 0...height-1{
-                let theCell = board[row][col]
-                
-                if(theCell.state == DEAD) {
-                    rowText += "_"
-                }
-                else if(theCell.state == P1) {
-                    rowText += "1"
-                }
-                else if(theCell.state == P2) {
-                    rowText += "2"
-                }
-            }
-            print(rowText)
-        }
-        print("********************")
-    }
     
-    
-    //optimization for later: "A cell that did not change at the last time step, and none of whose neighbours changed, is guaranteed not to change at the current time step as well. So, a program that keeps track of which areas are active can save time by not updating the inactive zones." (from Wikipedia) -> Cell needs a last updated variable (units, turns/generations?)
-    /*
-    * Determines the state of each cell on the board for the next generation
-    */
-    func nextGeneration() {
-        for row in 0...width-1 {
-            for col in 0...height-1 {
-                var theCell: Cell = board[row][col]
-                let neighbors = countNeighbors(row, y: col)
-                let totalNeighbors = neighbors.0 + neighbors.1
-                
-                if(theCell.state > 0) {         // conditions for death of live cell
-                    if(totalNeighbors < 2 ||    // if less than 2 or more than 3 neighbors, cell dies
-                        totalNeighbors > 3)
-                    {
-                        theCell.updateState(DEAD)
-                    }
-                }
-                else {
-                    if(totalNeighbors == 3) {   // conditions of revival for dead cell
-                        if(neighbors.0 > neighbors.1) { // if exactly 3 neighbors, cell revives
-                            theCell.updateState(P1)
-                        }
-                        else {
-                            theCell.updateState(P2)
-                        }
-                    }
-                }
-            }
-        }
-    }
-    
-    /*
-    * Changes the state of the cell at the specified location
-    */
-    func changeState(row: Int, col: Int, newState: Int) {
-        board[row][col].updateState(newState)
-        
-    }
-    
-    func gridTouched(gridX: CGFloat, gridY: CGFloat)
+    // figures out cell that was tapped. Returns tuple that indicates row, col of selected cell
+    // in board array
+    func gridTouched(gridX: CGFloat, gridY: CGFloat) -> (Int, Int)
     {
         var col = 0
         var row = 0
@@ -127,14 +63,11 @@ class World {
         if (col >= 0 && row >= 0 &&
             col < board[0].count && row < board.count)
         {
-            let state = board[row][col].state
-            
-            if (state == P1) {
-                board[row][col].updateState(DEAD)
-            }
-            else {
-                board[row][col].updateState(P1)
-            }
+            return (row, col)
+        }
+        else {
+            print("Warning: no cell returned for gridTouched")
+            return (-1, -1)
         }
     }
     
