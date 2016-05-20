@@ -41,16 +41,13 @@ class GameScene: SKScene {
         let numRows = 30
         let numCols = 20
         
-        sceneCam = SKCameraNode() //initialize your camera
-        //scaleAsPoint lets you zoom the camera in and out
+        sceneCam = SKCameraNode()
         sceneCam.setScale(1)
-        
-        camera = sceneCam  //set the scene's camera
-        addChild(sceneCam) //add camera to scene
-        
-        //position the camera on the gamescene.
         sceneCam.position = CGPoint(x: frame.midX, y: frame.midY)
+        camera = sceneCam
         
+        addChild(sceneCam)
+
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: 0, y: 0)
         background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -117,33 +114,51 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        
+
         let touch = touches.first! as UITouch
         let positionInScene = touch.locationInNode(self)
         let previousPosition = touch.previousLocationInNode(self)
         let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
-        
-        sceneCam.position = CGPoint(x: sceneCam.position.x - translation.x, y: sceneCam.position.y - translation.y)
 
+        if camera?.xScale <= 1 {
+            
+            print(camera?.frame.minX)
+
+            camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
+        }
     }
     
     func pinched(sender: UIPinchGestureRecognizer) {
         
         if sender.numberOfTouches() == 2 {
+            if sender.state == .Changed {
+            
+                zoom(sender)
+            }
+        }
+    }
+    
+    func zoom(sender: UIPinchGestureRecognizer) {
+        
+        let deltaScale = (sender.scale - 1.0)*2
+        let convertedScale = sender.scale - deltaScale
+        let newScale = camera!.xScale*convertedScale
+        
+        if (camera?.xScale >= 0.25 && sender.scale > previousScale) ||
+            (camera?.xScale <= 1 && sender.scale < previousScale) {
+            
+            previousScale = sender.scale
+            
             let locationInView = sender.locationInView(self.view)
             let location = self.convertPointFromView(locationInView)
-            if sender.state == .Changed {
-                let deltaScale = (sender.scale - 1.0)*2
-                let convertedScale = sender.scale - deltaScale
-                let newScale = camera!.xScale*convertedScale
-                camera!.setScale(newScale)
-                
+            
+            camera!.setScale(newScale)
+            
                 let locationAfterScale = self.convertPointFromView(locationInView)
                 let locationDelta = CGPoint(x: location.x - locationAfterScale.x, y: location.y - locationAfterScale.y)
                 let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
                 camera!.position = newPoint
                 sender.scale = 1.0
-            }
         }
     }
    
