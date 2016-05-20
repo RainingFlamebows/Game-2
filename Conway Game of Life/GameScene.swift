@@ -122,8 +122,6 @@ class GameScene: SKScene {
 
         if camera?.xScale <= 1 {
             
-            print(camera?.frame.minX)
-
             camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
         }
     }
@@ -144,33 +142,34 @@ class GameScene: SKScene {
         let convertedScale = sender.scale - deltaScale
         let newScale = camera!.xScale*convertedScale
         
-        if (camera?.xScale >= 0.25 && sender.scale > previousScale) ||
-            (camera?.xScale <= 1 && sender.scale < previousScale) {
-            
-            if camera?.xScale > 1 {
-                camera?.setScale(1)
-            }
-            else if camera?.xScale < 0.25 {
-                camera?.setScale(0.25)
-            }
-            else {
+        if (newScale >= 0.25 && sender.scale > previousScale) ||
+            (newScale <= 1 && sender.scale < previousScale) {
+//
+            print("\(camera?.xScale), \(newScale), \(convertedScale)")
+//            if camera?.xScale > 1 {
+//                camera?.setScale(1)
+//            }
+//            else if camera?.xScale < 0.25 {
+//                camera?.setScale(0.25)
+//            }
+//            else {
                 camera!.setScale(newScale)
-            }
-            
+//            }
+        
             let locationInView = sender.locationInView(self.view)
             let location = self.convertPointFromView(locationInView)
             
-            if camera?.xScale == 1 {
-//                sender.scale = 1.0
-                camera?.position = CGPoint(x: frame.midX, y: frame.midY)
-            }
-            else {
+//            if camera?.xScale == 1 {
+////                sender.scale = 1.0
+//                camera?.position = CGPoint(x: frame.midX, y: frame.midY)
+//            }
+//            else {
                 let locationAfterScale = self.convertPointFromView(locationInView)
                 let locationDelta = CGPoint(x: location.x - locationAfterScale.x, y: location.y - locationAfterScale.y)
                 let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
                 camera!.position = newPoint
 
-            }
+//            }
         }
     }
    
