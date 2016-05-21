@@ -18,9 +18,16 @@ class GameScene: SKScene {
     let spaceBetwCells: CGFloat = 1.4
     var cellSize: CGFloat = 0
     
+    var screenMidX: CGFloat!
+    var screenMidY: CGFloat!
+    
     let cellLayer = SKNode()
     var previousScale = CGFloat(1.0)
     var sceneCam: SKCameraNode!
+    
+    // status screen at bottom, shows unit stats when unit selected or training queue when city is selected
+    var statusBar = SKShapeNode() // <- when graphics finished make this SKSpriteNode
+    var statusHealth = SKLabelNode()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -30,10 +37,24 @@ class GameScene: SKScene {
     {
         super.init(size: size)
         
+        screenMidX = CGRectGetMidX(frame)
+        screenMidY = CGRectGetMidY(frame)
+        
         anchorPoint = CGPoint(x: 0, y: 1.0)
         
+        statusBar = SKShapeNode(path: CGPathCreateWithRect(
+            CGRectMake(screenMidX, -screenMidY,UIScreen.mainScreen().bounds.size.width, 125), nil), centered: true)
     }
     
+    // creates a health bar using two rectangles whose widths correspond to amount of current health and amount of max health
+    // color: the color the currentHealth part of the health bar should be
+    func createHealthBar(currentHealth: Int, maxHealth: Int, color: SKColor) {
+        // can you pass SKNodes without dying?
+        var maxHealthRect = SKShapeNode(path: CGPathCreateWithRect(CGRectMake(screenMidX, -screenMidY, 30, 15), nil), centered: true)
+        var currentHealthRect = SKShapeNode(path: CGPathCreateWithRect(CGRectMake(screenMidX, -screenMidY, 30-(30*CGFloat(currentHealth/maxHealth)), 15), nil), centered: true)
+        maxHealthRect.fillColor = SKColor.darkGrayColor()
+        currentHealthRect.fillColor = color
+    }
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -57,7 +78,16 @@ class GameScene: SKScene {
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
         
+        statusBar.fillColor = SKColor.redColor()
+        statusBar.position = CGPoint(x: screenMidX, y: -UIScreen.mainScreen().bounds.size.height+25)
         
+        statusHealth.text = "Health"
+        statusHealth.fontSize = 15
+        statusHealth.fontName = "HelveticaBold"
+        statusHealth.position = CGPointMake(0, 0)
+        statusBar.addChild(statusHealth)
+        
+        addChild(statusBar)
     }
     
     func addSpritesForCells(numRows: Int, numCols: Int)
