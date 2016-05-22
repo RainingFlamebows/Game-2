@@ -13,7 +13,6 @@ class Piece {
     var row: Int
     var column: Int
     var attack: Int
-    var defense: Double // <- do we still need defense?
     var range: Int
     var health: Int
     var currentHealth: Int
@@ -24,12 +23,11 @@ class Piece {
     
     var sprite: SKSpriteNode!
     
-    init(owner: Int, row: Int, column: Int, attack: Int, defense: Double, range: Int, health: Int, movement: Int) {
+    init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         self.owner = owner
         self.row = row
         self.column = column
         self.attack = attack
-        self.defense = defense
         self.range = range
         self.health = health
         self.movement = movement
@@ -75,9 +73,9 @@ class Piece {
 }
 
 class Warrior: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int, defense: Double, range: Int, health: Int, movement: Int) {
+    override init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 3, defense: 2, range: 1, health: 10, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 3, range: 1, health: 10, movement: 1)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "warrior sprite red")
         }
@@ -88,9 +86,9 @@ class Warrior: Piece {
 }
 
 class Ranger: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int, defense: Double, range: Int, health: Int, movement: Int) {
+    override init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 2, defense: 2, range: 2, health: 8, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 2, range: 2, health: 8, movement: 1)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "ranger sprite red")
         }
@@ -101,9 +99,9 @@ class Ranger: Piece {
 }
 
 class Defender: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int, defense: Double, range: Int, health: Int, movement: Int) {
+    override init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 1, defense: 5, range: 1, health: 15, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 1, range: 1, health: 15, movement: 1)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "defender sprite red")
         }
@@ -114,9 +112,9 @@ class Defender: Piece {
 }
 
 class Mage: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int, defense: Double, range: Int, health: Int, movement: Int) {
+    override init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 3, defense: 2, range: 3, health: 6, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 3, range: 3, health: 6, movement: 1)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "mage sprite red")
         }
