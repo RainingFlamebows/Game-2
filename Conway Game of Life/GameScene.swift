@@ -79,15 +79,16 @@ class GameScene: SKScene {
         addChild(cellLayer)
         
         statusBar.fillColor = SKColor.redColor()
-        statusBar.position = CGPoint(x: screenMidX, y: -UIScreen.mainScreen().bounds.size.height+25)
+        statusBar.position = CGPoint(x: 0, y: -UIScreen.mainScreen().bounds.size.height/2+25)
         
         statusHealth.text = "Health"
         statusHealth.fontSize = 15
         statusHealth.fontName = "HelveticaBold"
         statusHealth.position = CGPointMake(0, 0)
         statusBar.addChild(statusHealth)
+        statusBar.zPosition = 100
         
-        addChild(statusBar)
+        sceneCam.addChild(statusBar)
     }
     
     func addSpritesForCells(numRows: Int, numCols: Int)
@@ -174,32 +175,20 @@ class GameScene: SKScene {
         
         if (newScale >= 0.25 && sender.scale > previousScale) ||
             (newScale <= 1 && sender.scale < previousScale) {
-//
+
             print("\(camera?.xScale), \(newScale), \(convertedScale)")
-//            if camera?.xScale > 1 {
-//                camera?.setScale(1)
-//            }
-//            else if camera?.xScale < 0.25 {
-//                camera?.setScale(0.25)
-//            }
-//            else {
-                camera!.setScale(newScale)
-//            }
+            camera!.setScale(newScale)
         
             let locationInView = sender.locationInView(self.view)
             let location = self.convertPointFromView(locationInView)
             
-//            if camera?.xScale == 1 {
-////                sender.scale = 1.0
-//                camera?.position = CGPoint(x: frame.midX, y: frame.midY)
-//            }
-//            else {
-                let locationAfterScale = self.convertPointFromView(locationInView)
-                let locationDelta = CGPoint(x: location.x - locationAfterScale.x, y: location.y - locationAfterScale.y)
-                let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
-                camera!.position = newPoint
-
-//            }
+            let locationAfterScale = self.convertPointFromView(locationInView)
+            let locationDelta = CGPoint(x: location.x - locationAfterScale.x, y: location.y - locationAfterScale.y)
+            let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
+            camera!.position = newPoint
+            
+            
+            
         }
     }
    
