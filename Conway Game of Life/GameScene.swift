@@ -27,7 +27,10 @@ class GameScene: SKScene {
     
     // status screen at bottom, shows unit stats when unit selected or training queue when city is selected
     var statusBar = SKShapeNode() // <- when graphics finished make this SKSpriteNode
-    var statusHealth = SKLabelNode()
+    
+    var statusHealth = SKLabelNode()    // displays "Health" label for health stat of unit
+    
+    var statusBarSprite = SKSpriteNode()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -43,17 +46,54 @@ class GameScene: SKScene {
         anchorPoint = CGPoint(x: 0, y: 1.0)
         
         statusBar = SKShapeNode(path: CGPathCreateWithRect(
-            CGRectMake(screenMidX, -screenMidY,UIScreen.mainScreen().bounds.size.width, 125), nil), centered: true)
+            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
     }
     
     // creates a health bar using two rectangles whose widths correspond to amount of current health and amount of max health
     // color: the color the currentHealth part of the health bar should be
-    func createHealthBar(currentHealth: Int, maxHealth: Int, color: SKColor) {
-        // can you pass SKNodes without dying?
-        var maxHealthRect = SKShapeNode(path: CGPathCreateWithRect(CGRectMake(screenMidX, -screenMidY, 30, 15), nil), centered: true)
-        var currentHealthRect = SKShapeNode(path: CGPathCreateWithRect(CGRectMake(screenMidX, -screenMidY, 30-(30*CGFloat(currentHealth/maxHealth)), 15), nil), centered: true)
-        maxHealthRect.fillColor = SKColor.darkGrayColor()
+    // health bar width is randomly set to 30. Make width global variable or add to argument of function?
+    //
+    func createHealthBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKNode {
+        let margin = CGFloat(5)
+        let healthBarWidth = CGFloat(60)
+        let healthBarHeight = CGFloat(15)
+        
+        let healthBar = SKShapeNode()
+        let maxHealthRect = SKShapeNode(path: CGPathCreateWithRect(
+            CGRectMake(screenMidX, -screenMidY, healthBarWidth, healthBarHeight), nil), centered: true)
+        
+        let currentHealthWidth = healthBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin
+        let currentHealthRect = SKShapeNode(path: CGPathCreateWithRect(
+            CGRectMake(screenMidX, -screenMidY, currentHealthWidth, healthBarHeight - margin), nil), centered: true)
+        
+        maxHealthRect.fillColor = SKColor.lightGrayColor()
+        maxHealthRect.strokeColor = SKColor.clearColor()
+        
         currentHealthRect.fillColor = color
+        currentHealthRect.strokeColor = SKColor.clearColor()
+        currentHealthRect.position = CGPoint(x: -currentHealthWidth/2, y: 0)
+        maxHealthRect.addChild(currentHealthRect)
+        healthBar.addChild(maxHealthRect)
+        
+        return healthBar
+    }
+    
+    func drawStatusBar(piece: Piece) {
+        let maxStat = 10        // the maximum number any stat (except health) can be among all pieces
+        
+        statusBar.fillColor = SKColor.redColor()
+        statusBar.position = CGPoint(x: screenMidX, y: -UIScreen.mainScreen().bounds.size.height+25)
+        
+        statusHealth.text = "Health"
+        statusHealth.fontSize = 15
+        statusHealth.fontName = "HelveticaBold"
+        statusHealth.position = CGPointMake(0, 20)
+        statusBar.addChild(statusHealth)
+        
+        let healthBar = createHealthBar(piece.currentHealth, maxHealth: piece.health, color: SKColor.greenColor())
+        statusBar.addChild(healthBar)
+        addChild(statusBar)
+
     }
     
     override func didMoveToView(view: SKView) {
@@ -78,16 +118,8 @@ class GameScene: SKScene {
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
         
-        statusBar.fillColor = SKColor.redColor()
-        statusBar.position = CGPoint(x: screenMidX, y: -UIScreen.mainScreen().bounds.size.height+25)
         
-        statusHealth.text = "Health"
-        statusHealth.fontSize = 15
-        statusHealth.fontName = "HelveticaBold"
-        statusHealth.position = CGPointMake(0, 0)
-        statusBar.addChild(statusHealth)
-        
-        addChild(statusBar)
+        drawStatusBar(Piece(owner: 1, row: 3, column: 2, attack: 4, range: 3, health: 5, movement: 2))
     }
     
     func addSpritesForCells(numRows: Int, numCols: Int)
