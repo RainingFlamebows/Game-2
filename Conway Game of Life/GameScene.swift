@@ -79,7 +79,7 @@ class GameScene: SKScene {
         addChild(cellLayer)
         
         statusBar.fillColor = SKColor.redColor()
-        statusBar.position = CGPoint(x: 0, y: -UIScreen.mainScreen().bounds.size.height/2+25)
+        statusBar.position = CGPoint(x: 0, y: -screenMidY+25)
         
         statusHealth.text = "Health"
         statusHealth.fontSize = 15
@@ -113,7 +113,6 @@ class GameScene: SKScene {
                 cell.size = CGSize(width: cellSize, height: cellSize)
                 cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
                 cell.anchorPoint = CGPoint(x: 0, y: 1.0)
-                
                 
                 cellLayer.addChild(cell)
             }
@@ -173,11 +172,16 @@ class GameScene: SKScene {
         let convertedScale = sender.scale - deltaScale
         let newScale = camera!.xScale*convertedScale
         
-        if (newScale >= 0.25 && sender.scale > previousScale) ||
-            (newScale <= 1 && sender.scale < previousScale) {
-
+        let gridWidth = cellLayer.calculateAccumulatedFrame().width
+        let actualWidth = gridWidth/camera!.xScale
+        
+        if (newScale >= 0.25 && sender.scale >= 1) ||
+            (newScale <= 1 && sender.scale <= 1) {
+            
             print("\(camera?.xScale), \(newScale), \(convertedScale)")
             camera!.setScale(newScale)
+            sender.scale = 1
+        
         
             let locationInView = sender.locationInView(self.view)
             let location = self.convertPointFromView(locationInView)
@@ -187,10 +191,13 @@ class GameScene: SKScene {
             let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
             camera!.position = newPoint
             
-            
-            
+            print(cellLayer.calculateAccumulatedFrame())
+            print(actualWidth)
+            print(cellLayer.calculateAccumulatedFrame().size)
+
         }
-    }
+        
+            }
    
     override func update(currentTime: CFTimeInterval)
     {
