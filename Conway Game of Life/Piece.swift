@@ -72,7 +72,7 @@ class Piece {
     }
 }
 
-class Warrior: Piece {
+class Warrior: Piece {      // is there a more convenient way of declaring a new piece
     override init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         
         super.init(owner: owner, row: row, column: column, attack: 3, range: 1, health: 10, movement: 1)

@@ -26,7 +26,8 @@ class GameScene: SKScene {
     var sceneCam: SKCameraNode!
     
     // status screen at bottom, shows unit stats when unit selected or training queue when city is selected
-    var statusBar = SKShapeNode() // <- when graphics finished make this SKSpriteNode
+    var statusBar = SKSpriteNode() // <- when graphics finished make this SKSpriteNode
+    var statusBarHeight = CGFloat(100)
     
     var statusHealth = SKLabelNode()    // displays "Health" label for health stat of unit
     
@@ -44,34 +45,29 @@ class GameScene: SKScene {
         screenMidY = CGRectGetMidY(frame)
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
-        
-        statusBar = SKShapeNode(path: CGPathCreateWithRect(
-            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
+        statusBar = SKSpriteNode(color: SKColor.redColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: statusBarHeight))
+//        statusBar = SKShapeNode(path: CGPathCreateWithRect(
+//            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
     }
     
     // creates a health bar using two rectangles whose widths correspond to amount of current health and amount of max health
     // color: the color the currentHealth part of the health bar should be
     // health bar width is randomly set to 30. Make width global variable or add to argument of function?
     //
-    func createHealthBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKNode {
-        let margin = CGFloat(5)
+    func createHealthBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKSpriteNode {
+        let margin = CGFloat(2.5) // thickness of border between outer maxHealthRect and currentHealthRect
         let healthBarWidth = CGFloat(60)
         let healthBarHeight = CGFloat(15)
         
-        let healthBar = SKShapeNode()
-        let maxHealthRect = SKShapeNode(path: CGPathCreateWithRect(
-            CGRectMake(screenMidX, -screenMidY, healthBarWidth, healthBarHeight), nil), centered: true)
+        let healthBar = SKSpriteNode()
+        let maxHealthRect = SKSpriteNode(color: SKColor.blackColor(), size: CGSize(width: healthBarWidth, height: healthBarHeight))
         
-        let currentHealthWidth = healthBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin
-        let currentHealthRect = SKShapeNode(path: CGPathCreateWithRect(
-            CGRectMake(screenMidX, -screenMidY, currentHealthWidth, healthBarHeight - margin), nil), centered: true)
+        let currentHealthWidth = healthBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
+        let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: healthBarHeight - margin*2))
         
-        maxHealthRect.fillColor = SKColor.lightGrayColor()
-        maxHealthRect.strokeColor = SKColor.clearColor()
+        currentHealthRect.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
         
-        currentHealthRect.fillColor = color
-        currentHealthRect.strokeColor = SKColor.clearColor()
-        currentHealthRect.position = CGPoint(x: -currentHealthWidth/2, y: 0)
         maxHealthRect.addChild(currentHealthRect)
         healthBar.addChild(maxHealthRect)
         
@@ -81,17 +77,21 @@ class GameScene: SKScene {
     func drawStatusBar(piece: Piece) {
         let maxStat = 10        // the maximum number any stat (except health) can be among all pieces
         
-        statusBar.fillColor = SKColor.redColor()
-        statusBar.position = CGPoint(x: 0, y: -screenMidY+25)
+//        statusBar.fillColor = SKColor.redColor()
+        statusBar.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        statusBar.position = CGPoint(x: 0, y: -screenMidY+statusBarHeight/2)
         
         statusHealth.text = "Health"
         statusHealth.fontSize = 15
         statusHealth.fontName = "HelveticaBold"
-        statusHealth.position = CGPointMake(0, 20)
+        statusHealth.position = CGPointMake(2/3*screenMidX, 0)
         statusBar.addChild(statusHealth)
-        statusBar.zPosition = 100
+//        statusBar.zPosition = 100
         
         let healthBar = createHealthBar(piece.currentHealth, maxHealth: piece.health, color: SKColor.greenColor())
+        healthBar.anchorPoint = CGPointMake(0,0)
+//        healthBar.position = CGPointMake(2/3*screenMidX, 0)
+        
         statusBar.addChild(healthBar)
 
     }
