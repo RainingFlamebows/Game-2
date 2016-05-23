@@ -29,9 +29,6 @@ class GameScene: SKScene {
     var statusBar = SKSpriteNode() // <- when graphics finished make this SKSpriteNode
     var statusBarHeight = CGFloat(100)
     
-    var statusHealth = SKLabelNode()    // displays "Health" label for health stat of unit
-    
-    var statusBarSprite = SKSpriteNode()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -55,50 +52,80 @@ class GameScene: SKScene {
     // color: the color the currentHealth part of the health bar should be
     // health bar width is randomly set to 30. Make width global variable or add to argument of function?
     //
-    func createHealthBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKSpriteNode {
+    func createStatBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKSpriteNode {
         let margin = CGFloat(2.5) // thickness of border between outer maxHealthRect and currentHealthRect
-        let healthBarWidth = CGFloat(60)
-        let healthBarHeight = CGFloat(15)
+        let statBarWidth = CGFloat(60)
+        let statBarHeight = CGFloat(15)
         
-        let healthBar = SKSpriteNode()
-        let maxHealthRect = SKSpriteNode(color: SKColor.blackColor(), size: CGSize(width: healthBarWidth, height: healthBarHeight))
+        let statBar = SKSpriteNode()
+        let maxHealthRect = SKSpriteNode(color: SKColor.blackColor(), size: CGSize(width: statBarWidth, height: statBarHeight))
         maxHealthRect.anchorPoint = CGPointMake(0.5,0.5)
         
-        let currentHealthWidth = healthBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
-        let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: healthBarHeight - margin*2))
+        let currentHealthWidth = statBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
+        let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: statBarHeight - margin*2))
         
         currentHealthRect.anchorPoint = CGPoint(x: 0, y: 0)
-        currentHealthRect.position = CGPointMake(-healthBarWidth/2 + margin, -healthBarHeight/2 + margin)
+        currentHealthRect.position = CGPointMake(-statBarWidth/2 + margin, -statBarHeight/2 + margin)
 //        currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
         
         maxHealthRect.addChild(currentHealthRect)
-        healthBar.addChild(maxHealthRect)
+        statBar.addChild(maxHealthRect)
         
-        return healthBar
+        return statBar
     }
     
     func drawStatusBar(piece: Piece) {
         let maxStat = 10        // the maximum number any stat (except health) can be among all pieces
-        
+        let fontSize = CGFloat(20)
+        let font = "HelveticaBold"
 //        statusBar.fillColor = SKColor.redColor()
         statusBar.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         statusBar.position = CGPoint(x: 0, y: -screenMidY+statusBarHeight/2)
         
+        let statusHealth = SKLabelNode()    // displays "Health" label for health stat of unit
         statusHealth.text = "Health"
-        statusHealth.fontSize = 15
-        statusHealth.fontName = "HelveticaBold"
+        statusHealth.fontSize = fontSize
+        statusHealth.fontName = font
         statusHealth.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
         statusHealth.position = CGPointMake(-1/3*screenMidX, statusBarHeight/4)
         statusBar.addChild(statusHealth)
         statusBar.zPosition = 10
         
-        // I've decided that I really don't like positioning in Xcode
-        let healthBar = createHealthBar(piece.currentHealth, maxHealth: piece.health, color: SKColor.greenColor())
+        var healthBarColor = SKColor()
+        // determines color of health bar:
+        // green by default, yellow if currentHP < 50%, red if currentHP < 25% of max HP
+        if(piece.currentHealth < piece.health/4) {
+            healthBarColor = SKColor.redColor()
+        }
+        else if(piece.currentHealth < piece.health/2) {
+            healthBarColor = SKColor.yellowColor()
+        }
+        else {
+            healthBarColor = SKColor.greenColor()
+        }
+        let healthBar = createStatBar(piece.currentHealth, maxHealth: piece.health, color: healthBarColor)
         healthBar.anchorPoint = CGPointMake(0.5,0.5)
         healthBar.position = CGPointMake(0, statusBarHeight/4)
-        
         statusBar.addChild(healthBar)
-
+        
+        
+        let statusAttack = SKLabelNode()
+        statusAttack.text = "Attack"
+        statusAttack.fontSize = fontSize
+        statusAttack.fontName = font
+        statusAttack.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        statusAttack.position = CGPointMake(-1/3*screenMidX, -statusBarHeight/4)
+        statusBar.addChild(statusAttack)
+        
+        let attackBar = createStatBar(piece.attack, maxHealth: maxStat, color: SKColor.cyanColor())
+        attackBar.anchorPoint = CGPointMake(0.5, 0.5)
+        attackBar.position = CGPointMake(0, -statusBarHeight/4)
+        statusBar.addChild(attackBar)
+        
+        let statusRange = SKLabelNode()
+        statusRange.text = "Range"
+        
+        
     }
     
     override func didMoveToView(view: SKView) {
