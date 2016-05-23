@@ -61,11 +61,12 @@ class GameScene: SKScene {
         
         let healthBar = SKSpriteNode()
         let maxHealthRect = SKSpriteNode(color: SKColor.blackColor(), size: CGSize(width: healthBarWidth, height: healthBarHeight))
+        maxHealthRect.anchorPoint = CGPointMake(0.5,0.5)
         
         let currentHealthWidth = healthBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
         let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: healthBarHeight - margin*2))
         
-        currentHealthRect.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        currentHealthRect.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
         
         maxHealthRect.addChild(currentHealthRect)
