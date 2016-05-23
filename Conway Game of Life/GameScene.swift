@@ -48,6 +48,7 @@ class GameScene: SKScene {
         statusBar = SKSpriteNode(color: SKColor.redColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: statusBarHeight))
 //        statusBar = SKShapeNode(path: CGPathCreateWithRect(
 //            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
+        
     }
     
     // creates a health bar using two rectangles whose widths correspond to amount of current health and amount of max health
@@ -87,7 +88,7 @@ class GameScene: SKScene {
         statusHealth.fontName = "HelveticaBold"
         statusHealth.position = CGPointMake(2/3*screenMidX, 0)
         statusBar.addChild(statusHealth)
-//        statusBar.zPosition = 100
+        statusBar.zPosition = 10
         
         let healthBar = createHealthBar(piece.currentHealth, maxHealth: piece.health, color: SKColor.greenColor())
         healthBar.anchorPoint = CGPointMake(0,0)
@@ -114,16 +115,14 @@ class GameScene: SKScene {
         background.position = CGPoint(x: 0, y: 0)
         background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sceneCam.addChild(background)
-
         
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
         
-        
-
         drawStatusBar(Piece(owner: 1, row: 3, column: 2, attack: 4, range: 3, health: 5, movement: 2))
         sceneCam.addChild(statusBar)
-
+        
+        addConstraints()
     }
     
     func addSpritesForCells(numRows: Int, numCols: Int)
@@ -152,6 +151,26 @@ class GameScene: SKScene {
                 cellLayer.addChild(cell)
             }
         }
+    }
+    
+    func addConstraints()
+    {
+        let scaledSize = CGSize(width: size.width * camera!.xScale, height: size.height * camera!.yScale)
+        let boardContentRect = cellLayer.calculateAccumulatedFrame()
+        let xInset = min((scaledSize.width / 2) - margin, boardContentRect.width / 2)
+        let yInset = min((scaledSize.height / 2) - margin, boardContentRect.height / 2)
+        
+        // Use these insets to create a smaller inset rectangle within which the camera must stay.
+        let insetContentRect = boardContentRect.insetBy(dx: xInset, dy: yInset)
+        
+        // Define an `SKRange` for each of the x and y axes to stay within the inset rectangle.
+        let xRange = SKRange(lowerLimit: insetContentRect.minX, upperLimit: insetContentRect.maxX)
+        let yRange = SKRange(lowerLimit: insetContentRect.minY, upperLimit: insetContentRect.maxY)
+        
+        // Constrain the camera within the inset rectangle.
+        let levelEdgeConstraint = SKConstraint.positionX(xRange, y: yRange)
+        camera!.constraints = [levelEdgeConstraint]
+
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -189,6 +208,7 @@ class GameScene: SKScene {
             
             camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
         }
+        print(camera!.position)
     }
     
     func pinched(sender: UIPinchGestureRecognizer) {
@@ -203,21 +223,25 @@ class GameScene: SKScene {
     
     func zoom(sender: UIPinchGestureRecognizer) {
         
+        
         let deltaScale = (sender.scale - 1.0)*2
         let convertedScale = sender.scale - deltaScale
-        let newScale = camera!.xScale*convertedScale
+        var newScale = camera!.xScale*convertedScale
         
-        let gridWidth = cellLayer.calculateAccumulatedFrame().width
-        let actualWidth = gridWidth/camera!.xScale
+        if newScale < 0.24 {
+            newScale = 0.25
+        }
+        else if newScale > 0.99 {
+            newScale = 1
+        }
         
         if (newScale >= 0.25 && sender.scale >= 1) ||
             (newScale <= 1 && sender.scale <= 1) {
             
             print("\(camera?.xScale), \(newScale), \(convertedScale)")
+            print("sender.scale \(sender.scale)")
             camera!.setScale(newScale)
-            sender.scale = 1
-        
-        
+            
             let locationInView = sender.locationInView(self.view)
             let location = self.convertPointFromView(locationInView)
             
@@ -226,13 +250,27 @@ class GameScene: SKScene {
             let newPoint = CGPoint(x: camera!.position.x - locationDelta.x, y: camera!.position.y - locationDelta.y)
             camera!.position = newPoint
             
-            print(cellLayer.calculateAccumulatedFrame())
-            print(actualWidth)
-            print(cellLayer.calculateAccumulatedFrame().size)
+            let scaledSize = CGSize(width: size.width * camera!.xScale, height: size.height * camera!.yScale)
+            let boardContentRect = cellLayer.calculateAccumulatedFrame()
+            let xInset = min((scaledSize.width / 2) - margin, boardContentRect.width / 2)
+            let yInset = min((scaledSize.height / 2) - margin, boardContentRect.height / 2)
+            
+            // Use these insets to create a smaller inset rectangle within which the camera must stay.
+            let insetContentRect = boardContentRect.insetBy(dx: xInset, dy: yInset)
+            
+            // Define an `SKRange` for each of the x and y axes to stay within the inset rectangle.
+            let xRange = SKRange(lowerLimit: insetContentRect.minX, upperLimit: insetContentRect.maxX)
+            let yRange = SKRange(lowerLimit: insetContentRect.minY, upperLimit: insetContentRect.maxY)
+            
+            // Constrain the camera within the inset rectangle.
+            let levelEdgeConstraint = SKConstraint.positionX(xRange, y: yRange)
+            camera!.constraints = [levelEdgeConstraint]
+            
+            print("scaled size \(scaledSize)")
 
         }
         
-            }
+    }
    
     override func update(currentTime: CFTimeInterval)
     {
