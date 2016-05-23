@@ -66,8 +66,9 @@ class GameScene: SKScene {
         let currentHealthWidth = healthBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
         let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: healthBarHeight - margin*2))
         
-//        currentHealthRect.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
+        currentHealthRect.anchorPoint = CGPoint(x: 0, y: 0)
+        currentHealthRect.position = CGPointMake(-healthBarWidth/2 + margin, -healthBarHeight/2 + margin)
+//        currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
         
         maxHealthRect.addChild(currentHealthRect)
         healthBar.addChild(maxHealthRect)
@@ -85,13 +86,14 @@ class GameScene: SKScene {
         statusHealth.text = "Health"
         statusHealth.fontSize = 15
         statusHealth.fontName = "HelveticaBold"
-        statusHealth.position = CGPointMake(2/3*screenMidX, 0)
+        statusHealth.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        statusHealth.position = CGPointMake(-1/3*screenMidX, statusBarHeight/4)
         statusBar.addChild(statusHealth)
-//        statusBar.zPosition = 100
         
+        // I've decided that I really don't like positioning in Xcode
         let healthBar = createHealthBar(piece.currentHealth, maxHealth: piece.health, color: SKColor.greenColor())
-        healthBar.anchorPoint = CGPointMake(0,0)
-//        healthBar.position = CGPointMake(2/3*screenMidX, 0)
+        healthBar.anchorPoint = CGPointMake(0.5,0.5)
+        healthBar.position = CGPointMake(0, statusBarHeight/4)
         
         statusBar.addChild(healthBar)
 
@@ -121,7 +123,7 @@ class GameScene: SKScene {
         
         
 
-        drawStatusBar(Piece(owner: 1, row: 3, column: 2, attack: 4, range: 3, health: 5, movement: 2))
+        drawStatusBar(Warrior(owner: 1, row: 1, column: 1))
         sceneCam.addChild(statusBar)
 
     }
