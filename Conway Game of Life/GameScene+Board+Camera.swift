@@ -19,22 +19,34 @@ extension GameScene {
         let widthScreen = bounds.size.width
         
         let gridWidth: CGFloat = widthScreen - margin*2
-        cellSize = (gridWidth - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
+
+        let image = UIImage(named: "11x20 background")
+        let sizeBackground = image?.size
+
+        let gameBoard = SKSpriteNode(imageNamed: "11x20 background")
+        gameBoard.size = CGSize(width: gridWidth, height: sizeBackground!.height*gridWidth/(sizeBackground!.width))
+        gameBoard.anchorPoint = CGPointMake(0, 1.0)
+        gameBoard.position = CGPointMake(margin, -upperSpace)
+        gameBoard.alpha = 1
+        cellLayer.addChild(gameBoard)
+        
+        cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
         
         for row in 0...numRows-1 {
             for col in 0...numCols-1 {
                 
-                let leftCornerCell = margin + CGFloat(col) * (cellSize + spaceBetwCells)
-                let upperCornerCell = upperSpace + CGFloat(row) * (cellSize + spaceBetwCells)
+                let leftCornerCell = margin + CGFloat(col) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
+                let upperCornerCell = upperSpace + CGFloat(row) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
                 gridCoord[row][col] = CGPointMake(leftCornerCell, -upperCornerCell)
                 
-                var cell = SKSpriteNode()
-                cell = SKSpriteNode(imageNamed: "dead")
-                cell.size = CGSize(width: cellSize, height: cellSize)
-                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
-                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
-                
-                cellLayer.addChild(cell)
+//                var cell = SKSpriteNode()
+//                cell = SKSpriteNode(imageNamed: "dead")
+//                cell.size = CGSize(width: cellSize, height: cellSize)
+//                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
+//                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
+//                cell.alpha = 0.6
+//                
+//                cellLayer.addChild(cell)
             }
         }
     }
@@ -70,7 +82,6 @@ extension GameScene {
             
             camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
         }
-        print(camera!.position)
     }
     
     func pinched(sender: UIPinchGestureRecognizer) {
@@ -87,9 +98,7 @@ extension GameScene {
     func zoom(sender: UIPinchGestureRecognizer) {
         
         let locationInView = sender.locationInView(self.view)
-        print("locationinView \(locationInView)")
         let location = self.convertPointFromView(locationInView)
-        print("location \(location)")
         
         let deltaScale = (sender.scale - 1.0)*1.08
         let convertedScale = sender.scale - deltaScale
@@ -105,9 +114,7 @@ extension GameScene {
         if (newScale >= 0.25 && sender.scale >= 1) ||
             (newScale <= 1 && sender.scale <= 1) {
             
-            print("\(camera?.xScale), \(newScale), \(convertedScale)")
-            print("sender.scale \(sender.scale)")
-            camera!.setScale(newScale)            
+            camera!.setScale(newScale)
             
             let locationAfterScale = self.convertPointFromView(locationInView)
             let locationDelta = CGPoint(x: location.x - locationAfterScale.x, y: location.y - locationAfterScale.y)

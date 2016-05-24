@@ -15,7 +15,7 @@ class GameScene: SKScene {
     
     let margin: CGFloat = 20    // distance between left and right edges of grid and screen edges
     let upperSpace: CGFloat = 50
-    let spaceBetwCells: CGFloat = 1.4
+    let spaceBetwCells: CGFloat = 0.5
     var cellSize: CGFloat = 0
     
     var screenMidX: CGFloat!
@@ -52,8 +52,8 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        let numRows = 30
-        let numCols = 20
+        let numRows = 20
+        let numCols = 11
         
         sceneCam = SKCameraNode()
         sceneCam.setScale(1)
@@ -72,7 +72,7 @@ class GameScene: SKScene {
         
         drawStatusBar(Warrior(owner: 1, row: 1, column: 1))
 
-        sceneCam.addChild(statusBar)
+//        sceneCam.addChild(statusBar)
         
         addConstraints()
     }
