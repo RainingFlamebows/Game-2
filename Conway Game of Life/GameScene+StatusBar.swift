@@ -143,6 +143,12 @@ extension GameScene {
         sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
         statusBar.addChild(sprite)
+        
+        let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
+        cancelButton.position = CGPointMake(screenMidX - 8, statusBarHeight/2 - 8)
+        cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
+        cancelButton.size = CGSize(width: 18, height: 18)
+        statusBar.addChild(cancelButton)
     }
 
 
