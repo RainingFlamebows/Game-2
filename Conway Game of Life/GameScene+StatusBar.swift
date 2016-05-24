@@ -126,8 +126,8 @@ extension GameScene {
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
         createLabel(String(piece.range), position: CGPointMake(1/6*screenMidX, -statusBarHeight/5))
         
-        createLabel("\(piece.dynamicType)", position: CGPointMake(-4.25/6*screenMidX, -statusBarHeight/4),
-                    color: customYellow, horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
+        createLabel("\(piece.dynamicType)", position: CGPointMake(-4.25/6*screenMidX, -1.5*statusBarHeight/5),
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
 
         let redBlue: String!
         if piece.owner == 1 {
@@ -139,9 +139,9 @@ extension GameScene {
         
         let pieceType = String(piece.dynamicType).lowercaseString
         let sprite = SKSpriteNode(imageNamed: "\(pieceType) sprite " + redBlue)
-        sprite.position = CGPointMake(-4.25/6*screenMidX, statusBarHeight/5)
+        sprite.position = CGPointMake(-4.25/6*screenMidX, 0.6*statusBarHeight/6)
         sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        sprite.size = CGSize(width: 1.5/6*screenMidX, height: 1.5/6*screenMidX)
+        sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
         statusBar.addChild(sprite)
     }
 
