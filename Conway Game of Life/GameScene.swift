@@ -102,30 +102,7 @@ class GameScene: SKScene {
         }
     }
     
-    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
-
-        let touch = touches.first! as UITouch
-        let positionInScene = touch.locationInNode(self)
-        let previousPosition = touch.previousLocationInNode(self)
-        let translation = CGPoint(x: positionInScene.x - previousPosition.x, y: positionInScene.y - previousPosition.y)
-
-        if camera?.xScale <= 1 {
-            
-            camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
-        }
-        print(camera!.position)
-    }
-    
-    func pinched(sender: UIPinchGestureRecognizer) {
-        
-        if sender.numberOfTouches() == 2 {
-            if sender.state == .Changed {
-            
-                zoom(sender)
-            }
-        }
-    }
-    
+       
        
     override func update(currentTime: CFTimeInterval)
     {

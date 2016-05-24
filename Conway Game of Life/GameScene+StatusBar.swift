@@ -39,15 +39,17 @@ extension GameScene {
         return statBar
     }
     
-    func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(), font: String = "Helvetica", fontSize: CGFloat = CGFloat(20),
-        horizontalAlignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center) {
+    func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(),
+        font: String = "Avenir-Medium", fontSize: CGFloat = CGFloat(20),
+        horizontalAlignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center,
+        verticalAlignment: SKLabelVerticalAlignmentMode = SKLabelVerticalAlignmentMode.Baseline) {
         let label = SKLabelNode()    // displays "Health" label for health stat of unit
         label.text = text
         label.fontSize = fontSize
         label.fontName = font
-        label.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        label.verticalAlignmentMode = verticalAlignment
         label.horizontalAlignmentMode = horizontalAlignment
-        label.position = position
+        label.position = CGPoint(x: position.x, y: position.y - fontSize/2)
         label.fontColor = color
         statusBar.addChild(label)
 
@@ -55,27 +57,33 @@ extension GameScene {
     
     func drawStatusBar(piece: Piece) {
         
+        
         //        statusBar.fillColor = SKColor.redColor()
         statusBar.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         statusBar.position = CGPoint(x: 0, y: -screenMidY+statusBarHeight/2)
         statusBar.zPosition = 10
         
-        createLabel("Health", position: CGPointMake(-1/3*screenMidX, statusBarHeight/4))
+        let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
+        let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
+        let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
+
+        createLabel("Health", position: CGPointMake(-2.5/6*screenMidX, statusBarHeight/4), color: customYellow,
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
         
         var healthLabelColor = SKColor()
         if(piece.currentHealth < piece.health/4) {
-            healthLabelColor = SKColor.redColor()
-        }
-        else if(piece.currentHealth < piece.health/2) {
-            healthLabelColor = SKColor.yellowColor()
+            healthLabelColor = customRed
         }
         else {
-            healthLabelColor = SKColor.greenColor()
+            healthLabelColor = customGreen
         }
-        createLabel(String(piece.currentHealth) + "/" + String(piece.health),
-                    position: CGPointMake(0, statusBarHeight/4),
+        createLabel(String(piece.currentHealth),
+                    position: CGPointMake(0.5/6*screenMidX, statusBarHeight/4),
                     color: healthLabelColor,
-                    font: "Helvetica-Bold")
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
+        createLabel(String("/" + String(piece.health)),
+                    position: CGPointMake(0.5/6*screenMidX, statusBarHeight/4),
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
 
 //        var healthLabelColor = SKColor()
 //        // determines color of health bar:
@@ -94,8 +102,7 @@ extension GameScene {
 //        healthBar.anchorPoint = CGPointMake(0.5,0.5)
 //        healthBar.position = CGPointMake(0, statusBarHeight/4)
 //        statusBar.addChild(healthBar)
-        
-        createLabel("Attack", position: CGPointMake(-1/3*screenMidX, -statusBarHeight/4))
+//        
 //        let statusAttack = SKLabelNode()
 //        statusAttack.text = "Attack"
 //        statusAttack.fontSize = fontSize
@@ -103,17 +110,21 @@ extension GameScene {
 //        statusAttack.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
 //        statusAttack.position = CGPointMake(-1/3*screenMidX, -statusBarHeight/4)
 //        statusBar.addChild(statusAttack)
-        createLabel(String(piece.attack), position: CGPointMake(0, -statusBarHeight/4), color: SKColor.cyanColor(), font: "Helvetica-Bold")
+//
 //        let attackBar = createStatBar(piece.attack, maxHealth: maxStat, color: SKColor.cyanColor())
 //        attackBar.anchorPoint = CGPointMake(0.5, 0.5)
 //        attackBar.position = CGPointMake(0, -statusBarHeight/4)
 //        statusBar.addChild(attackBar)
         
-        createLabel("Range", position: CGPointMake(3/6*screenMidX, statusBarHeight/4 - 2.5))
-        createLabel(String(piece.range), position: CGPointMake(4.5/6*screenMidX, statusBarHeight/4), color: SKColor.purpleColor(), font: "Helvetica-Bold")
+        createLabel("Attack", position: CGPointMake(3.5/6*screenMidX, statusBarHeight/4), color: customYellow)
+        createLabel(String(piece.attack), position: CGPointMake(5/6*screenMidX, statusBarHeight/4))
         
-        createLabel("Movement", position: CGPointMake(3/6*screenMidX, -statusBarHeight/4))
-        createLabel(String(piece.range), position: CGPointMake(4.5/6*screenMidX, -statusBarHeight/4), color: SKColor.brownColor(), font: "Helvetica-Bold")
+        createLabel("Range", position: CGPointMake(3.5/6*screenMidX, -statusBarHeight/4), color: customYellow)
+        createLabel(String(piece.range), position: CGPointMake(5/6*screenMidX, -statusBarHeight/4))
+        
+        createLabel("Movement", position: CGPointMake(-2.5/6*screenMidX, -statusBarHeight/4), color: customYellow,
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+        createLabel(String(piece.range), position: CGPointMake(1/6*screenMidX, -statusBarHeight/4))
         
     }
 

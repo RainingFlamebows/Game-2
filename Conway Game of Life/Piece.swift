@@ -73,9 +73,10 @@ class Piece {
 }
 
 class Warrior: Piece {      // is there a more convenient way of declaring a new piece
-    override init(owner: Int, row: Int, column: Int, attack: Int = 3, range: Int = 1, health: Int = 10, movement: Int = 1) {
+    init(owner: Int, row: Int, column: Int) {
         
         super.init(owner: owner, row: row, column: column, attack: 3, range: 1, health: 10, movement: 1)
+        
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "warrior sprite red")
         }
@@ -86,7 +87,7 @@ class Warrior: Piece {      // is there a more convenient way of declaring a new
 }
 
 class Ranger: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int = 2, range: Int = 2, health: Int = 8, movement: Int = 1) {
+    init(owner: Int, row: Int, column: Int) {
         
         super.init(owner: owner, row: row, column: column, attack: 2, range: 2, health: 8, movement: 1)
         if(owner == 1) {
@@ -99,7 +100,7 @@ class Ranger: Piece {
 }
 
 class Defender: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int = 1, range: Int = 1, health: Int = 15, movement: Int = 1) {
+    init(owner: Int, row: Int, column: Int) {
         
         super.init(owner: owner, row: row, column: column, attack: 1, range: 1, health: 15, movement: 1)
         if(owner == 1) {
