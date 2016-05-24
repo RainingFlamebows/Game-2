@@ -72,7 +72,7 @@ class GameScene: SKScene {
         
         drawStatusBar(Warrior(owner: 1, row: 1, column: 1))
 
-//        sceneCam.addChild(statusBar)
+        sceneCam.addChild(statusBar)
         
         addConstraints()
     }
