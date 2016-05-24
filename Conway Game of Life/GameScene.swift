@@ -42,7 +42,7 @@ class GameScene: SKScene {
         screenMidY = CGRectGetMidY(frame)
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
-        statusBar = SKSpriteNode(color: SKColor.redColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: statusBarHeight))
+        statusBar = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: statusBarHeight))
 //        statusBar = SKShapeNode(path: CGPathCreateWithRect(
 //            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
         

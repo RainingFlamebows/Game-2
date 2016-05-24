@@ -113,7 +113,7 @@ extension GameScene {
         createLabel(String(piece.range), position: CGPointMake(4.5/6*screenMidX, statusBarHeight/4), color: SKColor.purpleColor(), font: "Helvetica-Bold")
         
         createLabel("Movement", position: CGPointMake(3/6*screenMidX, -statusBarHeight/4))
-        createLabel(String(piece.range), position: CGPointMake(4.5/6*screenMidX, -statusBarHeight/4), color: SKColor.magentaColor(), font: "Helvetica-Bold")
+        createLabel(String(piece.range), position: CGPointMake(4.5/6*screenMidX, -statusBarHeight/4), color: SKColor.brownColor(), font: "Helvetica-Bold")
         
     }
 
