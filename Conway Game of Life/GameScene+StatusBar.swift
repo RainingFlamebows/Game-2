@@ -67,7 +67,7 @@ extension GameScene {
         let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
         let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
 
-        createLabel("Health", position: CGPointMake(-2.5/6*screenMidX, statusBarHeight/5), color: customYellow,
+        createLabel("Health", position: CGPointMake(-2.6/6*screenMidX, statusBarHeight/5), color: customYellow,
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
         
         var healthLabelColor = SKColor()
@@ -78,11 +78,11 @@ extension GameScene {
             healthLabelColor = customGreen
         }
         createLabel(String(piece.currentHealth),
-                    position: CGPointMake(0.5/6*screenMidX, statusBarHeight/5),
+                    position: CGPointMake(0.4/6*screenMidX, statusBarHeight/5),
                     color: healthLabelColor,
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
         createLabel(String("/" + String(piece.health)),
-                    position: CGPointMake(0.5/6*screenMidX, statusBarHeight/5),
+                    position: CGPointMake(0.4/6*screenMidX, statusBarHeight/5),
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
 
 //        var healthLabelColor = SKColor()
@@ -116,17 +116,17 @@ extension GameScene {
 //        attackBar.position = CGPointMake(0, -statusBarHeight/5)
 //        statusBar.addChild(attackBar)
         
-        createLabel("Attack", position: CGPointMake(3.5/6*screenMidX, statusBarHeight/5), color: customYellow)
-        createLabel(String(piece.attack), position: CGPointMake(5/6*screenMidX, statusBarHeight/5))
+        createLabel("Attack", position: CGPointMake(3.1/6*screenMidX, statusBarHeight/5), color: customYellow)
+        createLabel(String(piece.attack), position: CGPointMake(4.6/6*screenMidX, statusBarHeight/5))
         
-        createLabel("Range", position: CGPointMake(3.5/6*screenMidX, -statusBarHeight/5), color: customYellow)
-        createLabel(String(piece.range), position: CGPointMake(5/6*screenMidX, -statusBarHeight/5))
+        createLabel("Range", position: CGPointMake(3.1/6*screenMidX, -statusBarHeight/5), color: customYellow)
+        createLabel(String(piece.range), position: CGPointMake(4.6/6*screenMidX, -statusBarHeight/5))
         
-        createLabel("Movement", position: CGPointMake(-2.5/6*screenMidX, -statusBarHeight/5), color: customYellow,
+        createLabel("Movement", position: CGPointMake(-2.6/6*screenMidX, -statusBarHeight/5), color: customYellow,
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
-        createLabel(String(piece.range), position: CGPointMake(1/6*screenMidX, -statusBarHeight/5))
+        createLabel(String(piece.range), position: CGPointMake(0.9/6*screenMidX, -statusBarHeight/5))
         
-        createLabel("\(piece.dynamicType)", position: CGPointMake(-4.25/6*screenMidX, -1.5*statusBarHeight/5),
+        createLabel("\(piece.dynamicType)", position: CGPointMake(-4.2/6*screenMidX, -1.5*statusBarHeight/5),
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
 
         let redBlue: String!
@@ -139,7 +139,7 @@ extension GameScene {
         
         let pieceType = String(piece.dynamicType).lowercaseString
         let sprite = SKSpriteNode(imageNamed: "\(pieceType) sprite " + redBlue)
-        sprite.position = CGPointMake(-4.25/6*screenMidX, 0.6*statusBarHeight/6)
+        sprite.position = CGPointMake(-4.2/6*screenMidX, 0.6*statusBarHeight/6)
         sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
         statusBar.addChild(sprite)
