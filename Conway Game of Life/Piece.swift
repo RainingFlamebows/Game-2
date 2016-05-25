@@ -22,6 +22,7 @@ class Piece {
     var owner: Int // player 1 = 1, player 2 = 2
     
     var sprite: SKSpriteNode!
+    var pieceMenu: SKSpriteNode!
     
     init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         self.owner = owner
@@ -32,9 +33,100 @@ class Piece {
         self.health = health
         self.movement = movement
         self.isAlive = true
-        
         currentHealth = self.health // piece has max HP by default
+        
+        createPieceMenu()
+        
     }
+    
+    func createPieceMenu()
+    {
+        let screenMidX = UIScreen.mainScreen().bounds.height/2
+        let screenMidY = UIScreen.mainScreen().bounds.width/2
+                
+        pieceMenu = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: screenMidX*2, height: 100))
+        pieceMenu.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        pieceMenu.position = CGPoint(x: 0, y: -screenMidY*2+pieceMenu.size.height/2)
+        pieceMenu.zPosition = 10
+        
+        let menuHeight = pieceMenu.frame.height
+        
+        let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
+        let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
+        let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
+        
+        createLabel("Health", position: CGPointMake(-2.6/6*screenMidX, menuHeight/5), color: customYellow,
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+        
+        var healthLabelColor = SKColor()
+        if(currentHealth < health/4) {
+            healthLabelColor = customRed
+        }
+        else {
+            healthLabelColor = customGreen
+        }
+        createLabel(String(currentHealth),
+                    position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
+                    color: healthLabelColor,
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
+        createLabel(String("/" + String(health)),
+                    position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+        
+        createLabel("Attack", position: CGPointMake(3.1/6*screenMidX, menuHeight/5), color: customYellow)
+        createLabel(String(attack), position: CGPointMake(4.6/6*screenMidX, menuHeight/5))
+        
+        createLabel("Range", position: CGPointMake(3.1/6*screenMidX, -menuHeight/5), color: customYellow)
+        createLabel(String(range), position: CGPointMake(4.6/6*screenMidX, -menuHeight/5))
+        
+        createLabel("Movement", position: CGPointMake(-2.6/6*screenMidX, -menuHeight/5), color: customYellow,
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+        createLabel(String(range), position: CGPointMake(0.9/6*screenMidX, -menuHeight/5))
+        
+        createLabel("\(self.dynamicType)", position: CGPointMake(-4.2/6*screenMidX, -1.5*menuHeight/5),
+                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
+        
+        let redBlue: String!
+        if owner == 1 {
+            redBlue = "red"
+        }
+        else {
+            redBlue = "blue"
+        }
+        
+        let pieceType = String(self.dynamicType).lowercaseString
+        let sprite = SKSpriteNode(imageNamed: "\(pieceType) sprite " + redBlue)
+        sprite.position = CGPointMake(-4.2/6*screenMidX, 0.6*menuHeight/6)
+        sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
+        pieceMenu.addChild(sprite)
+        
+        let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
+        cancelButton.position = CGPointMake(screenMidX - 8, menuHeight/2 - 8)
+        cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
+        cancelButton.size = CGSize(width: 18, height: 18)
+        cancelButton.name = "cancel button"
+        pieceMenu.addChild(cancelButton)
+
+        
+    }
+    
+    func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(),
+                     font: String = "Avenir-Medium", fontSize: CGFloat = CGFloat(20),
+                     horizontalAlignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center,
+                     verticalAlignment: SKLabelVerticalAlignmentMode = SKLabelVerticalAlignmentMode.Baseline) {
+        let label = SKLabelNode()    // displays "Health" label for health stat of unit
+        label.text = text
+        label.fontSize = fontSize
+        label.fontName = font
+        label.verticalAlignmentMode = verticalAlignment
+        label.horizontalAlignmentMode = horizontalAlignment
+        label.position = CGPoint(x: position.x, y: position.y - fontSize/2)
+        label.fontColor = color
+        pieceMenu.addChild(label)
+        
+    }
+
     
     func attack(target: Piece) {
         let newHealth = target.currentHealth - self.attack

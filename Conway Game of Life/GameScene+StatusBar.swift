@@ -39,118 +39,119 @@ extension GameScene {
         return statBar
     }
     
-    func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(),
-        font: String = "Avenir-Medium", fontSize: CGFloat = CGFloat(20),
-        horizontalAlignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center,
-        verticalAlignment: SKLabelVerticalAlignmentMode = SKLabelVerticalAlignmentMode.Baseline) {
-        let label = SKLabelNode()    // displays "Health" label for health stat of unit
-        label.text = text
-        label.fontSize = fontSize
-        label.fontName = font
-        label.verticalAlignmentMode = verticalAlignment
-        label.horizontalAlignmentMode = horizontalAlignment
-        label.position = CGPoint(x: position.x, y: position.y - fontSize/2)
-        label.fontColor = color
-        statusBar.addChild(label)
-
-    }
-    
-    func drawStatusBar(piece: Piece) {
-        
-        
-        //        statusBar.fillColor = SKColor.redColor()
-        statusBar.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        statusBar.position = CGPoint(x: 0, y: -screenMidY+statusBarHeight/2)
-        statusBar.zPosition = 10
-        
-        let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
-        let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
-        let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
-
-        createLabel("Health", position: CGPointMake(-2.6/6*screenMidX, statusBarHeight/5), color: customYellow,
-                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
-        
-        var healthLabelColor = SKColor()
-        if(piece.currentHealth < piece.health/4) {
-            healthLabelColor = customRed
-        }
-        else {
-            healthLabelColor = customGreen
-        }
-        createLabel(String(piece.currentHealth),
-                    position: CGPointMake(0.4/6*screenMidX, statusBarHeight/5),
-                    color: healthLabelColor,
-                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
-        createLabel(String("/" + String(piece.health)),
-                    position: CGPointMake(0.4/6*screenMidX, statusBarHeight/5),
-                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
-
+//    func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(),
+//        font: String = "Avenir-Medium", fontSize: CGFloat = CGFloat(20),
+//        horizontalAlignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center,
+//        verticalAlignment: SKLabelVerticalAlignmentMode = SKLabelVerticalAlignmentMode.Baseline) {
+//        let label = SKLabelNode()    // displays "Health" label for health stat of unit
+//        label.text = text
+//        label.fontSize = fontSize
+//        label.fontName = font
+//        label.verticalAlignmentMode = verticalAlignment
+//        label.horizontalAlignmentMode = horizontalAlignment
+//        label.position = CGPoint(x: position.x, y: position.y - fontSize/2)
+//        label.fontColor = color
+//        statusBar.addChild(label)
+//
+//    }
+//    
+//    func drawStatusBar(piece: Piece) {
+//        
+//        
+//        //        statusBar.fillColor = SKColor.redColor()
+//        statusBar.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        statusBar.position = CGPoint(x: 0, y: -screenMidY+statusBarHeight/2)
+//        statusBar.zPosition = 10
+//        
+//        let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
+//        let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
+//        let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
+//
+//        createLabel("Health", position: CGPointMake(-2.6/6*screenMidX, statusBarHeight/5), color: customYellow,
+//                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+//        
 //        var healthLabelColor = SKColor()
-//        // determines color of health bar:
-//        // green by default, yellow if currentHP < 50%, red if currentHP < 25% of max HP
 //        if(piece.currentHealth < piece.health/4) {
-//            healthLabelColor = SKColor.redColor()
-//        }
-//        else if(piece.currentHealth < piece.health/2) {
-//            healthLabelColor = SKColor.yellowColor()
+//            healthLabelColor = customRed
 //        }
 //        else {
-//            healthLabelColor = SKColor.greenColor()
+//            healthLabelColor = customGreen
+//        }
+//        createLabel(String(piece.currentHealth),
+//                    position: CGPointMake(0.4/6*screenMidX, statusBarHeight/5),
+//                    color: healthLabelColor,
+//                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
+//        createLabel(String("/" + String(piece.health)),
+//                    position: CGPointMake(0.4/6*screenMidX, statusBarHeight/5),
+//                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+//        
+//        createLabel("Attack", position: CGPointMake(3.1/6*screenMidX, statusBarHeight/5), color: customYellow)
+//        createLabel(String(piece.attack), position: CGPointMake(4.6/6*screenMidX, statusBarHeight/5))
+//        
+//        createLabel("Range", position: CGPointMake(3.1/6*screenMidX, -statusBarHeight/5), color: customYellow)
+//        createLabel(String(piece.range), position: CGPointMake(4.6/6*screenMidX, -statusBarHeight/5))
+//        
+//        createLabel("Movement", position: CGPointMake(-2.6/6*screenMidX, -statusBarHeight/5), color: customYellow,
+//                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+//        createLabel(String(piece.range), position: CGPointMake(0.9/6*screenMidX, -statusBarHeight/5))
+//        
+//        createLabel("\(piece.dynamicType)", position: CGPointMake(-4.2/6*screenMidX, -1.5*statusBarHeight/5),
+//                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
+//
+//        let redBlue: String!
+//        if piece.owner == 1 {
+//            redBlue = "red"
+//        }
+//        else {
+//            redBlue = "blue"
 //        }
 //        
-//        let healthBar = createStatBar(piece.currentHealth, maxHealth: piece.health, color: healthLabelColor)
-//        healthBar.anchorPoint = CGPointMake(0.5,0.5)
-//        healthBar.position = CGPointMake(0, statusBarHeight/5)
-//        statusBar.addChild(healthBar)
+//        let pieceType = String(piece.dynamicType).lowercaseString
+//        let sprite = SKSpriteNode(imageNamed: "\(pieceType) sprite " + redBlue)
+//        sprite.position = CGPointMake(-4.2/6*screenMidX, 0.6*statusBarHeight/6)
+//        sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
+//        statusBar.addChild(sprite)
 //        
-//        let statusAttack = SKLabelNode()
-//        statusAttack.text = "Attack"
-//        statusAttack.fontSize = fontSize
-//        statusAttack.fontName = font
-//        statusAttack.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
-//        statusAttack.position = CGPointMake(-1/3*screenMidX, -statusBarHeight/5)
-//        statusBar.addChild(statusAttack)
-//
-//        let attackBar = createStatBar(piece.attack, maxHealth: maxStat, color: SKColor.cyanColor())
-//        attackBar.anchorPoint = CGPointMake(0.5, 0.5)
-//        attackBar.position = CGPointMake(0, -statusBarHeight/5)
-//        statusBar.addChild(attackBar)
+//        let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
+//        cancelButton.position = CGPointMake(screenMidX - 8, statusBarHeight/2 - 8)
+//        cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
+//        cancelButton.size = CGSize(width: 18, height: 18)
+//        cancelButton.name = "cancel button"
+//        statusBar.addChild(cancelButton)
+    
         
-        createLabel("Attack", position: CGPointMake(3.1/6*screenMidX, statusBarHeight/5), color: customYellow)
-        createLabel(String(piece.attack), position: CGPointMake(4.6/6*screenMidX, statusBarHeight/5))
-        
-        createLabel("Range", position: CGPointMake(3.1/6*screenMidX, -statusBarHeight/5), color: customYellow)
-        createLabel(String(piece.range), position: CGPointMake(4.6/6*screenMidX, -statusBarHeight/5))
-        
-        createLabel("Movement", position: CGPointMake(-2.6/6*screenMidX, -statusBarHeight/5), color: customYellow,
-                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
-        createLabel(String(piece.range), position: CGPointMake(0.9/6*screenMidX, -statusBarHeight/5))
-        
-        createLabel("\(piece.dynamicType)", position: CGPointMake(-4.2/6*screenMidX, -1.5*statusBarHeight/5),
-                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
-
-        let redBlue: String!
-        if piece.owner == 1 {
-            redBlue = "red"
-        }
-        else {
-            redBlue = "blue"
-        }
-        
-        let pieceType = String(piece.dynamicType).lowercaseString
-        let sprite = SKSpriteNode(imageNamed: "\(pieceType) sprite " + redBlue)
-        sprite.position = CGPointMake(-4.2/6*screenMidX, 0.6*statusBarHeight/6)
-        sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
-        statusBar.addChild(sprite)
-        
-        let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
-        cancelButton.position = CGPointMake(screenMidX - 8, statusBarHeight/2 - 8)
-        cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
-        cancelButton.size = CGSize(width: 18, height: 18)
-        cancelButton.name = "cancel button"
-        statusBar.addChild(cancelButton)
-    }
+        //        var healthLabelColor = SKColor()
+        //        // determines color of health bar:
+        //        // green by default, yellow if currentHP < 50%, red if currentHP < 25% of max HP
+        //        if(piece.currentHealth < piece.health/4) {
+        //            healthLabelColor = SKColor.redColor()
+        //        }
+        //        else if(piece.currentHealth < piece.health/2) {
+        //            healthLabelColor = SKColor.yellowColor()
+        //        }
+        //        else {
+        //            healthLabelColor = SKColor.greenColor()
+        //        }
+        //
+        //        let healthBar = createStatBar(piece.currentHealth, maxHealth: piece.health, color: healthLabelColor)
+        //        healthBar.anchorPoint = CGPointMake(0.5,0.5)
+        //        healthBar.position = CGPointMake(0, statusBarHeight/5)
+        //        statusBar.addChild(healthBar)
+        //
+        //        let statusAttack = SKLabelNode()
+        //        statusAttack.text = "Attack"
+        //        statusAttack.fontSize = fontSize
+        //        statusAttack.fontName = font
+        //        statusAttack.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+        //        statusAttack.position = CGPointMake(-1/3*screenMidX, -statusBarHeight/5)
+        //        statusBar.addChild(statusAttack)
+        //
+        //        let attackBar = createStatBar(piece.attack, maxHealth: maxStat, color: SKColor.cyanColor())
+        //        attackBar.anchorPoint = CGPointMake(0.5, 0.5)
+        //        attackBar.position = CGPointMake(0, -statusBarHeight/5)
+        //        statusBar.addChild(attackBar)
+//    }
 
 
 }
