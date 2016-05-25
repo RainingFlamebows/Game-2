@@ -16,11 +16,11 @@ extension GameScene {
         
         for touch in touches {
             
-            let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
-            view!.addGestureRecognizer(pinch)
-            
-            let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameScene.tapped(_:)))
-            view!.addGestureRecognizer(tap)
+//            let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
+//            view!.addGestureRecognizer(pinch)
+//            
+//            let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+//            view!.addGestureRecognizer(tap)
         }
     }
     
@@ -68,6 +68,14 @@ extension GameScene {
                     // hide all menus
                 }
             }
+                    let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
+                    newPiece.position = CGPointMake(gridCoord[gridLoc.0][gridLoc.1].x + cellSize/2,
+                                                    gridCoord[gridLoc.0][gridLoc.1].y - cellSize/2)
+            
+                    newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+                    newPiece.anchorPoint = CGPointMake(0.5, 0.5)
+                    addChild(newPiece)
+            
 
         }
         
@@ -75,13 +83,6 @@ extension GameScene {
         
         
         
-        //        let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
-        //        newPiece.position = CGPointMake(gridCoord[gridLoc.0][gridLoc.1].x + cellSize/2,
-        //                                        gridCoord[gridLoc.0][gridLoc.1].y - cellSize/2)
-        //
-        //        newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-        //        newPiece.anchorPoint = CGPointMake(0.5, 0.5)
-        //        addChild(newPiece)
         
     }
     

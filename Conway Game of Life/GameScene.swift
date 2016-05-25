@@ -86,10 +86,16 @@ class GameScene: SKScene {
         sceneCam.addChild(statusBar)
         
         addConstraints()
+        
+        let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
+        view.addGestureRecognizer(pinch)
+        
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
+        view.addGestureRecognizer(tap)
     }
     
-        
-        
+    
+    
     override func update(currentTime: CFTimeInterval)
     {
         
