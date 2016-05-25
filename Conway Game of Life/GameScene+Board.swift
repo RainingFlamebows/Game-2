@@ -49,11 +49,13 @@ extension GameScene {
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
                     gridLoc == (world.base2.row, world.base2.col) && world.mode == 2 {
                     
-                    if world.mode == 1 {
-                        addBaseMenu(world.base1)
+                    if world.mode == 1 && baseMenu1.parent == nil {
+                        sceneCam.addChild(baseMenu1)
+                        print("touched base 1")
                     }
-                    else {
-                        addBaseMenu(world.base2)
+                    else if world.mode == 2 && baseMenu2.parent == nil{
+                        sceneCam.addChild(baseMenu2)
+                        print("touched base 2")
                     }
                 }
                 else if pieceAtPos != nil {
@@ -84,9 +86,38 @@ extension GameScene {
     }
     
     
-    func addBaseMenu(base: Base)
+    func createBaseMenu(base: Base)
     {
+        print(screenMidY)
+        print(baseMenu1.frame.height)
+        if base.owner == 1 {
+            baseMenu1.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            baseMenu1.position = CGPoint(x: 0, y: -screenMidY+baseMenu1.frame.height/2.0)
+            baseMenu1.zPosition = 10
+            
+            let queue = SKSpriteNode(imageNamed: "dead")
+            queue.anchorPoint = CGPointMake(0.5, 0.5)
+            queue.size = CGSizeMake(1/6*screenMidX, 1/6*screenMidX)
+            queue.position = CGPointMake(-screenMidX + margin, margin)
+            
+            baseMenu1.addChild(queue)
+
+        }
+        else {
+            baseMenu2.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            baseMenu2.position = CGPoint(x: 0, y: -screenMidY+baseMenu2.frame.height/2.0)
+            baseMenu2.zPosition = 10
+            
+            let queue = SKSpriteNode(imageNamed: "dead")
+            queue.anchorPoint = CGPointMake(0, 1)
+            queue.size = CGSizeMake(1/6*screenMidX, 1/6*screenMidX)
+            queue.position = CGPointMake(-screenMidX + margin, margin)
+            
+            baseMenu2.addChild(queue)
+
+        }
         // queue/piece menu
+        
     }
     
     func addSpritesForCells(numRows: Int, numCols: Int)

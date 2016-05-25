@@ -30,6 +30,8 @@ class GameScene: SKScene {
     var statusBarHeight = CGFloat(100)
     
     var selectedPiece: Piece? = nil
+    var baseMenu1 = SKSpriteNode()
+    var baseMenu2 = SKSpriteNode()
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -44,6 +46,10 @@ class GameScene: SKScene {
         
         anchorPoint = CGPoint(x: 0, y: 1.0)
         statusBar = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: statusBarHeight))
+        baseMenu1 = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 200.0))
+        baseMenu2 = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 200.0))
+        
+        
 //        statusBar = SKShapeNode(path: CGPathCreateWithRect(
 //            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
         
@@ -56,6 +62,9 @@ class GameScene: SKScene {
         let numRows = 20
         let numCols = 11
         world = World(numRowsIn: numRows, numColsIn: numCols)
+        createBaseMenu(world.base1)
+        createBaseMenu(world.base2)
+
         
         sceneCam = SKCameraNode()
         sceneCam.setScale(1)
