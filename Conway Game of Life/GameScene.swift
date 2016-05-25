@@ -29,7 +29,6 @@ class GameScene: SKScene {
     var statusBar = SKSpriteNode() // <- when graphics finished make this SKSpriteNode
     var statusBarHeight = CGFloat(100)
     
-    
     var selectedPiece: Piece? = nil
     
     required init(coder aDecoder: NSCoder) {
@@ -81,47 +80,7 @@ class GameScene: SKScene {
     }
     
         
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
         
-        for touch in touches {
-            
-            let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
-            view!.addGestureRecognizer(pinch)
-            
-            let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameScene.tapped(_:)))
-            view!.addGestureRecognizer(tap)
-        }
-    }
-    
-    func tapped(sender: UITapGestureRecognizer)
-    {
-        
-        // figures out whether cell is touched
-        let locationInView = sender.locationInView(self.view)
-        let location = self.convertPointFromView(locationInView)
-
-        let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
-        let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
-        
-        let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
-        let gridLoc = world.gridTouched(gridX, gridY: gridY)
-        
-        print(gridLoc)
-        
-        if (gridLoc.0 >= 0 && gridLoc.1 >= 0 &&
-            gridLoc.0 < world.numRows && gridLoc.1 < world.numCols)
-        {
-            newPiece.position = CGPointMake(gridCoord[gridLoc.0][gridLoc.1].x + cellSize/2,
-                                            gridCoord[gridLoc.0][gridLoc.1].y - cellSize/2)
-            
-            newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-            newPiece.anchorPoint = CGPointMake(0.5, 0.5)
-            addChild(newPiece)
-        }
-
-    }
-    
     override func update(currentTime: CFTimeInterval)
     {
         

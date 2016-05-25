@@ -11,46 +11,6 @@ import SpriteKit
 
 extension GameScene {
     
-    func addSpritesForCells(numRows: Int, numCols: Int)
-    {
-        gridCoord = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: CGPointMake(0,0)))
-        
-        let bounds = UIScreen.mainScreen().bounds
-        let widthScreen = bounds.size.width
-        
-        let gridWidth: CGFloat = widthScreen - margin*2
-
-        let image = UIImage(named: "11x20 background")
-        let sizeBackground = image?.size
-
-        let gameBoard = SKSpriteNode(imageNamed: "11x20 background")
-        gameBoard.size = CGSize(width: gridWidth, height: sizeBackground!.height*gridWidth/(sizeBackground!.width))
-        gameBoard.anchorPoint = CGPointMake(0, 1.0)
-        gameBoard.position = CGPointMake(margin, -upperSpace)
-        gameBoard.alpha = 1
-        cellLayer.addChild(gameBoard)
-        
-        cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
-        
-        for row in 0...numRows-1 {
-            for col in 0...numCols-1 {
-                
-                let leftCornerCell = margin + CGFloat(col) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
-                let upperCornerCell = upperSpace + CGFloat(row) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
-                gridCoord[row][col] = CGPointMake(leftCornerCell, -upperCornerCell)
-                
-//                var cell = SKSpriteNode()
-//                cell = SKSpriteNode(imageNamed: "dead")
-//                cell.size = CGSize(width: cellSize, height: cellSize)
-//                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
-//                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
-//                cell.alpha = 0.6
-//                
-//                cellLayer.addChild(cell)
-            }
-        }
-    }
-    
     func addConstraints()
     {
         let scaledSize = CGSize(width: size.width * camera!.xScale, height: size.height * camera!.yScale)

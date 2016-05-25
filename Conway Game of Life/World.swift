@@ -9,7 +9,10 @@
 import SpriteKit
 
 class World {
-    var board: [[Cell]];
+    
+    var board: [[Piece?]];
+    let base1: Base
+    let base2: Base
  
     let numRows: Int;
     let numCols: Int;
@@ -34,8 +37,10 @@ class World {
         numP1Cells = 0;
         numP2Cells = 0;
         
-        board = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: Cell(xIn: 0, yIn: 0)));
-
+        board = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: nil));
+        
+        base1 = Base(ownerIn: 1, rowIn: 0, colIn: numCols/2)
+        base2 = Base(ownerIn: 2, rowIn: numRows - 1, colIn: numCols/2)
     }
     
     
@@ -71,30 +76,4 @@ class World {
         }
     }
     
-    /*
-    * Counts number of cells owned by player 1 and 2 that are neighboring
-    * a certain cell and returns result as a tuple
-    * x: x coordinate of the cell
-    * y: y coordinate of the cell
-    */
-    func countNeighbors(x: Int, y: Int) -> (Int, Int) {
-        var count = (0,0);
-        
-        // subtract center cell from total count
-        if(board[x][y].state == 1) {count.0 -= 1}
-        else if(board[x][y].state == 2) {count.1 -= 1}
-        
-        for row in x-1..<x+1 {
-            for col in y-1..<y+1 {
-                if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
-                    let neighborCellState = board[row][col].state
-                    if(neighborCellState == 1) {count.0 += 1}
-                    else if(neighborCellState == 2) {count.1 += 1}
-                }
-            }
-        }
-        print(count)
-        
-        return count
-    }
 }

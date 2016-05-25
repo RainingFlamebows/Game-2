@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EE14897B1CF536540021A847 /* Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE14897A1CF536540021A847 /* Base.swift */; };
+		EE14897D1CF539FB0021A847 /* GameScene+Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE14897C1CF539FB0021A847 /* GameScene+Board.swift */; };
 		EE45C9561CE6F174009B0DFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EE45C9551CE6F174009B0DFF /* Assets.xcassets */; };
-		EE5871A41CF3BDA9009C07BC /* GameScene+Board+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5871A31CF3BDA9009C07BC /* GameScene+Board+Camera.swift */; };
+		EE5871A41CF3BDA9009C07BC /* GameScene+Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5871A31CF3BDA9009C07BC /* GameScene+Camera.swift */; };
 		EE5871A61CF3BF6F009C07BC /* GameScene+StatusBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE5871A51CF3BF6F009C07BC /* GameScene+StatusBar.swift */; };
 		EE7DFDAB1CE6464300362588 /* Piece.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7DFDAA1CE6464300362588 /* Piece.swift */; };
 		EEA345941C938786007EF118 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EEA345931C938786007EF118 /* AppDelegate.swift */; };
@@ -22,8 +24,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EE14897A1CF536540021A847 /* Base.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Base.swift; sourceTree = "<group>"; };
+		EE14897C1CF539FB0021A847 /* GameScene+Board.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GameScene+Board.swift"; sourceTree = "<group>"; };
 		EE45C9551CE6F174009B0DFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = Assets.xcassets/Assets.xcassets; sourceTree = "<group>"; };
-		EE5871A31CF3BDA9009C07BC /* GameScene+Board+Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GameScene+Board+Camera.swift"; sourceTree = "<group>"; };
+		EE5871A31CF3BDA9009C07BC /* GameScene+Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GameScene+Camera.swift"; sourceTree = "<group>"; };
 		EE5871A51CF3BF6F009C07BC /* GameScene+StatusBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "GameScene+StatusBar.swift"; sourceTree = "<group>"; };
 		EE7DFDAA1CE6464300362588 /* Piece.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Piece.swift; sourceTree = "<group>"; };
 		EEA345901C938786007EF118 /* Game 2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game 2.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,13 +75,15 @@
 				EEA345931C938786007EF118 /* AppDelegate.swift */,
 				EEA345951C938786007EF118 /* GameScene.sks */,
 				EEA345971C938786007EF118 /* GameScene.swift */,
-				EE5871A31CF3BDA9009C07BC /* GameScene+Board+Camera.swift */,
+				EE5871A31CF3BDA9009C07BC /* GameScene+Camera.swift */,
+				EE14897C1CF539FB0021A847 /* GameScene+Board.swift */,
 				EE5871A51CF3BF6F009C07BC /* GameScene+StatusBar.swift */,
 				EEA345991C938786007EF118 /* GameViewController.swift */,
 				EEA3459B1C938786007EF118 /* Main.storyboard */,
 				EE45C9551CE6F174009B0DFF /* Assets.xcassets */,
 				FBBF396F1CD2A306009D1311 /* Cell.swift */,
 				FBBF39711CD2A7F9009D1311 /* World.swift */,
+				EE14897A1CF536540021A847 /* Base.swift */,
 				EE7DFDAA1CE6464300362588 /* Piece.swift */,
 				EEA345A01C938786007EF118 /* LaunchScreen.storyboard */,
 				EEA345A31C938786007EF118 /* Info.plist */,
@@ -164,8 +170,10 @@
 				FBBF39701CD2A306009D1311 /* Cell.swift in Sources */,
 				EEA3459A1C938786007EF118 /* GameViewController.swift in Sources */,
 				EEA345941C938786007EF118 /* AppDelegate.swift in Sources */,
+				EE14897B1CF536540021A847 /* Base.swift in Sources */,
 				FBBF39721CD2A7F9009D1311 /* World.swift in Sources */,
-				EE5871A41CF3BDA9009C07BC /* GameScene+Board+Camera.swift in Sources */,
+				EE5871A41CF3BDA9009C07BC /* GameScene+Camera.swift in Sources */,
+				EE14897D1CF539FB0021A847 /* GameScene+Board.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

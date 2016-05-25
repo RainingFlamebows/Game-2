@@ -148,6 +148,7 @@ extension GameScene {
         cancelButton.position = CGPointMake(screenMidX - 8, statusBarHeight/2 - 8)
         cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
         cancelButton.size = CGSize(width: 18, height: 18)
+        cancelButton.name = "cancel button"
         statusBar.addChild(cancelButton)
     }
 
