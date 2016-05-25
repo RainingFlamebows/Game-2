@@ -11,8 +11,8 @@ import SpriteKit
 class World {
     var board: [[Cell]];
  
-    let width: Int;
-    let height: Int;
+    let numRows: Int;
+    let numCols: Int;
  
     var numP1Cells: Int;
     var numP2Cells: Int;
@@ -27,14 +27,14 @@ class World {
     /*
     * Creates an array of dead cells
     */
-    init (widthIn: Int, heightIn: Int)
+    init (numRowsIn: Int, numColsIn: Int)
     {
-        width = widthIn;
-        height = heightIn;
+        numRows = numRowsIn;
+        numCols = numColsIn;
         numP1Cells = 0;
         numP2Cells = 0;
         
-        board = Array(count: width, repeatedValue: Array(count: height, repeatedValue: Cell(xIn: 0, yIn: 0)));
+        board = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: Cell(xIn: 0, yIn: 0)));
 
     }
     

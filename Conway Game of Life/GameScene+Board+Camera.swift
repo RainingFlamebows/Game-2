@@ -85,7 +85,7 @@ extension GameScene {
     }
     
     func pinched(sender: UIPinchGestureRecognizer) {
-        
+
         if sender.numberOfTouches() == 2 {
             if sender.state == .Changed {
                 
@@ -100,7 +100,7 @@ extension GameScene {
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
         
-        let deltaScale = (sender.scale - 1.0)*1.08
+        let deltaScale = (sender.scale - 1.0)*2
         let convertedScale = sender.scale - deltaScale
         var newScale = camera!.xScale*convertedScale
         
@@ -122,6 +122,7 @@ extension GameScene {
             camera!.position = newPoint
             
             addConstraints()
+            sender.scale = 1
         }
         
     }

@@ -30,6 +30,8 @@ class GameScene: SKScene {
     var statusBarHeight = CGFloat(100)
     
     
+    var selectedPiece: Piece? = nil
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -54,6 +56,7 @@ class GameScene: SKScene {
         
         let numRows = 20
         let numCols = 11
+        world = World(numRowsIn: numRows, numColsIn: numCols)
         
         sceneCam = SKCameraNode()
         sceneCam.setScale(1)
@@ -82,28 +85,43 @@ class GameScene: SKScene {
        /* Called when a touch begins */
         
         for touch in touches {
-
-//            let location = touch.locationInNode(self)
-            
             
             let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(GameScene.pinched(_:)))
             view!.addGestureRecognizer(pinch)
             
-            // figures out whether cell is touched
-            let location = touch.locationInNode(self)
-            let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
-            let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
-            
-            //attempt to make cells turn dark grey when tapped by user (to let user know which cell they're selecting)
-//            let tappedCell = world.gridTouched(gridX, gridY: gridY)
-//            world.board[tappedCell.0][tappedCell.1].updateState(SELECTED)
-            
-            
+            let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(GameScene.tapped(_:)))
+            view!.addGestureRecognizer(tap)
         }
     }
     
-       
-       
+    func tapped(sender: UITapGestureRecognizer)
+    {
+        
+        // figures out whether cell is touched
+        let locationInView = sender.locationInView(self.view)
+        let location = self.convertPointFromView(locationInView)
+
+        let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
+        let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
+        
+        let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
+        let gridLoc = world.gridTouched(gridX, gridY: gridY)
+        
+        print(gridLoc)
+        
+        if (gridLoc.0 >= 0 && gridLoc.1 >= 0 &&
+            gridLoc.0 < world.numRows && gridLoc.1 < world.numCols)
+        {
+            newPiece.position = CGPointMake(gridCoord[gridLoc.0][gridLoc.1].x + cellSize/2,
+                                            gridCoord[gridLoc.0][gridLoc.1].y - cellSize/2)
+            
+            newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+            newPiece.anchorPoint = CGPointMake(0.5, 0.5)
+            addChild(newPiece)
+        }
+
+    }
+    
     override func update(currentTime: CFTimeInterval)
     {
         
