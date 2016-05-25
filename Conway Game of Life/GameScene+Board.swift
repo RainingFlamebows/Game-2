@@ -16,11 +16,6 @@ extension GameScene {
         
         for touch in touches {
             
-//            let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
-//            view!.addGestureRecognizer(pinch)
-//            
-//            let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
-//            view!.addGestureRecognizer(tap)
         }
     }
     
@@ -41,10 +36,10 @@ extension GameScene {
             
             let gridLoc = world.gridTouched(gridX, gridY: gridY)
             
-            if (gridLoc.0 >= 0 && gridLoc.1 >= 0 &&
-                gridLoc.0 < world.numRows && gridLoc.1 < world.numCols)
+            if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
+                gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
-                let pieceAtPos = world.board[gridLoc.0][gridLoc.1]
+                let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
                 
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
                     gridLoc == (world.base2.row, world.base2.col) && world.mode == 2 {
@@ -68,13 +63,13 @@ extension GameScene {
                     // hide all menus
                 }
             }
-                    let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
-                    newPiece.position = CGPointMake(gridCoord[gridLoc.0][gridLoc.1].x + cellSize/2,
-                                                    gridCoord[gridLoc.0][gridLoc.1].y - cellSize/2)
+            let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
+            newPiece.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
+                                            gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
             
-                    newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-                    newPiece.anchorPoint = CGPointMake(0.5, 0.5)
-                    addChild(newPiece)
+            newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+            newPiece.anchorPoint = CGPointMake(0.5, 0.5)
+            addChild(newPiece)
             
 
         }

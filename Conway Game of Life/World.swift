@@ -46,7 +46,7 @@ class World {
     
     // figures out cell that was tapped. Returns tuple that indicates row, col of selected cell
     // in board array
-    func gridTouched(gridX: CGFloat, gridY: CGFloat) -> (Int, Int)
+    func gridTouched(gridX: CGFloat, gridY: CGFloat) -> (row: Int, col: Int)
     {
         var col = 0
         var row = 0
@@ -68,11 +68,11 @@ class World {
         if (col >= 0 && row >= 0 &&
             col < board[0].count && row < board.count)
         {
-            return (row, col)
+            return (row: row, col: col)
         }
         else {
             print("Warning: no cell returned for gridTouched")
-            return (-1, -1)
+            return (row: -1, col: -1)
         }
     }
     
