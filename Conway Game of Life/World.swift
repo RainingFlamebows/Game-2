@@ -76,4 +76,27 @@ class World {
         }
     }
     
+    // Determines available moves for a piece by returning all unoccupied (nil) cells
+    // within a thePiece.movement x thePiece.movement grid of cells around the piece.
+    // returns an array of tuples representing the row and col that the available cells
+    // to move to 
+    func availableMoves(thePiece: Piece) -> [(row: Int, col: Int)] {
+        var moves = [(row: Int, col: Int)]()
+        
+        for row in thePiece.row-thePiece.movement...thePiece.row+thePiece.movement {
+            for col in thePiece.column-thePiece.movement...thePiece.column+thePiece.movement {
+                // check if cell exists at that row, col
+                // check if there's any objects at that location
+                // check if there is a piece at that location
+                if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
+                    if(board[row][col] == nil) {
+                        moves.append(row: row, col: col)
+                    }
+                }
+                
+            }
+        }
+        
+        return moves
+    }
 }

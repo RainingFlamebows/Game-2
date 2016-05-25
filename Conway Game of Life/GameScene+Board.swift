@@ -57,12 +57,25 @@ extension GameScene {
                     selectedPiece = pieceAtPos
                     
                     // pull up selected piece menu
+                    
+                    // display possible moves
+                    let availableMoves = world.availableMoves(pieceAtPos!)
+                    for move in availableMoves {
+                        let target = SKSpriteNode(imageNamed: "blue target")
+                        target.position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,
+                                                      gridCoord[move.row][move.col].y - cellSize/2)
+                        target.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+                        target.anchorPoint = CGPointMake(0.5, 0.5)
+                        addChild(target)
+                    }
                 }
                 else if pieceAtPos == nil {
                     
                     // hide all menus
                 }
             }
+            
+            world.board[gridLoc.row][gridLoc.col] = Warrior(owner: world.mode, row: gridLoc.row, column: gridLoc.col)
             let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
             newPiece.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
                                             gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)

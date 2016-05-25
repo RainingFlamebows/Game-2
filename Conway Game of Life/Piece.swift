@@ -36,16 +36,6 @@ class Piece {
         currentHealth = self.health // piece has max HP by default
     }
     
-    func displaySprite() {
-        let newPiece = sprite
-//        newPiece.position = CGPointMake(gridCoord[gridLoc.0][gridLoc.1].x + cellSize/2,
-//                                        gridCoord[gridLoc.0][gridLoc.1].y - cellSize/2)
-//
-//        newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-//        newPiece.anchorPoint = CGPointMake(0.5, 0.5)
-//        addChild(newPiece)
-    }
-    
     func attack(target: Piece) {
         let newHealth = target.currentHealth - self.attack
         if(newHealth < 0) {
