@@ -23,20 +23,19 @@ extension GameScene {
     {
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
+        var tappedCancel = false
         
-    
         if selectedMenu != nil {
             let locationInStatusBar = convertPoint(location, toNode: selectedMenu!)
-            let tappedCancel = selectedMenu?.childNodeWithName("cancel button")?.containsPoint(locationInStatusBar)
+            tappedCancel = selectedMenu?.childNodeWithName("cancel button")?.containsPoint(locationInStatusBar) ?? false
             if tappedCancel == true {
                 
                 selectedMenu?.removeFromParent()
                 selectedMenu = nil
-                selectedPiece = nil
             }
         }
-        else {
-            
+        
+        if !tappedCancel {
             let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
             let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
             
@@ -66,42 +65,65 @@ extension GameScene {
                         print("touched base 2")
                     }
                 }
-                else if (selectedPiece != nil &&
+                else if (selectedPiece != nil && selectedPiece!.canMove &&
                     world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
+                    // tapped one of the targets
+                    // move selectedPiece
+                    
                     
                     print("move piece")
+                    world.board[selectedPiece!.row][selectedPiece!.column] = nil
+                    
                     selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
                         gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2))
+                    
+                    let newRow = selectedPiece!.row
+                    let newCol = selectedPiece!.column
+                    
+                    world.board[newRow][newCol] = selectedPiece
+                    
                     self.removeChildrenInArray(selectedPiece!.targets)
+                    selectedPiece = nil
                 }
-                else if pieceAtPos != nil {
+                else if pieceAtPos != nil && selectedPiece != pieceAtPos {
+                    // if user touched a piece, but not the same piece as before
+                    
+                    if selectedPiece != nil {
+                        removeChildrenInArray(selectedPiece!.targets)
+                    }
                     selectedPiece = pieceAtPos
-                    // if user touched a piece
                     
                     // pull up selected piece menu
                     
+                    selectedMenu?.removeFromParent()
+                    sceneCam.addChild(selectedPiece!.pieceMenu)
+                    selectedMenu = selectedPiece!.pieceMenu
                     
-                    // display possible moves
-                    let availableMoves = world.availableMoves(pieceAtPos!)
-                    
-                    selectedPiece!.targets.removeAll()
-                    for move in availableMoves {
-                        selectedPiece!.targets.append(SKSpriteNode(imageNamed: "blue target"))
-                        let targetIndex = selectedPiece!.targets.count - 1
+                    if selectedPiece!.canMove {
+                        // display possible moves
+                        let availableMoves = world.availableMoves(pieceAtPos!)
                         
-                        selectedPiece!.targets[targetIndex].position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
-                        selectedPiece!.targets[targetIndex].size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-                        selectedPiece!.targets[targetIndex].anchorPoint = CGPointMake(0.5, 0.5)
-
-                        addChild(selectedPiece!.targets[targetIndex])
+                        selectedPiece!.targets.removeAll()
+                        for move in availableMoves {
+                            selectedPiece!.targets.append(SKSpriteNode(imageNamed: "blue target"))
+                            let targetIndex = selectedPiece!.targets.count - 1
+                            
+                            selectedPiece!.targets[targetIndex].position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
+                            selectedPiece!.targets[targetIndex].size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+                            selectedPiece!.targets[targetIndex].anchorPoint = CGPointMake(0.5, 0.5)
+                            
+                            addChild(selectedPiece!.targets[targetIndex])
+                        }
                     }
                 }
-                else if pieceAtPos == nil {
+                else if pieceAtPos == nil && selectedPiece == nil {
+                    
+                    selectedMenu?.removeFromParent()
+                    
                     
                     selectedPiece = nil
                     selectedMenu = nil
                     
-                    // hide all menus
                     world.board[gridLoc.row][gridLoc.col] = Warrior(owner: world.mode, row: gridLoc.row, column: gridLoc.col)
                     let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
                     newPiece.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
@@ -111,16 +133,22 @@ extension GameScene {
                     world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
                     addChild(newPiece)
                 }
+                else if pieceAtPos == nil && selectedPiece != nil {
+                    removeChildrenInArray(selectedPiece!.targets)
+                    selectedMenu?.removeFromParent()
+                    selectedPiece = nil
+                    selectedMenu = nil
+                }
             }
             
-
         }
+        
         
         
     }
     
     
-        
+    
     func addSpritesForCells(numRows: Int, numCols: Int)
     {
         gridCoord = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: CGPointMake(0,0)))

@@ -16,7 +16,6 @@ let screenMidX = UIScreen.mainScreen().bounds.width/2
 let screenMidY = UIScreen.mainScreen().bounds.height/2
 
 
-
 class GameScene: SKScene {
     
     var world: World!
@@ -43,10 +42,7 @@ class GameScene: SKScene {
         super.init(size: size)
                 
         anchorPoint = CGPoint(x: 0, y: 1.0)        
-        
-//        statusBar = SKShapeNode(path: CGPathCreateWithRect(
-//            CGRectMake(screenMidX, 0, UIScreen.mainScreen().bounds.size.width, 140), nil), centered: true)
-        
+                
     }
     
         
@@ -64,7 +60,9 @@ class GameScene: SKScene {
         
         addChild(sceneCam)
 
-        let background = SKSpriteNode(imageNamed: "background")
+        let background = SKSpriteNode(color: SKColor.blackColor(),
+                                      size: CGSize(width: screenMidX*2, height: screenMidY*2))
+
         background.position = CGPoint(x: 0, y: 0)
         background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sceneCam.addChild(background)

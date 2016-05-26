@@ -89,7 +89,7 @@ class World {
                 // check if there's any objects at that location
                 // check if there is a piece at that location
                 if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
-                    if(board[row][col] == nil) {
+                    if (board[row][col] == nil) {
                         moves.append(row: row, col: col)
                     }
                 }

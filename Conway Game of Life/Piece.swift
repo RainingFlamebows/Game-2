@@ -9,7 +9,12 @@
 import Foundation
 import SpriteKit
 
-class Piece {
+func == (lhs: Piece, rhs: Piece) -> Bool
+{
+    return lhs === rhs
+}
+
+class Piece: Equatable {
     var row: Int
     var column: Int
     var attack: Int
@@ -42,14 +47,22 @@ class Piece {
         
     }
     
+    
     func createPieceMenu()
     {
-        let screenMidX = UIScreen.mainScreen().bounds.height/2
-        let screenMidY = UIScreen.mainScreen().bounds.width/2
-                
-        pieceMenu = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: screenMidX*2, height: 100))
+        let screenHeight = UIScreen.mainScreen().bounds.height
+        let screenWidth = UIScreen.mainScreen().bounds.width
+//        
+//        baseMenu = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 200.0))
+//        
+//        baseMenu.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        baseMenu.position = CGPoint(x: 0, y: -screenMidY+baseMenu.frame.height/2.0)
+//        baseMenu.zPosition = 10
+
+        
+        pieceMenu = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: screenWidth, height: 100))
         pieceMenu.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        pieceMenu.position = CGPoint(x: 0, y: -screenMidY*2+pieceMenu.size.height/2)
+        pieceMenu.position = CGPoint(x: 0, y: -screenMidY+pieceMenu.frame.height/2.0)
         pieceMenu.zPosition = 10
         
         let menuHeight = pieceMenu.frame.height
@@ -138,7 +151,7 @@ class Piece {
             self.row = newLoc.row
             self.column = newLoc.col
             self.sprite.position = newPosition
-            
+            self.sprite.alpha = 0.55
             
             canMove = false
         }
