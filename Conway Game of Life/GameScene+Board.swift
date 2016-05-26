@@ -64,8 +64,11 @@ extension GameScene {
             tappedCancel = selectedMenu?.childNodeWithName("cancel button")?.containsPoint(locationInStatusBar) ?? false
             if tappedCancel == true {
                 
-                selectedMenu?.removeFromParent()
-                selectedMenu = nil
+                hideSelectedMenu()
+                if selectedPiece != nil {
+                    removeChildrenInArray(selectedPiece!.targets)
+                }
+                selectedPiece = nil
             }
         }
         
@@ -84,7 +87,13 @@ extension GameScene {
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
                     gridLoc == (world.base2.row, world.base2.col) && world.mode == 2 {
                     
+                    if selectedPiece != nil {
+                        removeChildrenInArray(selectedPiece!.targets)
+                    }
                     selectedPiece = nil
+
+                    hideSelectedMenu()
+                    
                     let baseMenu1 = world.base1.baseMenu
                     let baseMenu2 = world.base2.baseMenu
                     
@@ -118,11 +127,8 @@ extension GameScene {
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
                     selectedPiece = nil
-                    
-                    if selectedMenu != nil {
-                        selectedMenu?.removeFromParent()
-                        selectedMenu = nil
-                    }
+                
+                    hideSelectedMenu()
                 }
                 else if pieceAtPos != nil && selectedPiece != pieceAtPos {
                     // if user touched a piece, but not the same piece as before
@@ -175,11 +181,8 @@ extension GameScene {
                 }
                 else if pieceAtPos == nil && selectedPiece == nil {
                     
-                    selectedMenu?.removeFromParent()
-                    
-                    
+                    hideSelectedMenu()
                     selectedPiece = nil
-                    selectedMenu = nil
                     
                     world.board[gridLoc.row][gridLoc.col] = Warrior(owner: world.mode, row: gridLoc.row, column: gridLoc.col)
                     let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
@@ -192,9 +195,8 @@ extension GameScene {
                 }
                 else if pieceAtPos == nil && selectedPiece != nil {
                     removeChildrenInArray(selectedPiece!.targets)
-                    selectedMenu?.removeFromParent()
                     selectedPiece = nil
-                    selectedMenu = nil
+                    hideSelectedMenu()
                 }
             }
             
@@ -202,6 +204,11 @@ extension GameScene {
         
         
         
+    }
+    
+    func hideSelectedMenu() {
+        selectedMenu?.removeFromParent()
+        selectedMenu = nil
     }
     
 

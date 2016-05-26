@@ -11,6 +11,7 @@ import SpriteKit
 
 class Base {
     
+    let numQueue = 5
     let owner: Int
     let row: Int
     let col: Int
@@ -43,12 +44,15 @@ class Base {
         cancelButton.name = "cancel button"
         baseMenu.addChild(cancelButton)
 
+        let spaceForQueue = baseMenu.frame.width - margin*CGFloat(numQueue - 1)
         
-        let queue = SKSpriteNode(imageNamed: "dead")
-        queue.anchorPoint = CGPointMake(0.5, 0.5)
-        queue.size = CGSizeMake(1/6*screenMidX, 1/6*screenMidX)
-        queue.position = CGPointMake(-screenMidX + margin, margin)
-        baseMenu.addChild(queue)
+        for i in 0..<numQueue {
+            let queue = SKSpriteNode(imageNamed: "dead")
+            queue.anchorPoint = CGPointMake(0, 1)
+            queue.size = CGSizeMake(spaceForQueue/CGFloat(numQueue), spaceForQueue/CGFloat(numQueue))
+            queue.position = CGPointMake(-screenMidX + margin + CGFloat(i)*(margin/2 + queue.frame.width), menuHeight/3)
+            baseMenu.addChild(queue)
+        }
         
     }
 
