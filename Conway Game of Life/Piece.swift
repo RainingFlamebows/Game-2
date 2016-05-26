@@ -25,6 +25,7 @@ class Piece {
     var pieceMenu: SKSpriteNode!
     
     var targets: [SKSpriteNode] = Array()
+    var canMove: Bool = true
     
     init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
         self.owner = owner
@@ -131,14 +132,16 @@ class Piece {
     
     
     // newLoc: the location of the piece in row, col
-    // newPosition: the location of the piece in x, y coordinates 
+    // newPosition: the location of the piece in x, y coordinates
     func move(newLoc: (row: Int, col: Int), newPosition: CGPoint) {
-        self.row = newLoc.row
-        self.column = newLoc.col
-        self.sprite.position = newPosition
-        
-        // remove targets since they're not needed anymore
-        self.targets = Array()
+        if canMove {
+            self.row = newLoc.row
+            self.column = newLoc.col
+            self.sprite.position = newPosition
+            
+            
+            canMove = false
+        }
     }
     
     func attack(inout target: Piece) { // inout = pass by reference

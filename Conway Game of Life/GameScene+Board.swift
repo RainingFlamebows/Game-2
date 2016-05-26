@@ -83,6 +83,8 @@ extension GameScene {
                     
                     // display possible moves
                     let availableMoves = world.availableMoves(pieceAtPos!)
+                    
+                    selectedPiece!.targets.removeAll()
                     for move in availableMoves {
                         selectedPiece!.targets.append(SKSpriteNode(imageNamed: "blue target"))
                         let targetIndex = selectedPiece!.targets.count - 1
