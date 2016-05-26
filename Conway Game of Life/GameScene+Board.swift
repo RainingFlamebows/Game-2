@@ -46,7 +46,6 @@ extension GameScene {
                 gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
                 let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
-                selectedPiece = nil
                 
                 // touched either base
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
@@ -73,7 +72,9 @@ extension GameScene {
                     print("move piece")
                     selectedPiece?.row = gridLoc.row
                     selectedPiece?.column = gridLoc.col
-                    selectedPiece = nil
+                    selectedPiece?.sprite.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
+                                                                 gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
+                    
                 }
                 else if pieceAtPos != nil {
                     selectedPiece = pieceAtPos
@@ -105,6 +106,7 @@ extension GameScene {
                                                     gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
                     newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
                     newPiece.anchorPoint = CGPointMake(0.5, 0.5)
+                    world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
                     addChild(newPiece)
                 }
             }
