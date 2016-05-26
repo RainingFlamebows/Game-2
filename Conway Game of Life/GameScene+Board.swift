@@ -70,10 +70,8 @@ extension GameScene {
                     world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
                     
                     print("move piece")
-                    selectedPiece?.row = gridLoc.row
-                    selectedPiece?.column = gridLoc.col
-                    selectedPiece?.sprite.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
-                                                                 gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
+                    selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
+                        gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2))
                     
                 }
                 else if pieceAtPos != nil {
