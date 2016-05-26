@@ -128,13 +128,24 @@ class Piece {
     }
 
     
-    func attack(target: Piece) {
-        let newHealth = target.currentHealth - self.attack
-        if(newHealth < 0) {
+    func attack(inout target: Piece) { // inout = pass by reference
+        // damage to the target
+        let targetHealth = target.currentHealth - self.attack
+        if(targetHealth < 0) {
             target.isAlive = false
         }
         else {
-            target.currentHealth = newHealth
+            target.currentHealth = targetHealth
+        }
+        
+        // damage to the attacker b/c target is defending 
+        // itself by attacking attacker at the same time
+        let attackerHealth = self.currentHealth - target.attack
+        if(self.currentHealth < 0) {
+            self.isAlive = false
+        }
+        else {
+            self.currentHealth = attackerHealth
         }
     }
     
