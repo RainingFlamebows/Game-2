@@ -16,28 +16,28 @@ extension GameScene {
     // color: the color the currentHealth part of the health bar should be
     // health bar width is randomly set to 30. Make width global variable or add to argument of function?
     //
-    func createStatBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKSpriteNode {
-        
-        let margin = CGFloat(2.5) // thickness of border between outer maxHealthRect and currentHealthRect
-        let statBarWidth = CGFloat(60)
-        let statBarHeight = CGFloat(15)
-        
-        let statBar = SKSpriteNode()
-        let maxHealthRect = SKSpriteNode(color: SKColor.blackColor(), size: CGSize(width: statBarWidth, height: statBarHeight))
-        maxHealthRect.anchorPoint = CGPointMake(0.5,0.5)
-        
-        let currentHealthWidth = statBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
-        let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: statBarHeight - margin*2))
-        
-        currentHealthRect.anchorPoint = CGPoint(x: 0, y: 0)
-        currentHealthRect.position = CGPointMake(-statBarWidth/2 + margin, -statBarHeight/2 + margin)
-        //        currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
-        
-        maxHealthRect.addChild(currentHealthRect)
-        statBar.addChild(maxHealthRect)
-        
-        return statBar
-    }
+//    func createStatBar(currentHealth: Int, maxHealth: Int, color: SKColor) -> SKSpriteNode {
+//        
+//        let margin = CGFloat(2.5) // thickness of border between outer maxHealthRect and currentHealthRect
+//        let statBarWidth = CGFloat(60)
+//        let statBarHeight = CGFloat(15)
+//        
+//        let statBar = SKSpriteNode()
+//        let maxHealthRect = SKSpriteNode(color: SKColor.blackColor(), size: CGSize(width: statBarWidth, height: statBarHeight))
+//        maxHealthRect.anchorPoint = CGPointMake(0.5,0.5)
+//        
+//        let currentHealthWidth = statBarWidth*CGFloat(currentHealth)/CGFloat(maxHealth) - margin*2
+//        let currentHealthRect = SKSpriteNode(color: color, size: CGSize(width: currentHealthWidth, height: statBarHeight - margin*2))
+//        
+//        currentHealthRect.anchorPoint = CGPoint(x: 0, y: 0)
+//        currentHealthRect.position = CGPointMake(-statBarWidth/2 + margin, -statBarHeight/2 + margin)
+//        //        currentHealthRect.position = CGPointMake(-currentHealthWidth/2 + margin, 0)
+//        
+//        maxHealthRect.addChild(currentHealthRect)
+//        statBar.addChild(maxHealthRect)
+//        
+//        return statBar
+//    }
     
 //    func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(),
 //        font: String = "Avenir-Medium", fontSize: CGFloat = CGFloat(20),

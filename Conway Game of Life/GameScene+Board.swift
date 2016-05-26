@@ -11,13 +11,47 @@ import SpriteKit
 
 extension GameScene {
     
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
+    func addSpritesForCells(numRows: Int, numCols: Int)
+    {
+        gridCoord = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: CGPointMake(0,0)))
         
-        for touch in touches {
-            
+        let bounds = UIScreen.mainScreen().bounds
+        let widthScreen = bounds.size.width
+        
+        let gridWidth: CGFloat = widthScreen - margin*2
+        
+        let image = UIImage(named: "11x20 background")
+        let sizeBackground = image?.size
+        
+        let gameBoard = SKSpriteNode(imageNamed: "11x20 background")
+        gameBoard.size = CGSize(width: gridWidth, height: sizeBackground!.height*gridWidth/(sizeBackground!.width))
+        gameBoard.anchorPoint = CGPointMake(0, 1.0)
+        gameBoard.position = CGPointMake(margin, -upperSpace)
+        gameBoard.alpha = 1
+        cellLayer.addChild(gameBoard)
+        
+        cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
+        
+        for row in 0...numRows-1 {
+            for col in 0...numCols-1 {
+                
+                let leftCornerCell = margin + CGFloat(col) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
+                let upperCornerCell = upperSpace + CGFloat(row) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
+                gridCoord[row][col] = CGPointMake(leftCornerCell, -upperCornerCell)
+                
+                //                var cell = SKSpriteNode()
+                //                cell = SKSpriteNode(imageNamed: "dead")
+                //                cell.size = CGSize(width: cellSize, height: cellSize)
+                //                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
+                //                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
+                //                cell.alpha = 0.6
+                //
+                //                cellLayer.addChild(cell)
+            }
         }
     }
+
+   
     
     func tapped(sender: UITapGestureRecognizer)
     {
@@ -84,6 +118,11 @@ extension GameScene {
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
                     selectedPiece = nil
+                    
+                    if selectedMenu != nil {
+                        selectedMenu?.removeFromParent()
+                        selectedMenu = nil
+                    }
                 }
                 else if pieceAtPos != nil && selectedPiece != pieceAtPos {
                     // if user touched a piece, but not the same piece as before
@@ -96,25 +135,43 @@ extension GameScene {
                     // pull up selected piece menu
                     
                     selectedMenu?.removeFromParent()
-                    sceneCam.addChild(selectedPiece!.pieceMenu)
                     selectedMenu = selectedPiece!.pieceMenu
+                    sceneCam.addChild(selectedMenu!)
                     
                     if selectedPiece!.canMove {
                         // display possible moves
-                        let availableMoves = world.availableMoves(pieceAtPos!)
+                        let availableTiles = world.availableTiles(pieceAtPos!)
                         
                         selectedPiece!.targets.removeAll()
-                        for move in availableMoves {
-                            selectedPiece!.targets.append(SKSpriteNode(imageNamed: "blue target"))
-                            let targetIndex = selectedPiece!.targets.count - 1
+                        for move in availableTiles {
                             
-                            selectedPiece!.targets[targetIndex].position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
-                            selectedPiece!.targets[targetIndex].size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-                            selectedPiece!.targets[targetIndex].anchorPoint = CGPointMake(0.5, 0.5)
+                            let pieceAtTile = world.board[move.row][move.col]
+                            var newSprite: SKSpriteNode? = nil
                             
-                            addChild(selectedPiece!.targets[targetIndex])
+                            if pieceAtTile == nil {
+                                // available move
+                                newSprite = SKSpriteNode(imageNamed: "blue target")
+                            }
+                            else if pieceAtTile?.owner != selectedPiece?.owner {
+                                // attack this piece
+                                newSprite = SKSpriteNode(imageNamed: "red target")
+                            }
+                            
+                            
+                            if newSprite != nil {
+                                newSprite!.position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
+                                newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+                                newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+                                addChild(newSprite!)
+                                
+                                selectedPiece!.targets.append(newSprite!)
+                            }
                         }
                     }
+                }
+                else if pieceAtPos != nil && selectedPiece == pieceAtPos && selectedMenu == nil {
+                    selectedMenu = selectedPiece!.pieceMenu
+                    sceneCam.addChild(selectedMenu!)
                 }
                 else if pieceAtPos == nil && selectedPiece == nil {
                     
@@ -147,46 +204,5 @@ extension GameScene {
         
     }
     
-    
-    
-    func addSpritesForCells(numRows: Int, numCols: Int)
-    {
-        gridCoord = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: CGPointMake(0,0)))
-        
-        let bounds = UIScreen.mainScreen().bounds
-        let widthScreen = bounds.size.width
-        
-        let gridWidth: CGFloat = widthScreen - margin*2
-        
-        let image = UIImage(named: "11x20 background")
-        let sizeBackground = image?.size
-        
-        let gameBoard = SKSpriteNode(imageNamed: "11x20 background")
-        gameBoard.size = CGSize(width: gridWidth, height: sizeBackground!.height*gridWidth/(sizeBackground!.width))
-        gameBoard.anchorPoint = CGPointMake(0, 1.0)
-        gameBoard.position = CGPointMake(margin, -upperSpace)
-        gameBoard.alpha = 1
-        cellLayer.addChild(gameBoard)
-        
-        cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
-        
-        for row in 0...numRows-1 {
-            for col in 0...numCols-1 {
-                
-                let leftCornerCell = margin + CGFloat(col) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
-                let upperCornerCell = upperSpace + CGFloat(row) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
-                gridCoord[row][col] = CGPointMake(leftCornerCell, -upperCornerCell)
-                
-                //                var cell = SKSpriteNode()
-                //                cell = SKSpriteNode(imageNamed: "dead")
-                //                cell.size = CGSize(width: cellSize, height: cellSize)
-                //                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
-                //                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
-                //                cell.alpha = 0.6
-                //                
-                //                cellLayer.addChild(cell)
-            }
-        }
-    }
 
 }

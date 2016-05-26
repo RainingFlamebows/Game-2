@@ -79,10 +79,11 @@ class GameScene: SKScene {
         view.addGestureRecognizer(tap)
     }
     
-    
-    
-    override func update(currentTime: CFTimeInterval)
-    {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        /* Called when a touch begins */
         
+        for touch in touches {
+            
+        }
     }
 }
