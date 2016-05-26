@@ -46,6 +46,7 @@ extension GameScene {
                 gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
                 let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
+                selectedPiece = nil
                 
                 // touched either base
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
@@ -65,6 +66,14 @@ extension GameScene {
                         sceneCam.addChild(baseMenu2)
                         print("touched base 2")
                     }
+                }
+                else if (selectedPiece != nil &&
+                    world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
+                    
+                    print("move piece")
+                    selectedPiece?.row = gridLoc.row
+                    selectedPiece?.column = gridLoc.col
+                    selectedPiece = nil
                 }
                 else if pieceAtPos != nil {
                     selectedPiece = pieceAtPos
