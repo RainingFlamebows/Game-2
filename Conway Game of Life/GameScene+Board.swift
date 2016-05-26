@@ -72,7 +72,7 @@ extension GameScene {
                     print("move piece")
                     selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
                         gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2))
-                    
+                    self.removeChildrenInArray(selectedPiece!.targets)
                 }
                 else if pieceAtPos != nil {
                     selectedPiece = pieceAtPos
@@ -84,12 +84,14 @@ extension GameScene {
                     // display possible moves
                     let availableMoves = world.availableMoves(pieceAtPos!)
                     for move in availableMoves {
-                        let target = SKSpriteNode(imageNamed: "blue target")
-                        target.position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,
-                                                      gridCoord[move.row][move.col].y - cellSize/2)
-                        target.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-                        target.anchorPoint = CGPointMake(0.5, 0.5)
-                        addChild(target)
+                        selectedPiece!.targets.append(SKSpriteNode(imageNamed: "blue target"))
+                        let targetIndex = selectedPiece!.targets.count - 1
+                        
+                        selectedPiece!.targets[targetIndex].position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
+                        selectedPiece!.targets[targetIndex].size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+                        selectedPiece!.targets[targetIndex].anchorPoint = CGPointMake(0.5, 0.5)
+
+                        addChild(selectedPiece!.targets[targetIndex])
                     }
                 }
                 else if pieceAtPos == nil {

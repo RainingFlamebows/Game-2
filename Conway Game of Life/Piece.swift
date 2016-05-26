@@ -136,6 +136,9 @@ class Piece {
         self.row = newLoc.row
         self.column = newLoc.col
         self.sprite.position = newPosition
+        
+        // remove targets since they're not needed anymore
+        self.targets = Array()
     }
     
     func attack(inout target: Piece) { // inout = pass by reference
