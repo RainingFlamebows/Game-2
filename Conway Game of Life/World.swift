@@ -99,4 +99,28 @@ class World {
         
         return moves
     }
+    
+    // Determines available attacks for a piece by returning locations of all cells occupied by another Piece
+    // within a thePiece.range x thePiece.range grid of cells around the piece.
+    // returns an array of tuples representing the row and col that the available cells
+    // to move to
+    func availableAttacks(thePiece: Piece) -> [(row: Int, col: Int)] {
+        var attacks = [(row: Int, col: Int)]()
+        
+        for row in thePiece.row-thePiece.range...thePiece.row+thePiece.range {
+            for col in thePiece.column-thePiece.range...thePiece.column+thePiece.range {
+                // check if cell exists at that row, col
+                // check if there's any objects at that location
+                // check if there is a piece at that location
+                if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
+                    if(board[row][col]!.isAlive) {
+                        attacks.append(row: row, col: col)
+                    }
+                }
+                
+            }
+        }
+        
+        return attacks
+    }
 }
