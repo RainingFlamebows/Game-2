@@ -126,7 +126,7 @@ extension GameScene {
                         world.board[newRow][newCol] = selectedPiece
                     }
                     else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
-//                        selectedPiece?.attack(&pieceAtPos)    // this gives errors
+//                        selectedPiece?.attack(&pieceAtPos)    // this gives errors. I'm so confused. There's no Int in here
                     }
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
