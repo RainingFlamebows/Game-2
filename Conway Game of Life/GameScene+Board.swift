@@ -108,26 +108,29 @@ extension GameScene {
                         print("touched base 2")
                     }
                 }
-                else if (selectedPiece != nil && selectedPiece!.canMove &&
-                    world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
+                    // move piece
+                else if (selectedPiece != nil && selectedPiece!.canMove) {
+                    
                     // tapped one of the targets
                     // move selectedPiece
-                    
-                    
-                    print("move piece")
-                    world.board[selectedPiece!.row][selectedPiece!.column] = nil
-                    
-                    selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
-                        gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2))
-                    
-                    let newRow = selectedPiece!.row
-                    let newCol = selectedPiece!.column
-                    
-                    world.board[newRow][newCol] = selectedPiece
+                    if(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
+                        print("move piece")
+                        world.board[selectedPiece!.row][selectedPiece!.column] = nil
+                        
+                        selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
+                            gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2))
+                        
+                        let newRow = selectedPiece!.row
+                        let newCol = selectedPiece!.column
+                        
+                        world.board[newRow][newCol] = selectedPiece
+                    }
+                    else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
+//                        selectedPiece?.attack(&pieceAtPos)    // this gives errors
+                    }
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
                     selectedPiece = nil
-                
                     hideSelectedMenu()
                 }
                 else if pieceAtPos != nil && selectedPiece != pieceAtPos {
@@ -173,6 +176,30 @@ extension GameScene {
                                 selectedPiece!.targets.append(newSprite!)
                             }
                         }
+                        
+                        
+                        // displays available attack options
+                        let availableAttacks = world.availableAttacks(pieceAtPos!)
+                        for attack in availableAttacks {
+                            let pieceAtTile = world.board[attack.row][attack.col]
+                            var newSprite: SKSpriteNode? = nil
+                            
+                            if pieceAtTile?.owner != selectedPiece?.owner {
+                                // attack this piece
+                                newSprite = SKSpriteNode(imageNamed: "red target")
+                            }
+                            
+                            
+                            if newSprite != nil {
+                                newSprite!.position = CGPointMake(gridCoord[attack.row][attack.col].x + cellSize/2,gridCoord[attack.row][attack.col].y - cellSize/2)
+                                newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+                                newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+                                addChild(newSprite!)
+                                
+                                selectedPiece!.targets.append(newSprite!)
+                            }
+                        }
+                        
                     }
                 }
                 else if pieceAtPos != nil && selectedPiece == pieceAtPos && selectedMenu == nil {
