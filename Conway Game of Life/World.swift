@@ -40,6 +40,7 @@ class World {
         board = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: nil));
         
         base1 = Base(ownerIn: 1, rowIn: 0, colIn: numCols/2)
+        
         base2 = Base(ownerIn: 2, rowIn: numRows - 1, colIn: numCols/2)
     }
     

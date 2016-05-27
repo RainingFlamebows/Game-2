@@ -17,12 +17,24 @@ class Base {
     let col: Int
     
     var baseMenu: SKSpriteNode!
+    var baseSprite: SKSpriteNode
     
     init (ownerIn: Int, rowIn: Int, colIn: Int)
     {
         owner = ownerIn
         row = rowIn
         col = colIn
+        
+        if(owner == 1) {
+            baseSprite = SKSpriteNode(imageNamed: "red base")
+        }
+        else if(owner == 2) {
+            baseSprite = SKSpriteNode(imageNamed: "blue base")
+        }
+        else {
+            print("Warning: base sprite not assigned")
+            baseSprite = SKSpriteNode()
+        }
         
         createBaseMenu()
     }

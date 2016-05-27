@@ -49,6 +49,19 @@ extension GameScene {
                 //                cellLayer.addChild(cell)
             }
         }
+        
+        // create bases
+        drawBases(world.base1)
+        drawBases(world.base2)
+        
+    }
+    
+    func drawBases(theBase: Base) {
+        let baseSprite = theBase.baseSprite
+        baseSprite.position = CGPointMake(gridCoord[theBase.row][theBase.col].x + cellSize/2,gridCoord[theBase.row][theBase.col].y - cellSize/2)
+        baseSprite.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+        baseSprite.anchorPoint = CGPointMake(0.5, 0.5)
+        cellLayer.addChild(baseSprite)
     }
 
    
@@ -109,7 +122,7 @@ extension GameScene {
                     }
                 }
                     // move piece
-                else if (selectedPiece != nil && selectedPiece!.canMove) {
+                else if (selectedPiece != nil && selectedPiece!.canMove && selectedPiece?.owner == world.mode) {
                     
                     // tapped one of the targets
                     // move selectedPiece
@@ -163,7 +176,7 @@ extension GameScene {
                             }
                             else if pieceAtTile?.owner != selectedPiece?.owner {
                                 // attack this piece
-                                newSprite = SKSpriteNode(imageNamed: "red target")
+                                newSprite = SKSpriteNode(imageNamed: "red glow") // this will not show up correctly bc attack uses range and not movement stat
                             }
                             
                             
@@ -186,7 +199,7 @@ extension GameScene {
                             
                             if pieceAtTile?.owner != selectedPiece?.owner {
                                 // attack this piece
-                                newSprite = SKSpriteNode(imageNamed: "red target")
+                                newSprite = SKSpriteNode(imageNamed: "red glow")
                             }
                             
                             
@@ -212,7 +225,7 @@ extension GameScene {
                     selectedPiece = nil
                     
                     world.board[gridLoc.row][gridLoc.col] = Warrior(owner: world.mode, row: gridLoc.row, column: gridLoc.col)
-                    let newPiece = SKSpriteNode(imageNamed: "warrior sprite red")
+                    let newPiece = world.board[gridLoc.row][gridLoc.col]!.sprite
                     newPiece.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
                                                     gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
                     newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)

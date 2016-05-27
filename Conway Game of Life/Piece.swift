@@ -43,6 +43,7 @@ class Piece: Equatable {
         self.isAlive = true
         currentHealth = self.health // piece has max HP by default
         
+        
         createPieceMenu()
         
     }
