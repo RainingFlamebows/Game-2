@@ -68,6 +68,11 @@ class Base {
         
     }
 
+	func touchedInsideBase(locationInStatusBar: CGPoint)
+	{
+		
+	}
+
     
     
 }
