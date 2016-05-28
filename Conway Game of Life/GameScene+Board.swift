@@ -70,12 +70,15 @@ extension GameScene {
     {
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
-        var tappedCancel = false
+        
         
         if selectedMenu != nil {
             let locationInStatusBar = convertPoint(location, toNode: selectedMenu!)
-            tappedCancel = selectedMenu?.childNodeWithName("cancel button")?.containsPoint(locationInStatusBar) ?? false
-            if tappedCancel == true {
+            let tappedCancel = selectedMenu!.childNodeWithName("cancel button")?.containsPoint(locationInStatusBar)
+            
+            let tappedInMenu = selectedMenu!.containsPoint(location)
+            
+            if tappedCancel == true || tappedInMenu == false {
                 
                 hideSelectedMenu()
                 if selectedPiece != nil {
@@ -85,7 +88,8 @@ extension GameScene {
             }
         }
         
-        if !tappedCancel {
+        else {
+            
             let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
             let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
             
@@ -139,7 +143,7 @@ extension GameScene {
                         world.board[newRow][newCol] = selectedPiece
                     }
                     else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
-                        selectedPiece!.attackPiece(&pieceAtPos!)    // this gives errors. I'm so confused. There's no Int in here
+                        selectedPiece!.attackPiece(&pieceAtPos!)
                     }
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
@@ -176,7 +180,7 @@ extension GameScene {
                             }
                             else if pieceAtTile?.owner != selectedPiece?.owner {
                                 // attack this piece
-                                newSprite = SKSpriteNode(imageNamed: "red target") // this will not show up correctly bc attack uses range and not movement stat
+                                newSprite = SKSpriteNode(imageNamed: "red target")
                             }
                             
                             
@@ -242,7 +246,7 @@ extension GameScene {
             
         }
         
-        
+        addConstraints()
         
     }
     

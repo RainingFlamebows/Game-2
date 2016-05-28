@@ -79,8 +79,13 @@ class World {
     
     func availableTiles(thePiece: Piece) -> [(row: Int, col: Int)] {
         var tiles = [(row: Int, col: Int)]()
-        for row in thePiece.row-thePiece.movement...thePiece.row+thePiece.movement {
-            for col in thePiece.column-thePiece.movement...thePiece.column+thePiece.movement {
+        var area = thePiece.movement
+        if area < thePiece.range {
+            area = thePiece.range
+        }
+        
+        for row in thePiece.row-area...thePiece.row+area {
+            for col in thePiece.column-area...thePiece.column+area {
                 // check if cell exists at that row, col
                 // check if there's any objects at that location
                 if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
