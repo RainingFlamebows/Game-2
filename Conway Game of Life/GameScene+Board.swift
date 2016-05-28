@@ -176,7 +176,7 @@ extension GameScene {
                             }
                             else if pieceAtTile?.owner != selectedPiece?.owner {
                                 // attack this piece
-                                newSprite = SKSpriteNode(imageNamed: "red glow") // this will not show up correctly bc attack uses range and not movement stat
+                                newSprite = SKSpriteNode(imageNamed: "red target") // this will not show up correctly bc attack uses range and not movement stat
                             }
                             
                             
@@ -199,7 +199,7 @@ extension GameScene {
                             
                             if pieceAtTile?.owner != selectedPiece?.owner {
                                 // attack this piece
-                                newSprite = SKSpriteNode(imageNamed: "red glow")
+                                newSprite = SKSpriteNode(imageNamed: "red target")
                             }
                             
                             
