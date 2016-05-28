@@ -71,7 +71,7 @@ extension GameScene {
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
         
-        
+        // hides selected menu if user tapped cancel button or somewhere outside menu
         if selectedMenu != nil {
             let locationInStatusBar = convertPoint(location, toNode: selectedMenu!)
             let tappedCancel = selectedMenu!.childNodeWithName("cancel button")?.containsPoint(locationInStatusBar)
@@ -96,6 +96,7 @@ extension GameScene {
             
             let locInCamera = convertPoint(location, toNode: camera!)
             
+            // switches player mode if nextRoundButton tapped
             if nextRoundButton.containsPoint(locInCamera)
             {
                 if world.mode == 1 {
@@ -105,12 +106,13 @@ extension GameScene {
                     world.mode = 1
                 }
             }
+                // if tapped inside grid...
             else if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
                 gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
                 let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
                 print("Hello, touched grid")
-                // touched either base
+                // touched either base, remove selectedPiece targets and menu and replace with base menu
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
                     gridLoc == (world.base2.row, world.base2.col) && world.mode == 2 {
                     
