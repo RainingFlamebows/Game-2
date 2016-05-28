@@ -67,6 +67,17 @@ class GameScene: SKScene {
         background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sceneCam.addChild(background)
         
+        var playerGlow = SKSpriteNode()
+        if(world.mode == 1) {
+            playerGlow = SKSpriteNode(imageNamed: "red player glow")
+        }
+        playerGlow = SKSpriteNode(imageNamed: "red player glow")
+        
+        playerGlow.size = CGSize(width: screenMidX*2, height: screenMidY*2)
+        playerGlow.anchorPoint = CGPointMake(0.5, 0.5)
+        playerGlow.position = CGPointMake(0, 0)
+        camera!.addChild(playerGlow)
+        
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
         

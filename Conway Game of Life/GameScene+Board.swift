@@ -30,6 +30,8 @@ extension GameScene {
         gameBoard.alpha = 1
         cellLayer.addChild(gameBoard)
         
+        
+        
         cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
         
         for row in 0...numRows-1 {
