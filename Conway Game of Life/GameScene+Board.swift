@@ -92,10 +92,21 @@ extension GameScene {
             
             let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
             let gridY = (abs(location.y) - upperSpace) / (cellSize + spaceBetwCells)
-            
             let gridLoc = world.gridTouched(gridX, gridY: gridY)
             
-            if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
+            let locInCamera = convertPoint(location, toNode: camera!)
+            
+            if nextRoundButton.containsPoint(locInCamera)
+            {
+                print("touched next round button")
+                if world.mode == 1 {
+                    world.mode = 2
+                }
+                else {
+                    world.mode = 1
+                }
+            }
+            else if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
                 gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
                 var pieceAtPos = world.board[gridLoc.row][gridLoc.col]
@@ -188,6 +199,7 @@ extension GameScene {
                                 newSprite!.position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
                                 newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
                                 newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+                                
                                 addChild(newSprite!)
                                 
                                 selectedPiece!.targets.append(newSprite!)

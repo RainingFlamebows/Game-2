@@ -32,6 +32,7 @@ class GameScene: SKScene {
     
     var selectedPiece: Piece? = nil
     var selectedMenu: SKNode? = nil
+    let nextRoundButton = SKSpriteNode(imageNamed: "dead")
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -40,9 +41,8 @@ class GameScene: SKScene {
     override init(size: CGSize)
     {
         super.init(size: size)
-                
+        
         anchorPoint = CGPoint(x: 0, y: 1.0)        
-                
     }
     
         
@@ -69,7 +69,14 @@ class GameScene: SKScene {
         
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
-                
+        
+        nextRoundButton.anchorPoint = CGPoint(x: 1, y: 0)
+        nextRoundButton.position = CGPoint(x: size.width/2 - margin/2, y: -size.height/2 + margin/2)
+        nextRoundButton.size = CGSize(width: 50, height: 50)
+        nextRoundButton.zPosition = 5
+        nextRoundButton.alpha = 0.7
+        camera!.addChild(nextRoundButton)
+        
         addConstraints()
         
         let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
