@@ -84,21 +84,20 @@ class Piece: Equatable {
         }
         createLabel(String(currentHealth),
                     position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
-                    color: healthLabelColor,
+                    color: healthLabelColor, name: "healthStat",
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
-        createLabel(String("/" + String(health)),
-                    position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
-                    horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
+        createLabel(String("/" + String(health)), position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
+                    name: "max health", horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
         
         createLabel("Attack", position: CGPointMake(3.1/6*screenMidX, menuHeight/5), color: customYellow)
-        createLabel(String(attack), position: CGPointMake(4.6/6*screenMidX, menuHeight/5))
+        createLabel(String(attack), position: CGPointMake(4.6/6*screenMidX, menuHeight/5), name: "attackStat")
         
         createLabel("Range", position: CGPointMake(3.1/6*screenMidX, -menuHeight/5), color: customYellow)
-        createLabel(String(range), position: CGPointMake(4.6/6*screenMidX, -menuHeight/5))
+        createLabel(String(range), position: CGPointMake(4.6/6*screenMidX, -menuHeight/5), name: "rangeStat")
         
         createLabel("Movement", position: CGPointMake(-2.6/6*screenMidX, -menuHeight/5), color: customYellow,
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
-        createLabel(String(range), position: CGPointMake(0.9/6*screenMidX, -menuHeight/5))
+        createLabel(String(range), position: CGPointMake(0.9/6*screenMidX, -menuHeight/5), name: "moveStat")
         
         createLabel("\(self.dynamicType)", position: CGPointMake(-4.2/6*screenMidX, -1.5*menuHeight/5),
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Center, fontSize: 15)
@@ -131,7 +130,8 @@ class Piece: Equatable {
     func createLabel(text: String, position: CGPoint, color: SKColor = SKColor.whiteColor(),
                      font: String = "Avenir-Medium", fontSize: CGFloat = CGFloat(20),
                      horizontalAlignment: SKLabelHorizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center,
-                     verticalAlignment: SKLabelVerticalAlignmentMode = SKLabelVerticalAlignmentMode.Baseline) {
+                     verticalAlignment: SKLabelVerticalAlignmentMode = SKLabelVerticalAlignmentMode.Baseline,
+                     name: String = "") {
         let label = SKLabelNode()    // displays "Health" label for health stat of unit
         label.text = text
         label.fontSize = fontSize
@@ -140,6 +140,7 @@ class Piece: Equatable {
         label.horizontalAlignmentMode = horizontalAlignment
         label.position = CGPoint(x: position.x, y: position.y - fontSize/2)
         label.fontColor = color
+        label.name = name
         pieceMenu.addChild(label)
         
     }
@@ -179,6 +180,13 @@ class Piece: Equatable {
         }
     }
     
+    func updateStatusBar()
+    {
+        (pieceMenu.childNodeWithName("healthStat") as! SKLabelNode).text = String(currentHealth)
+        (pieceMenu.childNodeWithName("attackStat") as! SKLabelNode).text = String(attack)
+        (pieceMenu.childNodeWithName("rangeStat") as! SKLabelNode).text = String(range)
+        (pieceMenu.childNodeWithName("moveStat") as! SKLabelNode).text = String(movement)
+    }
     
 }
 
