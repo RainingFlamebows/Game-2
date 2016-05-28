@@ -30,6 +30,8 @@ extension GameScene {
         gameBoard.alpha = 1
         cellLayer.addChild(gameBoard)
         
+        
+        
         cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
         
         for row in 0...numRows-1 {
@@ -70,6 +72,7 @@ extension GameScene {
     {
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
+
 		let locInCamera = convertPoint(location, toNode: camera!)
 
 		let gridX = (location.x - margin) / (cellSize + spaceBetwCells)
@@ -110,6 +113,11 @@ extension GameScene {
 				world.mode = 1
 			}
 			world.newRound()
+			selectedMenu?.removeFromParent()
+			if selectedPiece != nil {
+				removeChildrenInArray(selectedPiece!.targets)
+			}
+			selectedPiece = nil
 		}
 		else if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
 			gridLoc.row < world.numRows && gridLoc.col < world.numCols)
@@ -264,7 +272,6 @@ extension GameScene {
 				hideSelectedMenu()
 			}
 		}
-
 
 
         addConstraints()
