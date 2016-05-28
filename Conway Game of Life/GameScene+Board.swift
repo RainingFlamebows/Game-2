@@ -94,7 +94,7 @@ extension GameScene {
             if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
                 gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
-                let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
+                var pieceAtPos = world.board[gridLoc.row][gridLoc.col]
                 
                 // touched either base
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
@@ -139,7 +139,7 @@ extension GameScene {
                         world.board[newRow][newCol] = selectedPiece
                     }
                     else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
-//                        selectedPiece?.attack(&pieceAtPos)    // this gives errors. I'm so confused. There's no Int in here
+                        selectedPiece!.attackPiece(&pieceAtPos!)    // this gives errors. I'm so confused. There's no Int in here
                     }
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
