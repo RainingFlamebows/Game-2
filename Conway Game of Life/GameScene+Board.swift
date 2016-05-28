@@ -98,7 +98,6 @@ extension GameScene {
             
             if nextRoundButton.containsPoint(locInCamera)
             {
-                print("touched next round button")
                 if world.mode == 1 {
                     world.mode = 2
                 }
@@ -109,8 +108,8 @@ extension GameScene {
             else if (gridLoc.row >= 0 && gridLoc.col >= 0 &&
                 gridLoc.row < world.numRows && gridLoc.col < world.numCols)
             {
-                var pieceAtPos = world.board[gridLoc.row][gridLoc.col]
-                
+                let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
+                print("Hello, touched grid")
                 // touched either base
                 if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
                     gridLoc == (world.base2.row, world.base2.col) && world.mode == 2 {
@@ -136,9 +135,10 @@ extension GameScene {
                         print("touched base 2")
                     }
                 }
-                    // move piece
-                else if (selectedPiece != nil && selectedPiece!.canMove && selectedPiece?.owner == world.mode) {
-                    
+                else if (selectedPiece != nil && selectedPiece!.canMove && selectedPiece?.owner == world.mode &&
+                    world.availableTiles(pieceAtPos!).contains({element in return (element == gridLoc)})) {
+    
+                    print("tapped target")
                     // tapped one of the targets
                     // move selectedPiece
                     if(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
@@ -154,7 +154,10 @@ extension GameScene {
                         world.board[newRow][newCol] = selectedPiece
                     }
                     else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
-                        selectedPiece!.attackPiece(&pieceAtPos!)
+                        print("attacked piece")
+                        selectedPiece!.attackPiece(pieceAtPos!)
+                        selectedPiece!.updateStatusBar()
+                        pieceAtPos!.updateStatusBar()
                     }
                     
                     self.removeChildrenInArray(selectedPiece!.targets)
@@ -175,7 +178,7 @@ extension GameScene {
                     selectedMenu = selectedPiece!.pieceMenu
                     sceneCam.addChild(selectedMenu!)
                     
-                    if selectedPiece!.canMove {
+                    if selectedPiece!.canMove && selectedPiece!.owner == world.mode {
                         // display possible moves
                         let availableTiles = world.availableTiles(pieceAtPos!)
                         

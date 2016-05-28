@@ -159,7 +159,7 @@ class Piece: Equatable {
         }
     }
     
-    func attackPiece(inout target: Piece) { // inout = pass by reference
+    func attackPiece(target: Piece) { // inout = pass by reference
         // damage to the target
         let targetHealth = target.currentHealth - self.attack
         if(targetHealth < 0) {
@@ -178,6 +178,7 @@ class Piece: Equatable {
         else {
             self.currentHealth = attackerHealth
         }
+        canMove = false
     }
     
     func updateStatusBar()
