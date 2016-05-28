@@ -170,7 +170,7 @@ extension GameScene {
                             let pieceAtTile = world.board[move.row][move.col]
                             var newSprite: SKSpriteNode? = nil
                             
-                            if pieceAtTile == nil {
+                            if (pieceAtTile == nil && selectedPiece!.owner == world.mode) {
                                 // available move
                                 newSprite = SKSpriteNode(imageNamed: "blue target")
                             }
