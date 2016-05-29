@@ -21,6 +21,7 @@ class Base {
     var baseSprite: SKSpriteNode
     
     var pieces: Array = [SKSpriteNode]()
+    var trainingQueue: Array = [Queue]()
     init (ownerIn: Int, rowIn: Int, colIn: Int, numUnlockedQueuesIn: Int = 1)
     {
         owner = ownerIn
@@ -76,6 +77,7 @@ class Base {
                 
             }
             queue.sprite.addChild(queueInnerSprite)
+            trainingQueue.append(queue)
         }
         
         var color = "red"
@@ -86,6 +88,7 @@ class Base {
             color = "blue"
         }
         
+        trainingQueue[0].sprite.texture = SKTexture(imageNamed: "warrior sprite red")
         let numPieces = 4
         
         //I know hardcoding this is really bad, but if you have any better ideas on how to do this feel free to change it
