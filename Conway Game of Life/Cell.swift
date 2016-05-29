@@ -51,9 +51,6 @@ struct Cell {
         else if (state == SELECTED) {
             sprite.texture = SKTexture(imageNamed: "selected cell")
         }
-        else {
-            print("ERROR: invalid state for Cell.swift > updateState() function")
-        }
     }
  
 }

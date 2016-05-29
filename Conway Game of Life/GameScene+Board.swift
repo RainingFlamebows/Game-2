@@ -30,9 +30,7 @@ extension GameScene {
         gameBoard.alpha = 1
         cellLayer.addChild(gameBoard)
         
-        
-        
-        cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
+		cellSize = (gridWidth - spaceBetwCells - CGFloat(numCols-1)*spaceBetwCells) * 1.0 / CGFloat(numCols)
         
         for row in 0...numRows-1 {
             for col in 0...numCols-1 {
@@ -143,22 +141,18 @@ extension GameScene {
 				if world.mode == 1 && baseMenu1.parent == nil {
 					selectedMenu = baseMenu1
 					sceneCam.addChild(baseMenu1)
-					print("touched base 1")
 				}
 				else if world.mode == 2 && baseMenu2.parent == nil{
 					selectedMenu = baseMenu2
 					sceneCam.addChild(baseMenu2)
-					print("touched base 2")
 				}
 			}
 			else if (selectedPiece != nil && selectedPiece!.canMove && selectedPiece!.owner == world.mode &&
 				world.availableTiles(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
-				print("tapped target")
 				// tapped one of the targets
 				// move selectedPiece
 				if(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
-					print("move piece")
 					world.board[selectedPiece!.row][selectedPiece!.column] = nil
 
 					selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
@@ -170,8 +164,12 @@ extension GameScene {
 					world.board[newRow][newCol] = selectedPiece
 				}
 				else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
-					print("attacked piece")
 					world.attackPiece(selectedPiece!, target: pieceAtPos!)
+
+					animateAttack(selectedPiece!, target: pieceAtPos!)
+					animateHealthLabel(selectedPiece!, healthLost: pieceAtPos!.attack)
+					animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
+
 					selectedPiece!.updateStatusBar()
 					pieceAtPos!.updateStatusBar()
 				}
@@ -228,26 +226,26 @@ extension GameScene {
 
 
 					// displays available attack options
-					let availableAttacks = world.availableAttacks(pieceAtPos!)
-					for attack in availableAttacks {
-						let pieceAtTile = world.board[attack.row][attack.col]
-						var newSprite: SKSpriteNode? = nil
-
-						if pieceAtTile?.owner != selectedPiece?.owner {
-							// attack this piece
-							newSprite = SKSpriteNode(imageNamed: "red target")
-						}
-
-
-						if newSprite != nil {
-							newSprite!.position = CGPointMake(gridCoord[attack.row][attack.col].x + cellSize/2,gridCoord[attack.row][attack.col].y - cellSize/2)
-							newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-							newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
-							addChild(newSprite!)
-
-							selectedPiece!.targets.append(newSprite!)
-						}
-					}
+//					let availableAttacks = world.availableAttacks(pieceAtPos!)
+//					for attack in availableAttacks {
+//						let pieceAtTile = world.board[attack.row][attack.col]
+//						var newSprite: SKSpriteNode? = nil
+//
+//						if pieceAtTile?.owner != selectedPiece?.owner {
+//							// attack this piece
+//							newSprite = SKSpriteNode(imageNamed: "red target")
+//						}
+//
+//
+//						if newSprite != nil {
+//							newSprite!.position = CGPointMake(gridCoord[attack.row][attack.col].x + cellSize/2,gridCoord[attack.row][attack.col].y - cellSize/2)
+//							newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+//							newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+//							addChild(newSprite!)
+//
+//							selectedPiece!.targets.append(newSprite!)
+//						}
+//					}
 
 				}
 			}
@@ -286,5 +284,64 @@ extension GameScene {
         selectedMenu = nil
     }
 
+	func animateHealthLabel(thePiece: Piece, healthLost: Int) {
+
+		let spritePos = thePiece.sprite.position
+		let label = SKLabelNode()
+		label.text = String("- \(healthLost)")
+		label.fontSize = 15
+		label.fontName = "Avenir-Black"
+		label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+		label.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+		label.position = CGPoint(x: thePiece.sprite.position.x, y: thePiece.sprite.position.y)
+		label.fontColor = SKColor.redColor()
+
+		let moveAction = SKAction.moveTo(CGPointMake(spritePos.x, spritePos.y + 10), duration: NSTimeInterval(2))
+		moveAction.timingMode = .EaseOut
+
+		addChild(label)
+
+		label.runAction(SKAction.sequence([SKAction.group([moveAction, SKAction.fadeOutWithDuration(NSTimeInterval(2))]),
+				SKAction.removeFromParent()]))
+	}
+
+	func animateAttack(thePiece: Piece, target: Piece) {
+		let spritePos = thePiece.sprite.position
+		let targetSpritePos = target.sprite.position
+
+		let oppositePoint = CGPoint(x: 2*spritePos.x - targetSpritePos.x, y: 2*spritePos.y - targetSpritePos.y)
+		let oppositePointAttacker = CGPoint(x: 2*targetSpritePos.x - spritePos.x, y: 2*targetSpritePos.y - spritePos.y)
+		let launchAction = [SKAction.moveTo(dividePoint(spritePos, to: oppositePoint, factor: 2), duration: NSTimeInterval(0.3)),
+		                    SKAction.moveTo(dividePoint(spritePos, to: targetSpritePos, factor: 2), duration: NSTimeInterval(0.1)),
+		                    SKAction.moveTo(dividePoint(spritePos, to: oppositePoint, factor: 4), duration: NSTimeInterval(0.1)),
+		                    SKAction.moveTo(dividePoint(spritePos, to: targetSpritePos, factor: 4), duration: NSTimeInterval(0.1)),
+		                    SKAction.moveTo(spritePos, duration: NSTimeInterval(0.1))]
+
+		let moveAction = [SKAction.waitForDuration(NSTimeInterval(0.35)),
+		                  SKAction.moveTo(dividePoint(targetSpritePos, to: oppositePointAttacker, factor: 8), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(dividePoint(targetSpritePos, to: spritePos, factor: 8), duration: NSTimeInterval(0.1)),
+						  SKAction.moveTo(dividePoint(targetSpritePos, to: oppositePointAttacker, factor: 15), duration: NSTimeInterval(0.1)),
+						  SKAction.moveTo(dividePoint(targetSpritePos, to: spritePos, factor: 16), duration: NSTimeInterval(0.1)),
+
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 5), duration: NSTimeInterval(0.1)),
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y + 2), duration: NSTimeInterval(0.1)),
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 2), duration: NSTimeInterval(0.1)),
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y + 1), duration: NSTimeInterval(0.1)),
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 1), duration: NSTimeInterval(0.1)),
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y + 1), duration: NSTimeInterval(0.1)),
+//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 1), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y), duration: NSTimeInterval(0.1))]
+
+		thePiece.sprite.runAction(SKAction.sequence(launchAction))
+		target.sprite.runAction(SKAction.sequence(moveAction))
+	}
+
+	func dividePoint(from: CGPoint, to: CGPoint, factor: CGFloat) -> CGPoint
+	{
+		let xCoord = (to.x - from.x)/factor + from.x
+		let yCoord = (to.y - from.y)/factor + from.y
+
+		return CGPoint(x: xCoord, y: yCoord)
+	}
 
 }

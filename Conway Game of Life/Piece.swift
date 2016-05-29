@@ -67,23 +67,16 @@ class Piece: Equatable {
         
         let menuHeight = pieceMenu.frame.height
         
-        let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
         let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
         let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
         
         createLabel("Health", position: CGPointMake(-2.6/6*screenMidX, menuHeight/5), color: customYellow,
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
         
-        var healthLabelColor = SKColor()
-        if(currentHealth < health/4) {
-            healthLabelColor = customRed
-        }
-        else {
-            healthLabelColor = customGreen
-        }
+
         createLabel(String(currentHealth),
                     position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
-                    color: healthLabelColor, name: "healthStat",
+                    color: customGreen, name: "healthStat",
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Right)
         createLabel(String("/" + String(health)), position: CGPointMake(0.4/6*screenMidX, menuHeight/5),
                     name: "max health", horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
@@ -162,7 +155,19 @@ class Piece: Equatable {
     
     func updateStatusBar()
     {
+		let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
+		let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
+
+		var healthLabelColor = SKColor()
+		if(currentHealth < health/3) {
+			healthLabelColor = customRed
+		}
+		else {
+			healthLabelColor = customGreen
+		}
+
         (pieceMenu.childNodeWithName("healthStat") as! SKLabelNode).text = String(currentHealth)
+		(pieceMenu.childNodeWithName("healthStat") as! SKLabelNode).fontColor = healthLabelColor
         (pieceMenu.childNodeWithName("attackStat") as! SKLabelNode).text = String(attack)
         (pieceMenu.childNodeWithName("rangeStat") as! SKLabelNode).text = String(range)
         (pieceMenu.childNodeWithName("moveStat") as! SKLabelNode).text = String(movement)

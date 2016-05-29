@@ -75,7 +75,6 @@ class World {
             return (row: row, col: col)
         }
         else {
-            print("Warning: no cell returned for gridTouched")
             return (row: -1, col: -1)
         }
     }
@@ -147,9 +146,11 @@ class World {
         return attacks
     }
 
+
 	func attackPiece(attacker: Piece, target: Piece) { // inout = pass by reference
 		// damage to the target
 		let targetHealth = target.currentHealth - attacker.attack
+		
 		if(targetHealth < 0) { // target dies
 			target.currentHealth = 0
 			target.isAlive = false
@@ -202,7 +203,7 @@ class World {
 			redBlue = "blue "
 		}
 
-
+		// change back territory that the opposing team is on
 		let attacks = availableAttacks(thePiece)
 		if attacks.count != 0 {
 			for i in 0..<attacks.count {
@@ -221,6 +222,7 @@ class World {
 			redBlue = "blue "
 		}
 
+		// change all territory around the piece
 		for row in thePiece.row-bounds...thePiece.row+bounds {
 			for col in thePiece.column-bounds...thePiece.column+bounds {
 				territory[row][col] = owner

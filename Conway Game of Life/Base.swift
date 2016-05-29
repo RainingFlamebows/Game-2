@@ -32,7 +32,6 @@ class Base {
             baseSprite = SKSpriteNode(imageNamed: "blue base")
         }
         else {
-            print("Warning: base sprite not assigned")
             baseSprite = SKSpriteNode()
         }
         

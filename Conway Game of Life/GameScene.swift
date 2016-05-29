@@ -24,7 +24,6 @@ class GameScene: SKScene {
     
     var cellSize: CGFloat = 0
     
-    
     let cellLayer = SKNode()
     var previousScale = CGFloat(1.0)
     var sceneCam: SKCameraNode!
@@ -79,13 +78,11 @@ class GameScene: SKScene {
         else if(world.mode == 2) {
             playerGlow = SKSpriteNode(imageNamed: "blue player glow")
         }
-        else {
-            print("Warning: invalid value assigned to world.mode ")
-        }
         
         playerGlow.size = CGSize(width: screenMidX*2, height: screenMidY*2)
         playerGlow.anchorPoint = CGPointMake(0.5, 0.5)
         playerGlow.position = CGPointMake(0, 0)
+		playerGlow.zPosition = 4
         camera!.addChild(playerGlow)
         
         addSpritesForCells(numRows, numCols: numCols)
@@ -98,6 +95,7 @@ class GameScene: SKScene {
 				newTerritorySprite.anchorPoint = CGPoint(x: 0, y: 1)
 				newTerritorySprite.position = gridCoord[row][col]
 				newTerritorySprite.size = CGSize(width: cellSize, height: cellSize)
+				territorySprites[row][col] = newTerritorySprite
 				addChild(newTerritorySprite)
 			}
 		}
