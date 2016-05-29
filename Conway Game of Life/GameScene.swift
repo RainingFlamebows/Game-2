@@ -19,6 +19,7 @@ let screenMidY = UIScreen.mainScreen().bounds.height/2
 class GameScene: SKScene {
     
     var world: World!
+	var territorySprites = [[SKSpriteNode]]()
     var gridCoord = [[CGPointMake(0,0)]]
     
     var cellSize: CGFloat = 0
@@ -39,14 +40,16 @@ class GameScene: SKScene {
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override init(size: CGSize)
     {
         super.init(size: size)
-        
-        anchorPoint = CGPoint(x: 0, y: 1.0)        
-    }
-    
+
+        anchorPoint = CGPoint(x: 0, y: 1.0)
+
+
+	}
+
         
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -87,7 +90,19 @@ class GameScene: SKScene {
         
         addSpritesForCells(numRows, numCols: numCols)
         addChild(cellLayer)
-        
+
+		territorySprites = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: SKSpriteNode()))
+		for row in 0..<numRows {
+			for col in 0..<numCols {
+				let newTerritorySprite = SKSpriteNode()
+				newTerritorySprite.anchorPoint = CGPoint(x: 0, y: 1)
+				newTerritorySprite.position = gridCoord[row][col]
+				newTerritorySprite.size = CGSize(width: cellSize, height: cellSize)
+				addChild(newTerritorySprite)
+			}
+		}
+
+
         nextRoundButton.anchorPoint = CGPoint(x: 1, y: 0)
         nextRoundButton.position = CGPoint(x: size.width/2 - margin/2, y: -size.height/2 + margin/2)
         nextRoundButton.size = CGSize(width: 50, height: 50)
@@ -102,13 +117,5 @@ class GameScene: SKScene {
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         view.addGestureRecognizer(tap)
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
-        
-        for touch in touches {
-            
-        }
     }
 }

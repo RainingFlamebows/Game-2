@@ -10,7 +10,9 @@ import SpriteKit
 
 class World {
     
-    var board: [[Piece?]];
+    var board: [[Piece?]]
+	var territory: [[Int]]
+
     let base1: Base
     let base2: Base
  
@@ -38,6 +40,7 @@ class World {
         numP2Cells = 0;
         
         board = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: nil));
+		territory = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: 0));
         
         base1 = Base(ownerIn: 1, rowIn: 0, colIn: numCols/2)
         
@@ -182,6 +185,46 @@ class World {
 				let currentPiece = board[row][col]
 				currentPiece?.sprite.alpha = 1
 				currentPiece?.canMove = true
+			}
+		}
+	}
+
+	func updateTerritory(thePiece: Piece, territorySprites: [[SKSpriteNode]])
+	{
+		changeTerritory(thePiece, bounds: thePiece.movement, territorySprites: territorySprites)
+
+		var otherPlayer = 1
+		if thePiece.owner == 1 {
+			otherPlayer = 2
+		}
+		var redBlue = "red "
+		if otherPlayer == 2 {
+			redBlue = "blue "
+		}
+
+
+		let attacks = availableAttacks(thePiece)
+		if attacks.count != 0 {
+			for i in 0..<attacks.count {
+				territory[attacks[i].row][attacks[i].col] = otherPlayer
+				territorySprites[attacks[i].row][attacks[i].col].texture = SKTexture(imageNamed: redBlue + "territory")
+			}
+		}
+	}
+
+	func changeTerritory(thePiece: Piece, bounds: Int, territorySprites: [[SKSpriteNode]])
+	{
+		let owner = thePiece.owner
+
+		var redBlue = "red "
+		if owner == 2 {
+			redBlue = "blue "
+		}
+
+		for row in thePiece.row-bounds...thePiece.row+bounds {
+			for col in thePiece.column-bounds...thePiece.column+bounds {
+				territory[row][col] = owner
+				territorySprites[row][col].texture = SKTexture(imageNamed: redBlue + "territory")
 			}
 		}
 	}

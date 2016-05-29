@@ -51,7 +51,6 @@ class Piece: Equatable {
     
     func createPieceMenu()
     {
-        let screenHeight = UIScreen.mainScreen().bounds.height
         let screenWidth = UIScreen.mainScreen().bounds.width
 //        
 //        baseMenu = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 200.0))

@@ -177,6 +177,7 @@ extension GameScene {
 				}
 
 				self.removeChildrenInArray(selectedPiece!.targets)
+				world.updateTerritory(selectedPiece!, territorySprites: territorySprites)
 				selectedPiece = nil
 				hideSelectedMenu()
 			}
