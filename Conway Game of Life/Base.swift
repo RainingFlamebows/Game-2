@@ -62,22 +62,22 @@ class Base {
         let spaceForQueue = baseMenu.frame.width - margin*CGFloat(numQueue - 1)
         
         for i in 0..<numQueue {
-            let queue = Queue()
+            let queue = Queue(ownerIn: self.owner)
             queue.outerSprite.name = "queue " + String(i)
             queue.outerSprite.anchorPoint = CGPointMake(0, 1)
             queue.outerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue), spaceForQueue/CGFloat(numQueue))
             queue.outerSprite.position = CGPointMake(-screenMidX + margin + CGFloat(i)*(margin/2 + queue.outerSprite.frame.width), menuHeight/3)
             baseMenu.addChild(queue.outerSprite)
             
-            let queueInnerSprite = SKSpriteNode()
-            queueInnerSprite.name = "inner sprite"
+            queue.innerSprite.name = "inner sprite"
+            queue.innerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue), spaceForQueue/CGFloat(numQueue))
+            queue.innerSprite.anchorPoint = CGPointMake(0,1)
             if(i >= numUnlockedQueues) {
-                queueInnerSprite.texture = SKTexture(imageNamed: "lock")
-                queueInnerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue)*0.5, spaceForQueue/CGFloat(numQueue)*0.5)
-                queueInnerSprite.anchorPoint = CGPointMake(-0.5,1.5)
-                
+                queue.innerSprite.texture = SKTexture(imageNamed: "lock")
+                queue.isLocked = true
             }
-            queue.outerSprite.addChild(queueInnerSprite)
+            
+            queue.outerSprite.addChild(queue.innerSprite)
             trainingQueue.append(queue)
         }
         
@@ -89,7 +89,7 @@ class Base {
             color = "blue"
         }
         
-        trainingQueue[0].innerSprite.texture = SKTexture(imageNamed: "warrior sprite red")
+
         let numPieces = 4
         
         //I know hardcoding this is really bad, but if you have any better ideas on how to do this feel free to change it
@@ -132,12 +132,33 @@ class Base {
         ///////////// END BAD PROGRAMMING
         
     }
-
+    
+    func getAvailableQueue() -> Queue? {
+        var index = 0
+        while(index < trainingQueue.count && trainingQueue[index].trainingTimeLeft != -1 && trainingQueue[index].isLocked) {
+            index += 1
+        }
+        if(index >= trainingQueue.count) {
+            return nil
+        }
+        else {
+            return trainingQueue[index]
+        }
+    }
+    
 	func touchedInsideBase(locationInStatusBar: CGPoint)
 	{
         for piece in pieces {
             if(piece.containsPoint(locationInStatusBar)) {
-                
+                var availableQueue = getAvailableQueue()
+                if(availableQueue != nil) {
+//                    availableQueue!.innerSprite.texture = piece.texture
+                    availableQueue!.addPieceToQueue(piece)
+                }
+                else {
+                    print("no more spaces left in queue")
+                }
+                availableQueue = nil
             }
         }
 	}
@@ -155,8 +176,37 @@ class Queue {
     var trainingTimeLeft: Int     // -1 means queue is not occupied
     var outerSprite: SKSpriteNode = SKSpriteNode(imageNamed: "dead")
     var innerSprite: SKSpriteNode = SKSpriteNode()
-    init(trainingTime: Int = -1) {
+    var owner: Int
+    init(trainingTime: Int = -1, ownerIn: Int) {
         trainingTimeLeft = trainingTime
+        self.owner = ownerIn
+    }
+    
+    func addPieceToQueue(thePieceSprite: SKSpriteNode) {
+        var thePiece: Piece?
+        innerSprite.texture = thePieceSprite.texture
+        isLocked = false
+        if(thePieceSprite.name == "warrior") {
+            thePiece = Warrior(owner: self.owner, row: 0, column: 0)
+            self.trainingTimeLeft = (thePiece?.trainingTime)!
+        }
+        if(thePieceSprite.name == "defender") {
+            thePiece = Defender(owner: self.owner, row: 0, column: 0)
+            self.trainingTimeLeft = (thePiece?.trainingTime)!
+        }
+        else if(thePieceSprite.name == "ranger") {
+            thePiece = Ranger(owner: self.owner, row: 0, column: 0)
+            self.trainingTimeLeft = (thePiece?.trainingTime)!
+        }
+        else if(thePieceSprite.name == "mage") {
+            thePiece = Mage(owner: self.owner, row: 0, column: 0)
+            self.trainingTimeLeft = (thePiece?.trainingTime)!
+        }
+        else {
+            thePiece = nil
+            self.trainingTimeLeft = -1
+            
+        }
     }
 }
 

@@ -22,6 +22,7 @@ class Piece: Equatable {
     var health: Int
     var currentHealth: Int
     var movement: Int
+    var trainingTime: Int
     
     var isAlive: Bool
     var owner: Int // player 1 = 1, player 2 = 2
@@ -32,7 +33,7 @@ class Piece: Equatable {
     var targets: [SKSpriteNode] = Array()
     var canMove: Bool = true
     
-    init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int) {
+    init(owner: Int, row: Int, column: Int, attack: Int, range: Int, health: Int, movement: Int, trainingTime: Int) {
         self.owner = owner
         self.row = row
         self.column = column
@@ -40,6 +41,7 @@ class Piece: Equatable {
         self.range = range
         self.health = health
         self.movement = movement
+        self.trainingTime = trainingTime
         self.isAlive = true
         currentHealth = self.health // piece has max HP by default
         
@@ -178,7 +180,7 @@ class Piece: Equatable {
 class Warrior: Piece {      // is there a more convenient way of declaring a new piece
     init(owner: Int, row: Int, column: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 3, range: 1, health: 10, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 3, range: 1, health: 10, movement: 1, trainingTime: 1)
         
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "warrior sprite red")
@@ -192,7 +194,7 @@ class Warrior: Piece {      // is there a more convenient way of declaring a new
 class Ranger: Piece {
     init(owner: Int, row: Int, column: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 2, range: 2, health: 8, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 2, range: 2, health: 8, movement: 1, trainingTime: 2)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "ranger sprite red")
         }
@@ -205,7 +207,7 @@ class Ranger: Piece {
 class Defender: Piece {
     init(owner: Int, row: Int, column: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 1, range: 1, health: 15, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 1, range: 1, health: 15, movement: 1, trainingTime: 3)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "defender sprite red")
         }
@@ -216,9 +218,9 @@ class Defender: Piece {
 }
 
 class Mage: Piece {
-    override init(owner: Int, row: Int, column: Int, attack: Int = 3, range: Int = 3, health: Int = 6, movement: Int = 1) {
+    override init(owner: Int, row: Int, column: Int, attack: Int = 3, range: Int = 3, health: Int = 6, movement: Int = 1, trainingTime: Int = 3) {
         
-        super.init(owner: owner, row: row, column: column, attack: 3, range: 3, health: 6, movement: 1)
+        super.init(owner: owner, row: row, column: column, attack: 3, range: 3, health: 6, movement: 1, trainingTime: 3)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "mage sprite red")
         }
