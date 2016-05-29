@@ -28,6 +28,8 @@ class GameScene: SKScene {
     var previousScale = CGFloat(1.0)
     var sceneCam: SKCameraNode!
     
+    var playerGlow = SKSpriteNode()
+    
     // status screen at bottom, shows unit stats when unit selected or training queue when city is selected
     
     var selectedPiece: Piece? = nil
@@ -67,11 +69,16 @@ class GameScene: SKScene {
         background.anchorPoint = CGPoint(x: 0.5, y: 0.5)
         sceneCam.addChild(background)
         
-        var playerGlow = SKSpriteNode()
+        
         if(world.mode == 1) {
             playerGlow = SKSpriteNode(imageNamed: "red player glow")
         }
-        playerGlow = SKSpriteNode(imageNamed: "red player glow")
+        else if(world.mode == 2) {
+            playerGlow = SKSpriteNode(imageNamed: "blue player glow")
+        }
+        else {
+            print("Warning: invalid value assigned to world.mode ")
+        }
         
         playerGlow.size = CGSize(width: screenMidX*2, height: screenMidY*2)
         playerGlow.anchorPoint = CGPointMake(0.5, 0.5)

@@ -108,9 +108,11 @@ extension GameScene {
 		{
 			if world.mode == 1 {
 				world.mode = 2
+                playerGlow.texture = SKTexture(imageNamed: "blue player glow")
 			}
 			else {
 				world.mode = 1
+                playerGlow.texture = SKTexture(imageNamed: "red player glow")
 			}
 			world.newRound()
 			selectedMenu?.removeFromParent()
