@@ -41,14 +41,14 @@ extension GameScene {
                 let upperCornerCell = upperSpace + CGFloat(row) * (cellSize + spaceBetwCells) + spaceBetwCells*0.5
                 gridCoord[row][col] = CGPointMake(leftCornerCell, -upperCornerCell)
                 
-                                var cell = SKSpriteNode()
-                                cell = SKSpriteNode(imageNamed: "red territory")
-                                cell.size = CGSize(width: cellSize, height: cellSize)
-                                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
-                                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
-                                cell.alpha = 0.6
-                
-                                cellLayer.addChild(cell)
+//                                var cell = SKSpriteNode()
+//                                cell = SKSpriteNode(imageNamed: "red territory")
+//                                cell.size = CGSize(width: cellSize, height: cellSize)
+//                                cell.position = CGPointMake(leftCornerCell, -upperCornerCell)
+//                                cell.anchorPoint = CGPoint(x: 0, y: 1.0)
+//                                cell.alpha = 0.6
+//                
+//                                cellLayer.addChild(cell)
             }
         }
         
