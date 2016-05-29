@@ -63,20 +63,21 @@ class Base {
         
         for i in 0..<numQueue {
             let queue = Queue()
-            queue.sprite.name = "queue " + String(i)
-            queue.sprite.anchorPoint = CGPointMake(0, 1)
-            queue.sprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue), spaceForQueue/CGFloat(numQueue))
-            queue.sprite.position = CGPointMake(-screenMidX + margin + CGFloat(i)*(margin/2 + queue.sprite.frame.width), menuHeight/3)
-            baseMenu.addChild(queue.sprite)
+            queue.outerSprite.name = "queue " + String(i)
+            queue.outerSprite.anchorPoint = CGPointMake(0, 1)
+            queue.outerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue), spaceForQueue/CGFloat(numQueue))
+            queue.outerSprite.position = CGPointMake(-screenMidX + margin + CGFloat(i)*(margin/2 + queue.outerSprite.frame.width), menuHeight/3)
+            baseMenu.addChild(queue.outerSprite)
             
             let queueInnerSprite = SKSpriteNode()
+            queueInnerSprite.name = "inner sprite"
             if(i >= numUnlockedQueues) {
                 queueInnerSprite.texture = SKTexture(imageNamed: "lock")
                 queueInnerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue)*0.5, spaceForQueue/CGFloat(numQueue)*0.5)
                 queueInnerSprite.anchorPoint = CGPointMake(-0.5,1.5)
                 
             }
-            queue.sprite.addChild(queueInnerSprite)
+            queue.outerSprite.addChild(queueInnerSprite)
             trainingQueue.append(queue)
         }
         
@@ -88,7 +89,7 @@ class Base {
             color = "blue"
         }
         
-        trainingQueue[0].sprite.texture = SKTexture(imageNamed: "warrior sprite red")
+        trainingQueue[0].innerSprite.texture = SKTexture(imageNamed: "warrior sprite red")
         let numPieces = 4
         
         //I know hardcoding this is really bad, but if you have any better ideas on how to do this feel free to change it
@@ -152,7 +153,8 @@ class Base {
 class Queue {
     var isLocked: Bool = false
     var trainingTimeLeft: Int     // -1 means queue is not occupied
-    var sprite: SKSpriteNode = SKSpriteNode(imageNamed: "dead")
+    var outerSprite: SKSpriteNode = SKSpriteNode(imageNamed: "dead")
+    var innerSprite: SKSpriteNode = SKSpriteNode()
     init(trainingTime: Int = -1) {
         trainingTimeLeft = trainingTime
     }
