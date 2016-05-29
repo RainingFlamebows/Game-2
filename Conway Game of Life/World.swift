@@ -164,7 +164,7 @@ class World {
 		// damage to the attacker b/c target is defending
 		// itself by attacking attacker at the same time
 		let attackerHealth = attacker.currentHealth - target.attack
-		if(attacker.currentHealth < 0) {
+		if(attackerHealth < 0) {
 			attacker.currentHealth = 0
 			attacker.isAlive = false
 			board[attacker.row][attacker.column] = nil
