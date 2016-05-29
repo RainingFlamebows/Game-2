@@ -253,7 +253,9 @@ extension GameScene {
 				selectedMenu = selectedPiece!.pieceMenu
 				sceneCam.addChild(selectedMenu!)
 			}
-			else if pieceAtPos == nil && selectedPiece == nil {
+			else if pieceAtPos == nil && selectedPiece == nil &&
+                gridLoc != (world.base1.row, world.base1.col) &&
+                gridLoc != (world.base2.row, world.base2.col){
 
 				hideSelectedMenu()
 				selectedPiece = nil
