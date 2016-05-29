@@ -68,6 +68,7 @@ extension GameScene {
     
     func tapped(sender: UITapGestureRecognizer)
     {
+
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
 
@@ -142,13 +143,14 @@ extension GameScene {
 					selectedMenu = baseMenu1
 					sceneCam.addChild(baseMenu1)
 				}
-				else if world.mode == 2 && baseMenu2.parent == nil{
+				else if world.mode == 2 && baseMenu2.parent == nil {
 					selectedMenu = baseMenu2
 					sceneCam.addChild(baseMenu2)
 				}
 			}
-			else if (selectedPiece != nil && selectedPiece!.canMove && selectedPiece!.owner == world.mode &&
-				world.availableTiles(selectedPiece!).contains({element in return (element == gridLoc)})) {
+			else if selectedPiece != nil && selectedPiece!.canMove && selectedPiece!.owner == world.mode &&
+					(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)}) ||
+					world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
 				// tapped one of the targets
 				// move selectedPiece
@@ -195,57 +197,40 @@ extension GameScene {
 
 				if selectedPiece!.canMove && selectedPiece!.owner == world.mode {
 					// display possible moves
-					let availableTiles = world.availableTiles(pieceAtPos!)
+					let availableMoves = world.availableMoves(pieceAtPos!)
 
 					selectedPiece!.targets.removeAll()
-					for move in availableTiles {
+					for move in availableMoves {
 
-						let pieceAtTile = world.board[move.row][move.col]
 						var newSprite: SKSpriteNode? = nil
 
-						if (pieceAtTile == nil && selectedPiece!.owner == world.mode) {
-							// available move
-							newSprite = SKSpriteNode(imageNamed: "blue target")
-						}
-						else if pieceAtTile?.owner != selectedPiece?.owner {
-							// attack this piece
-							newSprite = SKSpriteNode(imageNamed: "red target")
-						}
+						newSprite = SKSpriteNode(imageNamed: "blue target")
 
+						newSprite!.position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
+						newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+						newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
 
-						if newSprite != nil {
-							newSprite!.position = CGPointMake(gridCoord[move.row][move.col].x + cellSize/2,gridCoord[move.row][move.col].y - cellSize/2)
-							newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-							newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+						addChild(newSprite!)
 
-							addChild(newSprite!)
-
-							selectedPiece!.targets.append(newSprite!)
-						}
+						selectedPiece!.targets.append(newSprite!)
 					}
 
 
 					// displays available attack options
-//					let availableAttacks = world.availableAttacks(pieceAtPos!)
-//					for attack in availableAttacks {
-//						let pieceAtTile = world.board[attack.row][attack.col]
-//						var newSprite: SKSpriteNode? = nil
-//
-//						if pieceAtTile?.owner != selectedPiece?.owner {
-//							// attack this piece
-//							newSprite = SKSpriteNode(imageNamed: "red target")
-//						}
-//
-//
-//						if newSprite != nil {
-//							newSprite!.position = CGPointMake(gridCoord[attack.row][attack.col].x + cellSize/2,gridCoord[attack.row][attack.col].y - cellSize/2)
-//							newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-//							newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
-//							addChild(newSprite!)
-//
-//							selectedPiece!.targets.append(newSprite!)
-//						}
-//					}
+					let availableAttacks = world.availableAttacks(pieceAtPos!)
+					for attack in availableAttacks {
+
+						var newSprite: SKSpriteNode? = nil
+
+						newSprite = SKSpriteNode(imageNamed: "red target")
+
+						newSprite!.position = CGPointMake(gridCoord[attack.row][attack.col].x + cellSize/2,gridCoord[attack.row][attack.col].y - cellSize/2)
+						newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+						newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+						addChild(newSprite!)
+
+						selectedPiece!.targets.append(newSprite!)
+					}
 
 				}
 			}
@@ -255,7 +240,7 @@ extension GameScene {
 			}
 			else if pieceAtPos == nil && selectedPiece == nil &&
                 gridLoc != (world.base1.row, world.base1.col) &&
-                gridLoc != (world.base2.row, world.base2.col){
+                gridLoc != (world.base2.row, world.base2.col) {
 
 				hideSelectedMenu()
 				selectedPiece = nil
@@ -278,6 +263,8 @@ extension GameScene {
 
 
         addConstraints()
+		print("red territory: \(world.numRedTerritory)")
+		print("blue territory: \(world.numBlueTerritory)")
 
     }
 
