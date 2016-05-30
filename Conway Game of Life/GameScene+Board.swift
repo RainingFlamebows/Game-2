@@ -129,8 +129,8 @@ extension GameScene {
 			let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
 
 			// touched either base
-			if gridLoc == (world.base1.row, world.base1.col) ||
-				gridLoc == (world.base2.row, world.base2.col) {
+			if (gridLoc == (world.base1.row, world.base1.col) || gridLoc == (world.base2.row, world.base2.col)) &&
+            selectedPiece == nil{
 
 				if selectedPiece != nil {
 					removeChildrenInArray(selectedPiece!.targets)
