@@ -193,7 +193,7 @@ class Base {
 			  trainingQueue[index].isLocked && trainingQueue[index].canChange == false) {
             index += 1
         }
-        if(index >= trainingQueue.count || trainingQueue[index].trainingTimeLeft != -1) {
+        if(index >= trainingQueue.count) {
             return nil
         }
         else {
