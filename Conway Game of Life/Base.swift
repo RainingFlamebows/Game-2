@@ -15,19 +15,23 @@ class Base {
     let owner: Int
     let row: Int
     let col: Int
-    let numUnlockedQueues: Int
+    var numUnlockedQueues: Int
+    let territory: Int
+    let totalTerritory: Int
     
     var baseMenu: SKSpriteNode!
     var baseSprite: SKSpriteNode
     
     var pieces: Array = [SKSpriteNode]()
     var trainingQueue: Array = [Queue]()
-    init (ownerIn: Int, rowIn: Int, colIn: Int, numUnlockedQueuesIn: Int = 1)
+    init (ownerIn: Int, rowIn: Int, colIn: Int, numUnlockedQueuesIn: Int = 1, inout numTerritory: Int, totalTiles: Int)
     {
         owner = ownerIn
         row = rowIn
         col = colIn
         numUnlockedQueues = numUnlockedQueuesIn
+        territory = numTerritory
+        totalTerritory = totalTiles
         
         if(owner == 1) {
             baseSprite = SKSpriteNode(imageNamed: "red base")
@@ -189,7 +193,7 @@ class Base {
 			  trainingQueue[index].isLocked && trainingQueue[index].canChange == false) {
             index += 1
         }
-        if(index >= trainingQueue.count) {
+        if(index >= trainingQueue.count || trainingQueue[index].trainingTimeLeft != -1) {
             return nil
         }
         else {
@@ -242,6 +246,23 @@ class Base {
 				}
 			}
 		}
+        
+        let percentTerritoryTaken = CGFloat(territory)/CGFloat(totalTerritory)
+        if percentTerritoryTaken > 0.8 {
+            numUnlockedQueues = 5
+        }
+        else if percentTerritoryTaken > 0.45 {
+            numUnlockedQueues = 4
+        }
+        else if percentTerritoryTaken > 0.2 {
+            numUnlockedQueues = 3
+        }
+        else if percentTerritoryTaken > 0.05 {
+            numUnlockedQueues = 2
+        }
+        else {
+            numUnlockedQueues = 1
+        }
 	}
 }
 
