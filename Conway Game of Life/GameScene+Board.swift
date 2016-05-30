@@ -283,9 +283,11 @@ extension GameScene {
 				world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
 				addChild(newPiece)
 			}
-			else if pieceAtPos == nil && selectedPiece != nil {
-				removeChildrenInArray(selectedPiece!.targets)
-				selectedPiece = nil
+			else if pieceAtPos == nil && selectedMenu != nil {
+				if selectedPiece != nil {
+					removeChildrenInArray(selectedPiece!.targets)
+					selectedPiece = nil
+				}
 				hideSelectedMenu()
 			}
 		}
