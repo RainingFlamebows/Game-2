@@ -153,7 +153,7 @@ extension GameScene {
                     }
 				}
 				else if world.mode == 2 && baseMenu2.parent == nil {
-                    if gridLoc == (world.base1.row, world.base1.col) {
+                    if gridLoc == (world.base2.row, world.base2.col) {
                         selectedMenu = baseMenu2
                         sceneCam.addChild(baseMenu2)
                     }
