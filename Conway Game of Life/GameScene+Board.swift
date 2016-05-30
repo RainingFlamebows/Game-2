@@ -173,38 +173,45 @@ extension GameScene {
 				else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
                     if((world.base1.row, world.base1.col) == gridLoc && world.base1.owner != pieceAtPos!.owner) {
+
                         world.attackBase(selectedPiece!, target: world.base1)
+						animateAttackBase(world.base1)
                         //***** need to updates status bar for base
                         // ***** animate attacking base?
                     }
                     else if ((world.base2.row, world.base2.col) == gridLoc && world.base2.owner != selectedPiece!.owner) {
+
                         world.attackBase(selectedPiece!, target: world.base2)
+						animateAttackBase(world.base2)
                         //***** need to updates status bar for base
                         //**** animate attacking base?
                     }
                     else {
                         let prevAttackerHealth = selectedPiece!.currentHealth
-                        world.attackPiece(selectedPiece!, target: pieceAtPos!)
-                        
+
+						world.attackPiece(selectedPiece!, target: pieceAtPos!)
+
                         if prevAttackerHealth == selectedPiece!.currentHealth {
+							animateAttack(pieceAtPos!)
+							runAction(SKAction.waitForDuration(0.4))
                             animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
                         }
                         else {
                             animateAttack(selectedPiece!, target: pieceAtPos!)
+							runAction(SKAction.waitForDuration(0.4))
                             animateHealthLabel(selectedPiece!, healthLost: pieceAtPos!.attack)
                             animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
                         }
-                        
-                        
+
                         selectedPiece!.updateStatusBar()
                         pieceAtPos!.updateStatusBar()
-                        runAction(SKAction.waitForDuration(0.4))
                     }
 				}
 				else if world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)}) {
 
+					let prevHealth = pieceAtPos!.currentHealth
 					(selectedPiece! as! Mage).heal(pieceAtPos!)
-
+					animateHeal(pieceAtPos!, healthGained: pieceAtPos!.currentHealth - prevHealth)
 
 					selectedPiece!.updateStatusBar()
 					pieceAtPos!.updateStatusBar()
@@ -288,13 +295,7 @@ extension GameScene {
 				selectedMenu = selectedPiece!.pieceMenu
 				sceneCam.addChild(selectedMenu!)
 			}
-			else if pieceAtPos == nil && selectedMenu != nil {
-				if selectedPiece != nil {
-					removeChildrenInArray(selectedPiece!.targets)
-					selectedPiece = nil
-				}
-				hideSelectedMenu()
-			}
+
 			else if pieceAtPos == nil && selectedPiece == nil &&
                 gridLoc != (world.base1.row, world.base1.col) &&
                 gridLoc != (world.base2.row, world.base2.col) {
@@ -310,6 +311,13 @@ extension GameScene {
 				newPiece.anchorPoint = CGPointMake(0.5, 0.5)
 				world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
 				addChild(newPiece)
+			}
+			else if pieceAtPos == nil && selectedMenu != nil {
+				if selectedPiece != nil {
+					removeChildrenInArray(selectedPiece!.targets)
+					selectedPiece = nil
+				}
+				hideSelectedMenu()
 			}
 
 		}
@@ -335,7 +343,7 @@ extension GameScene {
 		label.fontName = "Avenir-Black"
 		label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
 		label.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
-		label.position = CGPoint(x: thePiece.sprite.position.x, y: thePiece.sprite.position.y)
+		label.position = spritePos
 		label.fontColor = SKColor.redColor()
 
 		let moveAction = SKAction.moveTo(CGPointMake(spritePos.x, spritePos.y + 10), duration: NSTimeInterval(2))
@@ -345,6 +353,27 @@ extension GameScene {
 
 		label.runAction(SKAction.sequence([SKAction.group([moveAction, SKAction.fadeOutWithDuration(NSTimeInterval(2))]),
 				SKAction.removeFromParent()]))
+	}
+
+	func animateHeal(thePiece: Piece, healthGained: Int) {
+
+		let spritePos = thePiece.sprite.position
+		let label = SKLabelNode()
+		label.text = String("+ \(healthGained)")
+		label.fontSize = 15
+		label.fontName = "Avenir-Black"
+		label.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+		label.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+		label.position = spritePos
+		label.fontColor = SKColor.greenColor()
+
+		let moveAction = SKAction.moveTo(CGPointMake(spritePos.x, spritePos.y + 10), duration: NSTimeInterval(2))
+		moveAction.timingMode = .EaseOut
+
+		addChild(label)
+
+		label.runAction(SKAction.sequence([SKAction.group([moveAction, SKAction.fadeOutWithDuration(NSTimeInterval(2))]),
+			SKAction.removeFromParent()]))
 	}
 
 	func animateAttack(thePiece: Piece, target: Piece) {
@@ -367,6 +396,29 @@ extension GameScene {
 
 		thePiece.sprite.runAction(SKAction.sequence(launchAction))
 		target.sprite.runAction(SKAction.sequence(moveAction))
+	}
+
+	func animateAttack(target: Piece) {
+		let targetSpritePos = target.sprite.position
+
+		let moveAction = [SKAction.moveTo(CGPointMake(targetSpritePos.x + 5, targetSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(targetSpritePos.x - 5, targetSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(targetSpritePos.x + 2, targetSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(targetSpritePos.x - 2, targetSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(targetSpritePos, duration: NSTimeInterval(0.1))]
+		target.sprite.runAction(SKAction.sequence(moveAction))
+	}
+
+	func animateAttackBase(base: Base) {
+		let baseSpritePos = base.baseSprite.position
+
+		let moveAction = [SKAction.moveTo(CGPointMake(baseSpritePos.x + 5, baseSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(baseSpritePos.x - 5, baseSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(baseSpritePos.x + 2, baseSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(CGPointMake(baseSpritePos.x - 2, baseSpritePos.y), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(baseSpritePos, duration: NSTimeInterval(0.1))]
+		base.baseSprite.runAction(SKAction.sequence(moveAction))
+
 	}
 
 	func dividePoint(from: CGPoint, to: CGPoint, factor: CGFloat) -> CGPoint
