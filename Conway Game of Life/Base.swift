@@ -86,6 +86,15 @@ class Base {
 			queue.timeLeftLabel = timeLeftLabel
 			baseMenu.addChild(timeLeftLabel)
 
+			let statusLabel = SKLabelNode()
+			statusLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+			statusLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
+			statusLabel.fontName = "Avenir-Light"
+			statusLabel.fontSize = 15
+			statusLabel.position = CGPointMake(queue.outerSprite.frame.midX, queue.outerSprite.frame.midY)
+			queue.statusLabel = statusLabel
+			baseMenu.addChild(statusLabel)
+
             queue.outerSprite.addChild(queue.innerSprite)
             trainingQueue.append(queue)
         }
@@ -176,7 +185,8 @@ class Base {
     
     func getAvailableQueue() -> Queue? {
         var index = 0
-        while(index < trainingQueue.count && trainingQueue[index].trainingTimeLeft != -1 && trainingQueue[index].isLocked) {
+        while(index < trainingQueue.count && trainingQueue[index].trainingTimeLeft != -1 &&
+			  trainingQueue[index].isLocked && trainingQueue[index].canChange == false) {
             index += 1
         }
         if(index >= trainingQueue.count) {
@@ -192,7 +202,7 @@ class Base {
         for piece in pieces {
             if(piece.containsPoint(locationInStatusBar)) {
                 var availableQueue = getAvailableQueue()
-                if(availableQueue != nil) {
+                if(availableQueue != nil && availableQueue?.canChange == true) {
 //                    availableQueue!.innerSprite.texture = piece.texture
                     availableQueue!.addPieceToQueue(piece)
                 }
@@ -202,6 +212,13 @@ class Base {
                 availableQueue = nil
             }
         }
+
+		for q in trainingQueue {
+			if q.innerSprite.containsPoint(locationInStatusBar) && q.statusLabel.text == "ready!" {
+				// user touched piece in trainingQueue for which training has finished
+				// add this piece onto board
+			}
+		}
 	}
     
     func displayPiece(theSprite: SKSpriteNode, position: CGPoint, size: CGSize, menu: SKSpriteNode) {
@@ -209,15 +226,34 @@ class Base {
         theSprite.position = position
         menu.addChild(theSprite)
     }
+
+	func nextRound() {
+		for q in trainingQueue {
+			if q.trainingTimeLeft > 1 {
+				q.trainingTimeLeft -= 1
+				q.timeLeftLabel.text = "\(q.trainingTimeLeft) round(s)"
+				q.canChange = false
+			}
+			else {
+				if q.isLocked == false {
+					q.statusLabel.text = "ready!"
+					q.timeLeftLabel.text = ""
+					q.canChange = true
+				}
+			}
+		}
+	}
 }
 
 
 class Queue {
     var isLocked: Bool = false
+	var canChange: Bool = true
     var trainingTimeLeft: Int     // -1 means queue is not occupied
     var outerSprite: SKSpriteNode = SKSpriteNode(imageNamed: "dead")
     var innerSprite: SKSpriteNode = SKSpriteNode()
 	var timeLeftLabel: SKLabelNode = SKLabelNode()
+	var statusLabel: SKLabelNode = SKLabelNode()
     var owner: Int
 
     init(trainingTime: Int = -1, ownerIn: Int) {
@@ -250,11 +286,12 @@ class Queue {
             thePiece = nil
             self.trainingTimeLeft = -1
 			timeLeftLabel.text = ""
-            
+            statusLabel.text = ""
         }
 
 		if trainingTimeLeft != -1 {
-			timeLeftLabel.text = "\(trainingTimeLeft) rounds"
+			timeLeftLabel.text = "\(trainingTimeLeft) round(s)"
+			statusLabel.text = "training..."
 		}
     }
 }

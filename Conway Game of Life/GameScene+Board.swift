@@ -107,10 +107,12 @@ extension GameScene {
 		{
 			if world.mode == 1 {
 				world.mode = 2
+				world.base2.nextRound()
                 playerGlow.texture = SKTexture(imageNamed: "blue player glow")
 			}
 			else {
 				world.mode = 1
+				world.base1.nextRound()
                 playerGlow.texture = SKTexture(imageNamed: "red player glow")
 			}
 			world.newRound()
