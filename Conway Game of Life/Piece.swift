@@ -146,14 +146,19 @@ class Piece: Equatable {
         if canMove {
             self.row = newLoc.row
             self.column = newLoc.col
-            self.sprite.position = newPosition
             self.sprite.alpha = 0.55
-            
+
+			animateMovePiece(newPosition)
+
             canMove = false
         }
     }
     
-
+	func animateMovePiece(newPosition: CGPoint) {
+		let moveAction = (SKAction.moveTo(newPosition, duration: NSTimeInterval(0.2)))
+		moveAction.timingMode = .EaseOut
+		sprite.runAction(moveAction)
+	}
     
     func updateStatusBar()
     {

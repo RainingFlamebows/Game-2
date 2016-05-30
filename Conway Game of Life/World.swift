@@ -244,26 +244,30 @@ class World {
 		// change all territory around the piece
 		for row in thePiece.row-bounds...thePiece.row+bounds {
 			for col in thePiece.column-bounds...thePiece.column+bounds {
-				let prevOwner = territory[row][col]
-				territory[row][col] = owner
-				territorySprites[row][col].texture = SKTexture(imageNamed: redBlue + "territory")
 
-				if owner == 1 {
-					if prevOwner == 0 {
-						numRedTerritory += 1
+				if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
+
+					let prevOwner = territory[row][col]
+					territory[row][col] = owner
+					territorySprites[row][col].texture = SKTexture(imageNamed: redBlue + "territory")
+
+					if owner == 1 {
+						if prevOwner == 0 {
+							numRedTerritory += 1
+						}
+						else if prevOwner != owner {
+							numRedTerritory += 1
+							numBlueTerritory -= 1
+						}
 					}
-					else if prevOwner != owner {
-						numRedTerritory += 1
-						numBlueTerritory -= 1
-					}
-				}
-				else {
-					if prevOwner == 0 {
-						numBlueTerritory += 1
-					}
-					else if prevOwner != owner {
-						numBlueTerritory += 1
-						numRedTerritory -= 1
+					else {
+						if prevOwner == 0 {
+							numBlueTerritory += 1
+						}
+						else if prevOwner != owner {
+							numBlueTerritory += 1
+							numRedTerritory -= 1
+						}
 					}
 				}
 			}

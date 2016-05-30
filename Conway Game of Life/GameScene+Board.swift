@@ -159,6 +159,7 @@ extension GameScene {
 
 					selectedPiece?.move(gridLoc, newPosition: CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
 						gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2))
+					runAction(SKAction.waitForDuration(0.2))
 
 					let newRow = selectedPiece!.row
 					let newCol = selectedPiece!.column
@@ -174,6 +175,7 @@ extension GameScene {
 
 					selectedPiece!.updateStatusBar()
 					pieceAtPos!.updateStatusBar()
+					runAction(SKAction.waitForDuration(0.4))
 				}
 
 				self.removeChildrenInArray(selectedPiece!.targets)
@@ -300,26 +302,17 @@ extension GameScene {
 
 		let oppositePoint = CGPoint(x: 2*spritePos.x - targetSpritePos.x, y: 2*spritePos.y - targetSpritePos.y)
 		let oppositePointAttacker = CGPoint(x: 2*targetSpritePos.x - spritePos.x, y: 2*targetSpritePos.y - spritePos.y)
-		let launchAction = [SKAction.moveTo(dividePoint(spritePos, to: oppositePoint, factor: 2), duration: NSTimeInterval(0.3)),
-		                    SKAction.moveTo(dividePoint(spritePos, to: targetSpritePos, factor: 2), duration: NSTimeInterval(0.1)),
+		let launchAction = [SKAction.moveTo(dividePoint(spritePos, to: targetSpritePos, factor: 4), duration: NSTimeInterval(0.1)),
 		                    SKAction.moveTo(dividePoint(spritePos, to: oppositePoint, factor: 4), duration: NSTimeInterval(0.1)),
-		                    SKAction.moveTo(dividePoint(spritePos, to: targetSpritePos, factor: 4), duration: NSTimeInterval(0.1)),
+		                    SKAction.moveTo(dividePoint(spritePos, to: targetSpritePos, factor: 8), duration: NSTimeInterval(0.1)),
+		                    SKAction.moveTo(dividePoint(spritePos, to: oppositePoint, factor: 8), duration: NSTimeInterval(0.1)),
 		                    SKAction.moveTo(spritePos, duration: NSTimeInterval(0.1))]
 
-		let moveAction = [SKAction.waitForDuration(NSTimeInterval(0.35)),
-		                  SKAction.moveTo(dividePoint(targetSpritePos, to: oppositePointAttacker, factor: 8), duration: NSTimeInterval(0.1)),
-		                  SKAction.moveTo(dividePoint(targetSpritePos, to: spritePos, factor: 8), duration: NSTimeInterval(0.1)),
-						  SKAction.moveTo(dividePoint(targetSpritePos, to: oppositePointAttacker, factor: 15), duration: NSTimeInterval(0.1)),
-						  SKAction.moveTo(dividePoint(targetSpritePos, to: spritePos, factor: 16), duration: NSTimeInterval(0.1)),
-
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 5), duration: NSTimeInterval(0.1)),
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y + 2), duration: NSTimeInterval(0.1)),
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 2), duration: NSTimeInterval(0.1)),
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y + 1), duration: NSTimeInterval(0.1)),
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 1), duration: NSTimeInterval(0.1)),
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y + 1), duration: NSTimeInterval(0.1)),
-//		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y - 1), duration: NSTimeInterval(0.1)),
-		                  SKAction.moveTo(CGPointMake(targetSpritePos.x, targetSpritePos.y), duration: NSTimeInterval(0.1))]
+		let moveAction = [SKAction.moveTo(dividePoint(targetSpritePos, to: spritePos, factor: 4), duration: NSTimeInterval(0.1)),
+						  SKAction.moveTo(dividePoint(targetSpritePos, to: oppositePointAttacker, factor: 4), duration: NSTimeInterval(0.1)),
+						  SKAction.moveTo(dividePoint(targetSpritePos, to: spritePos, factor: 8), duration: NSTimeInterval(0.1)),
+						  SKAction.moveTo(dividePoint(targetSpritePos, to: oppositePointAttacker, factor: 8), duration: NSTimeInterval(0.1)),
+		                  SKAction.moveTo(targetSpritePos, duration: NSTimeInterval(0.1))]
 
 		thePiece.sprite.runAction(SKAction.sequence(launchAction))
 		target.sprite.runAction(SKAction.sequence(moveAction))
