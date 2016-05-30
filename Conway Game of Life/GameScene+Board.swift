@@ -150,7 +150,8 @@ extension GameScene {
 			}
 			else if selectedPiece != nil && selectedPiece!.canMove && selectedPiece!.owner == world.mode &&
 					(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)}) ||
-					world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
+					world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)}) ||
+					world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
 				// tapped one of the targets
 				// move selectedPiece
@@ -176,6 +177,14 @@ extension GameScene {
 					selectedPiece!.updateStatusBar()
 					pieceAtPos!.updateStatusBar()
 					runAction(SKAction.waitForDuration(0.4))
+				}
+				else if world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)}) {
+					(selectedPiece! as! Mage).heal(pieceAtPos!)
+
+
+
+					selectedPiece!.updateStatusBar()
+					pieceAtPos!.updateStatusBar()
 				}
 
 				self.removeChildrenInArray(selectedPiece!.targets)
@@ -232,6 +241,22 @@ extension GameScene {
 						addChild(newSprite!)
 
 						selectedPiece!.targets.append(newSprite!)
+					}
+
+					if pieceAtPos is Mage {
+						let availableHeals = world.availableHeals(pieceAtPos!)
+						for heal in availableHeals {
+							var newSprite: SKSpriteNode? = nil
+
+							newSprite = SKSpriteNode(imageNamed: "green target")
+
+							newSprite!.position = CGPointMake(gridCoord[heal.row][heal.col].x + cellSize/2,gridCoord[heal.row][heal.col].y - cellSize/2)
+							newSprite!.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+							newSprite!.anchorPoint = CGPointMake(0.5, 0.5)
+							addChild(newSprite!)
+
+							selectedPiece!.targets.append(newSprite!)
+						}
 					}
 
 				}

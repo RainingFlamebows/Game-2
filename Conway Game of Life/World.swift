@@ -151,6 +151,27 @@ class World {
         return attacks
     }
 
+	func availableHeals(thePiece: Piece) -> [(row: Int, col: Int)] {
+		var heals = [(row: Int, col: Int)]()
+
+		if thePiece is Mage {
+			for row in thePiece.row-thePiece.range...thePiece.row+thePiece.range {
+				for col in thePiece.column-thePiece.range...thePiece.column+thePiece.range {
+					// check if cell exists at that row, col
+					// check if there's any objects at that location
+					// check if there is a piece at that location
+					if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
+						if (board[row][col]?.owner != nil && board[row][col]?.owner == thePiece.owner) {
+							heals.append(row: row, col: col)
+						}
+					}
+
+				}
+			}
+		}
+		return heals
+	}
+
 
 	func attackPiece(attacker: Piece, target: Piece) { // inout = pass by reference
 		// damage to the target

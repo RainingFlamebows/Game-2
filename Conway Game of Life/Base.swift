@@ -76,7 +76,16 @@ class Base {
                 queue.innerSprite.texture = SKTexture(imageNamed: "lock")
                 queue.isLocked = true
             }
-            
+
+			let timeLeftLabel = SKLabelNode()
+			timeLeftLabel.name = "timeLeftLabel " + String(i)
+			timeLeftLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+			timeLeftLabel.fontSize = 15
+			timeLeftLabel.fontName = "Avenir-Medium"
+			timeLeftLabel.position = CGPointMake(queue.outerSprite.frame.midX, baseMenu.frame.height/2 - 30)
+			queue.timeLeftLabel = timeLeftLabel
+			baseMenu.addChild(timeLeftLabel)
+
             queue.outerSprite.addChild(queue.innerSprite)
             trainingQueue.append(queue)
         }
@@ -100,6 +109,14 @@ class Base {
         warriorSprite.size = CGSizeMake(spaceForQueue/CGFloat(numPieces), spaceForQueue/CGFloat(numPieces))
         warriorSprite.position = CGPointMake(-screenMidX + margin + CGFloat(index)*(margin/2 + warriorSprite.frame.width), -menuHeight/2.7)
         baseMenu.addChild(warriorSprite)
+
+		let warriorLabel = SKLabelNode(text: "Warrior")
+		warriorLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+		warriorLabel.fontSize = 15
+		warriorLabel.fontName = "Avenir-Medium"
+		warriorLabel.position = CGPointMake(warriorSprite.frame.midX, warriorSprite.frame.midY - 50)
+		baseMenu.addChild(warriorLabel)
+
         
         index += 1
         let defenderSprite = SKSpriteNode(imageNamed: "defender sprite " + color)
@@ -108,7 +125,15 @@ class Base {
         defenderSprite.size = CGSizeMake(spaceForQueue/CGFloat(numPieces), spaceForQueue/CGFloat(numPieces))
         defenderSprite.position = CGPointMake(-screenMidX + margin + CGFloat(index)*(margin/2 + defenderSprite.frame.width), -menuHeight/2.7)
         baseMenu.addChild(defenderSprite)
-        
+
+		let defenderLabel = SKLabelNode(text: "Defender")
+		defenderLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+		defenderLabel.fontSize = 15
+		defenderLabel.fontName = "Avenir-Medium"
+		defenderLabel.position = CGPointMake(defenderSprite.frame.midX, defenderSprite.frame.midY - 50)
+		baseMenu.addChild(defenderLabel)
+
+
         index += 1
         let rangerSprite = SKSpriteNode(imageNamed: "ranger sprite " + color)
         rangerSprite.name = "ranger"
@@ -116,6 +141,14 @@ class Base {
         rangerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numPieces), spaceForQueue/CGFloat(numPieces))
         rangerSprite.position = CGPointMake(-screenMidX + margin + CGFloat(index)*(margin/2 + rangerSprite.frame.width), -menuHeight/2.7)
         baseMenu.addChild(rangerSprite)
+
+		let rangerLabel = SKLabelNode(text: "Ranger")
+		rangerLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+		rangerLabel.fontSize = 15
+		rangerLabel.fontName = "Avenir-Medium"
+		rangerLabel.position = CGPointMake(rangerSprite.frame.midX, rangerSprite.frame.midY - 50)
+		baseMenu.addChild(rangerLabel)
+
         
         index += 1
         let mageSprite = SKSpriteNode(imageNamed: "mage sprite " + color)
@@ -124,6 +157,14 @@ class Base {
         mageSprite.size = CGSizeMake(spaceForQueue/CGFloat(numPieces), spaceForQueue/CGFloat(numPieces))
         mageSprite.position = CGPointMake(-screenMidX + margin + CGFloat(index)*(margin/2 + mageSprite.frame.width), -menuHeight/2.7)
         baseMenu.addChild(mageSprite)
+
+
+		let mageLabel = SKLabelNode(text: "Mage")
+		mageLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+		mageLabel.fontSize = 15
+		mageLabel.fontName = "Avenir-Medium"
+		mageLabel.position = CGPointMake(mageSprite.frame.midX, mageSprite.frame.midY - 50)
+		baseMenu.addChild(mageLabel)
         
         pieces.append(warriorSprite)
         pieces.append(defenderSprite)
@@ -176,7 +217,9 @@ class Queue {
     var trainingTimeLeft: Int     // -1 means queue is not occupied
     var outerSprite: SKSpriteNode = SKSpriteNode(imageNamed: "dead")
     var innerSprite: SKSpriteNode = SKSpriteNode()
+	var timeLeftLabel: SKLabelNode = SKLabelNode()
     var owner: Int
+
     init(trainingTime: Int = -1, ownerIn: Int) {
         trainingTimeLeft = trainingTime
         self.owner = ownerIn
@@ -186,11 +229,12 @@ class Queue {
         var thePiece: Piece?
         innerSprite.texture = thePieceSprite.texture
         isLocked = false
+
         if(thePieceSprite.name == "warrior") {
             thePiece = Warrior(owner: self.owner, row: 0, column: 0)
             self.trainingTimeLeft = (thePiece?.trainingTime)!
         }
-        if(thePieceSprite.name == "defender") {
+        else if(thePieceSprite.name == "defender") {
             thePiece = Defender(owner: self.owner, row: 0, column: 0)
             self.trainingTimeLeft = (thePiece?.trainingTime)!
         }
@@ -205,8 +249,13 @@ class Queue {
         else {
             thePiece = nil
             self.trainingTimeLeft = -1
+			timeLeftLabel.text = ""
             
         }
+
+		if trainingTimeLeft != -1 {
+			timeLeftLabel.text = "\(trainingTimeLeft) rounds"
+		}
     }
 }
 
