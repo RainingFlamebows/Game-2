@@ -80,7 +80,7 @@ class Base {
 			let timeLeftLabel = SKLabelNode()
 			timeLeftLabel.name = "timeLeftLabel " + String(i)
 			timeLeftLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
-			timeLeftLabel.fontSize = 15
+			timeLeftLabel.fontSize = 12
 			timeLeftLabel.fontName = "Avenir-Medium"
 			timeLeftLabel.position = CGPointMake(queue.outerSprite.frame.midX, baseMenu.frame.height/2 - 30)
 			queue.timeLeftLabel = timeLeftLabel
@@ -256,7 +256,7 @@ class Base {
         for q in trainingQueue {
             if q.trainingTimeLeft > 1 {
                 q.trainingTimeLeft -= 1
-                q.timeLeftLabel.text = "\(q.trainingTimeLeft) round(s)"
+                q.timeLeftLabel.text = "\(q.trainingTimeLeft) turn(s) left"
                 q.canChange = false
             }
             else {
@@ -315,7 +315,7 @@ class Queue {
         }
 
 		if trainingTimeLeft != -1 {
-			timeLeftLabel.text = "\(trainingTimeLeft) round(s)"
+			timeLeftLabel.text = "\(trainingTimeLeft) turn(s) left"
 			statusLabel.text = "training..."
 		}
     }
