@@ -2,15 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "green target.png",
+      "filename" : "green target version2 70-1.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "green target version2 70.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "green target version2 70-2.png",
       "scale" : "3x"
     }
   ],

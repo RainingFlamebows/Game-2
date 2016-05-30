@@ -171,19 +171,27 @@ extension GameScene {
 					world.board[newRow][newCol] = selectedPiece
 				}
 				else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
+
+					let prevAttackerHealth = selectedPiece!.currentHealth
 					world.attackPiece(selectedPiece!, target: pieceAtPos!)
 
-					animateAttack(selectedPiece!, target: pieceAtPos!)
-					animateHealthLabel(selectedPiece!, healthLost: pieceAtPos!.attack)
-					animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
+					if prevAttackerHealth == selectedPiece!.currentHealth {
+						animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
+					}
+					else {
+						animateAttack(selectedPiece!, target: pieceAtPos!)
+						animateHealthLabel(selectedPiece!, healthLost: pieceAtPos!.attack)
+						animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
+					}
+
 
 					selectedPiece!.updateStatusBar()
 					pieceAtPos!.updateStatusBar()
 					runAction(SKAction.waitForDuration(0.4))
 				}
 				else if world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)}) {
-					(selectedPiece! as! Mage).heal(pieceAtPos!)
 
+					(selectedPiece! as! Mage).heal(pieceAtPos!)
 
 
 					selectedPiece!.updateStatusBar()
@@ -268,6 +276,13 @@ extension GameScene {
 				selectedMenu = selectedPiece!.pieceMenu
 				sceneCam.addChild(selectedMenu!)
 			}
+			else if pieceAtPos == nil && selectedMenu != nil {
+				if selectedPiece != nil {
+					removeChildrenInArray(selectedPiece!.targets)
+					selectedPiece = nil
+				}
+				hideSelectedMenu()
+			}
 			else if pieceAtPos == nil && selectedPiece == nil &&
                 gridLoc != (world.base1.row, world.base1.col) &&
                 gridLoc != (world.base2.row, world.base2.col) {
@@ -284,13 +299,7 @@ extension GameScene {
 				world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
 				addChild(newPiece)
 			}
-			else if pieceAtPos == nil && selectedMenu != nil {
-				if selectedPiece != nil {
-					removeChildrenInArray(selectedPiece!.targets)
-					selectedPiece = nil
-				}
-				hideSelectedMenu()
-			}
+
 		}
 
 

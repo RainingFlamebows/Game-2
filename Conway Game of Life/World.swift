@@ -180,7 +180,8 @@ class World {
 	func attackPiece(attacker: Piece, target: Piece) { // inout = pass by reference
 		// damage to the target
 		let targetHealth = target.currentHealth - attacker.attack
-		
+
+
 		if(targetHealth < 0) { // target dies
 			target.currentHealth = 0
 			target.isAlive = false
@@ -193,19 +194,28 @@ class World {
 
 		// damage to the attacker b/c target is defending
 		// itself by attacking attacker at the same time
-		let attackerHealth = attacker.currentHealth - target.attack
-		if(attackerHealth < 0) {
-			attacker.currentHealth = 0
-			attacker.isAlive = false
-			board[attacker.row][attacker.column] = nil
-			attacker.sprite.removeFromParent()
-		}
-		else {
-			attacker.currentHealth = attackerHealth
-		}
 
+		let rowInRange = (target.row - target.range <= attacker.row) &&
+						 (target.row + target.range >= attacker.row)
+		let colInRange = (target.column - target.range <= attacker.column) &&
+						 (target.column + target.range >= attacker.column)
+
+		if rowInRange && colInRange {
+			let attackerHealth = attacker.currentHealth - target.attack
+			if(attackerHealth < 0) {
+				attacker.currentHealth = 0
+				attacker.isAlive = false
+				board[attacker.row][attacker.column] = nil
+				attacker.sprite.removeFromParent()
+			}
+			else {
+				attacker.currentHealth = attackerHealth
+			}
+
+		}
 		attacker.sprite.alpha = 0.55
 		attacker.canMove = false
+
 	}
 
 	func newRound() {
