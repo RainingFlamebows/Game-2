@@ -16,22 +16,18 @@ class Base {
     let row: Int
     let col: Int
     var numUnlockedQueues: Int
-    let territory: Int
-    let totalTerritory: Int
     
     var baseMenu: SKSpriteNode!
     var baseSprite: SKSpriteNode
     
     var pieces: Array = [SKSpriteNode]()
     var trainingQueue: Array = [Queue]()
-    init (ownerIn: Int, rowIn: Int, colIn: Int, numUnlockedQueuesIn: Int = 1, inout numTerritory: Int, totalTiles: Int)
+    init (ownerIn: Int, rowIn: Int, colIn: Int, numUnlockedQueuesIn: Int = 1)
     {
         owner = ownerIn
         row = rowIn
         col = colIn
         numUnlockedQueues = numUnlockedQueuesIn
-        territory = numTerritory
-        totalTerritory = totalTiles
         
         if(owner == 1) {
             baseSprite = SKSpriteNode(imageNamed: "red base")
@@ -214,6 +210,7 @@ class Base {
                     print("no more spaces left in queue")
                 }
                 availableQueue = nil
+                break // no point in iterating thru rest of queue if location where user touched queue already identified
             }
         }
 
@@ -231,22 +228,7 @@ class Base {
         menu.addChild(theSprite)
     }
 
-	func nextRound() {
-		for q in trainingQueue {
-			if q.trainingTimeLeft > 1 {
-				q.trainingTimeLeft -= 1
-				q.timeLeftLabel.text = "\(q.trainingTimeLeft) round(s)"
-				q.canChange = false
-			}
-			else {
-				if q.isLocked == false {
-					q.statusLabel.text = "ready!"
-					q.timeLeftLabel.text = ""
-					q.canChange = true
-				}
-			}
-		}
-        
+    func nextRound(territory: Int, totalTerritory: Int) {
         let percentTerritoryTaken = CGFloat(territory)/CGFloat(totalTerritory)
         if percentTerritoryTaken > 0.8 {
             numUnlockedQueues = 5
@@ -262,6 +244,28 @@ class Base {
         }
         else {
             numUnlockedQueues = 1
+        }
+        
+        for i in 0..<numQueue {
+            if(i < numUnlockedQueues && trainingQueue[i].trainingTimeLeft == -1) {
+                trainingQueue[i].innerSprite.texture = SKTexture(imageNamed: "dead")
+                trainingQueue[i].isLocked = false
+            }
+        }
+        
+        for q in trainingQueue {
+            if q.trainingTimeLeft > 1 {
+                q.trainingTimeLeft -= 1
+                q.timeLeftLabel.text = "\(q.trainingTimeLeft) round(s)"
+                q.canChange = false
+            }
+            else {
+                if q.isLocked == false {
+                    q.statusLabel.text = "ready!"
+                    q.timeLeftLabel.text = ""
+                    q.canChange = true
+                }
+            }
         }
 	}
 }

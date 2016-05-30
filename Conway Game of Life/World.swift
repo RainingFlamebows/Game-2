@@ -21,6 +21,7 @@ class World {
  
     let numRows: Int;
     let numCols: Int;
+    let totalArea: Int
  
     var numP1Cells: Int;
     var numP2Cells: Int;
@@ -49,9 +50,9 @@ class World {
         numRedTerritory = 0
         numBlueTerritory = 0
         
-        let totalArea = numRows*numCols
-        base1 = Base(ownerIn: 1, rowIn: 0, colIn: numCols/2, numTerritory: &numRedTerritory, totalTiles: totalArea)
-        base2 = Base(ownerIn: 2, rowIn: numRows - 1, colIn: numCols/2, numTerritory: &numBlueTerritory, totalTiles:totalArea)
+        totalArea = numRows*numCols
+        base1 = Base(ownerIn: 1, rowIn: 0, colIn: numCols/2)
+        base2 = Base(ownerIn: 2, rowIn: numRows - 1, colIn: numCols/2)
 
     }
     

@@ -107,12 +107,13 @@ extension GameScene {
 		{
 			if world.mode == 1 {
 				world.mode = 2
-				world.base2.nextRound()
+				world.base2.nextRound(world.numBlueTerritory, totalTerritory: world.totalArea)
                 playerGlow.texture = SKTexture(imageNamed: "blue player glow")
 			}
 			else {
 				world.mode = 1
-				world.base1.nextRound()
+				world.base1.nextRound(world.numRedTerritory, totalTerritory: world.totalArea
+                )
                 playerGlow.texture = SKTexture(imageNamed: "red player glow")
 			}
 			world.newRound()
