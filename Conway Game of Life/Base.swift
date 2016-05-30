@@ -16,18 +16,22 @@ class Base {
     let row: Int
     let col: Int
     var numUnlockedQueues: Int
+    let health: Int
+    var currentHealth: Int
     
     var baseMenu: SKSpriteNode!
     var baseSprite: SKSpriteNode
     
     var pieces: Array = [SKSpriteNode]()
     var trainingQueue: Array = [Queue]()
-    init (ownerIn: Int, rowIn: Int, colIn: Int, numUnlockedQueuesIn: Int = 1)
+    init (ownerIn: Int, rowIn: Int, colIn: Int, health: Int = 20, numUnlockedQueuesIn: Int = 1)
     {
         owner = ownerIn
         row = rowIn
         col = colIn
         numUnlockedQueues = numUnlockedQueuesIn
+        self.health = health
+        currentHealth = health
         
         if(owner == 1) {
             baseSprite = SKSpriteNode(imageNamed: "red base")
@@ -51,6 +55,19 @@ class Base {
         baseMenu.zPosition = 10
         
         let menuHeight = baseMenu.frame.height
+        
+        // displays "Health"
+        let healthLabel = SKLabelNode()
+        healthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        healthLabel.verticalAlignmentMode = .Center
+        healthLabel.fontName = "Avenier-Light"
+        healthLabel.fontSize = 20
+        healthLabel.position = CGPointMake(baseMenu.frame.width/2, baseMenu.frame.height)
+        healthLabel.text = "Health: "
+        baseMenu.addChild(healthLabel)
+        
+        // displays currentHealth/totalHealth
+        
         
         let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
         cancelButton.position = CGPointMake(screenMidX - 8, menuHeight/2 - 8)

@@ -119,7 +119,8 @@ class World {
                 // check if cell exists at that row, col
                 // check if there's any objects at that location
                 // check if there is a piece at that location
-                if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
+                if(row >= 0 && row < board.count && col >= 0 && col < board[0].count &&
+                    (base1.row, base1.col) != (row, col) && (base2.row, base2.col) != (row, col)) {
                     if (board[row][col] == nil) {
                         moves.append(row: row, col: col)
                     }
@@ -145,6 +146,11 @@ class World {
                 // check if there is a piece at that location
                 if(row >= 0 && row < board.count && col >= 0 && col < board[0].count) {
                     if (board[row][col]?.owner != nil && board[row][col]?.owner != thePiece.owner) {
+                        attacks.append(row: row, col: col)
+                    }
+                        // if enemy base at row, col, let piece attack it
+                    else if((base1.row, base1.col) == (row, col) && base1.owner != thePiece.owner ||
+                        (base2.row, base2.col) == (row, col) && base2.owner != thePiece.owner) {
                         attacks.append(row: row, col: col)
                     }
                 }
@@ -177,7 +183,7 @@ class World {
 	}
 
 
-	func attackPiece(attacker: Piece, target: Piece) { // inout = pass by reference
+	func attackPiece(attacker: Piece, target: Piece) { 
 		// damage to the target
 		let targetHealth = target.currentHealth - attacker.attack
 
@@ -217,6 +223,21 @@ class World {
 		attacker.canMove = false
 
 	}
+    
+    func attackBase(attacker: Piece, target: Base) {
+        let targetHealth = target.currentHealth - attacker.attack
+        if(targetHealth < 0) {
+            // game over, attacker.owner wins
+        }
+        else {
+            target.currentHealth = targetHealth
+            attacker.sprite.alpha = 0.55
+            attacker.canMove = false
+        }
+        
+        //unlike attackPiece, bases cannot defend themselves
+        
+    }
 
 	func newRound() {
 		for row in 0...board.count-1

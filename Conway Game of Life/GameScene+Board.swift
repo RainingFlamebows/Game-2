@@ -172,22 +172,34 @@ extension GameScene {
 				}
 				else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
-					let prevAttackerHealth = selectedPiece!.currentHealth
-					world.attackPiece(selectedPiece!, target: pieceAtPos!)
-
-					if prevAttackerHealth == selectedPiece!.currentHealth {
-						animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
-					}
-					else {
-						animateAttack(selectedPiece!, target: pieceAtPos!)
-						animateHealthLabel(selectedPiece!, healthLost: pieceAtPos!.attack)
-						animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
-					}
-
-
-					selectedPiece!.updateStatusBar()
-					pieceAtPos!.updateStatusBar()
-					runAction(SKAction.waitForDuration(0.4))
+                    if((world.base1.row, world.base1.col) == gridLoc && world.base1.owner != pieceAtPos!.owner) {
+                        world.attackBase(selectedPiece!, target: world.base1)
+                        //***** need to updates status bar for base
+                        // ***** animate attacking base?
+                    }
+                    else if ((world.base2.row, world.base2.col) == gridLoc && world.base2.owner != selectedPiece!.owner) {
+                        world.attackBase(selectedPiece!, target: world.base2)
+                        //***** need to updates status bar for base
+                        //**** animate attacking base?
+                    }
+                    else {
+                        let prevAttackerHealth = selectedPiece!.currentHealth
+                        world.attackPiece(selectedPiece!, target: pieceAtPos!)
+                        
+                        if prevAttackerHealth == selectedPiece!.currentHealth {
+                            animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
+                        }
+                        else {
+                            animateAttack(selectedPiece!, target: pieceAtPos!)
+                            animateHealthLabel(selectedPiece!, healthLost: pieceAtPos!.attack)
+                            animateHealthLabel(pieceAtPos!, healthLost: selectedPiece!.attack)
+                        }
+                        
+                        
+                        selectedPiece!.updateStatusBar()
+                        pieceAtPos!.updateStatusBar()
+                        runAction(SKAction.waitForDuration(0.4))
+                    }
 				}
 				else if world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)}) {
 
