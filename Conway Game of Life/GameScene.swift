@@ -34,7 +34,7 @@ class GameScene: SKScene {
     
     var selectedPiece: Piece? = nil
     var selectedMenu: SKNode? = nil
-    let nextRoundButton = SKSpriteNode(imageNamed: "dead")
+    let nextRoundButton = SKSpriteNode(imageNamed: "switch player")
     
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -102,10 +102,20 @@ class GameScene: SKScene {
 
 
         nextRoundButton.anchorPoint = CGPoint(x: 1, y: 0)
-        nextRoundButton.position = CGPoint(x: size.width/2 - margin/2, y: -size.height/2 + margin/2)
+        nextRoundButton.position = CGPoint(x: size.width/2 - margin/2, y: -size.height/2 + margin)
         nextRoundButton.size = CGSize(width: 50, height: 50)
         nextRoundButton.zPosition = 5
         nextRoundButton.alpha = 0.7
+        
+        let nextRoundLabel = SKLabelNode()
+        nextRoundLabel.text = "Done"
+        nextRoundLabel.fontSize = 15
+        nextRoundLabel.fontName = "Avenier-Light"
+        nextRoundLabel.horizontalAlignmentMode = .Right
+        nextRoundLabel.verticalAlignmentMode = .Center
+        nextRoundLabel.position = CGPointMake(-5,-5)
+        
+        nextRoundButton.addChild(nextRoundLabel)
         camera!.addChild(nextRoundButton)
         
         addConstraints()
