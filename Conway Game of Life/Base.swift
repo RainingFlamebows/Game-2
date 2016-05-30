@@ -22,6 +22,8 @@ class Base {
     var baseMenu: SKSpriteNode!
     var baseSprite: SKSpriteNode
     
+    var miniBaseMenu: SKSpriteNode!     // menu that opposing player sees when they tap base
+    
     var pieces: Array = [SKSpriteNode]()
     var trainingQueue: Array = [Queue]()
     init (ownerIn: Int, rowIn: Int, colIn: Int, health: Int = 20, numUnlockedQueuesIn: Int = 1)
@@ -44,6 +46,7 @@ class Base {
         }
         
         createBaseMenu()
+        createMiniBaseMenu()
     }
     
     func createBaseMenu()
@@ -62,13 +65,32 @@ class Base {
         healthLabel.verticalAlignmentMode = .Center
         healthLabel.fontName = "Avenier-Light"
         healthLabel.fontSize = 20
-        healthLabel.position = CGPointMake(baseMenu.frame.width/2, baseMenu.frame.height)
+        healthLabel.position = CGPointMake(-screenMidX/4, menuHeight/2.6)
         healthLabel.text = "Health: "
         baseMenu.addChild(healthLabel)
         
-        // displays currentHealth/totalHealth
+        // displays currentHealth
+        let currentHealthLabel = SKLabelNode()
+        currentHealthLabel.name = "currentHealthLabel"
+        currentHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        currentHealthLabel.verticalAlignmentMode = .Center
+        currentHealthLabel.fontName = "Avenier-Light"
+        currentHealthLabel.fontSize = 20
+        currentHealthLabel.position = CGPointMake(0, menuHeight/2.6)
+        currentHealthLabel.fontColor = customGreen
+//        currentHealthLabel.text = String(currentHealth)
+        currentHealthLabel.text = " \(currentHealth)"
+        baseMenu.addChild(currentHealthLabel)
         
-        
+        let totalHealthLabel = SKLabelNode()
+        totalHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+        totalHealthLabel.verticalAlignmentMode = .Center
+        totalHealthLabel.fontName = "Avenier-Light"
+        totalHealthLabel.fontSize = 20
+        totalHealthLabel.position = CGPointMake(10, menuHeight/2.6)
+        totalHealthLabel.text = "/\(health)"
+        baseMenu.addChild(totalHealthLabel)
+
         let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
         cancelButton.position = CGPointMake(screenMidX - 8, menuHeight/2 - 8)
         cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
@@ -83,7 +105,7 @@ class Base {
             queue.outerSprite.name = "queue " + String(i)
             queue.outerSprite.anchorPoint = CGPointMake(0, 1)
             queue.outerSprite.size = CGSizeMake(spaceForQueue/CGFloat(numQueue), spaceForQueue/CGFloat(numQueue))
-            queue.outerSprite.position = CGPointMake(-screenMidX + margin + CGFloat(i)*(margin/2 + queue.outerSprite.frame.width), menuHeight/3)
+            queue.outerSprite.position = CGPointMake(-screenMidX + margin + CGFloat(i)*(margin/2 + queue.outerSprite.frame.width), menuHeight/4)
             baseMenu.addChild(queue.outerSprite)
             
             queue.innerSprite.name = "inner sprite"
@@ -96,18 +118,19 @@ class Base {
 
 			let timeLeftLabel = SKLabelNode()
 			timeLeftLabel.name = "timeLeftLabel " + String(i)
-			timeLeftLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+			timeLeftLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
 			timeLeftLabel.fontSize = 12
 			timeLeftLabel.fontName = "Avenir-Medium"
-			timeLeftLabel.position = CGPointMake(queue.outerSprite.frame.midX, baseMenu.frame.height/2 - 30)
+            timeLeftLabel.position = CGPointMake(-3, margin/4)
+//			timeLeftLabel.position = CGPointMake(queue.outerSprite.frame.midX, baseMenu.frame.height/2 - 30)
 			queue.timeLeftLabel = timeLeftLabel
-			baseMenu.addChild(timeLeftLabel)
+			queue.outerSprite.addChild(timeLeftLabel)
 
 			let statusLabel = SKLabelNode()
 			statusLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
 			statusLabel.verticalAlignmentMode = SKLabelVerticalAlignmentMode.Center
 			statusLabel.fontName = "Avenir-Light"
-			statusLabel.fontSize = 15
+			statusLabel.fontSize = 13
 			statusLabel.position = CGPointMake(queue.outerSprite.frame.midX, queue.outerSprite.frame.midY)
 			queue.statusLabel = statusLabel
 			baseMenu.addChild(statusLabel)
@@ -125,7 +148,7 @@ class Base {
         }
         
 
-        let numPieces = 4
+        let numPieces = 5
         
         //I know hardcoding this is really bad, but if you have any better ideas on how to do this feel free to change it
         var index = CGFloat(0)
@@ -198,6 +221,86 @@ class Base {
         pieces.append(mageSprite)
         ///////////// END BAD PROGRAMMING
         
+    }
+    
+    func createMiniBaseMenu() {
+        miniBaseMenu = SKSpriteNode(color: SKColor.lightGrayColor(), size: CGSize(width: UIScreen.mainScreen().bounds.size.width, height: 100))
+        miniBaseMenu.anchorPoint = baseMenu.anchorPoint
+        miniBaseMenu.position = CGPoint(x: 0, y: -screenMidY+miniBaseMenu.frame.height/2.0)
+        miniBaseMenu.zPosition = baseMenu.zPosition
+        
+        let miniMenuHeight = miniBaseMenu.frame.height
+        
+        
+        // I would directly add the same healthLabels created in createBaseMenu except Swift crashes when
+        // you try to add the same SKNode to 2 different SKNodes (basemenu and minibasemenu)
+        // displays "Health"
+        let healthLabel = SKLabelNode()
+        healthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        healthLabel.verticalAlignmentMode = .Center
+        healthLabel.fontName = "Avenier-Light"
+        healthLabel.fontSize = 20
+        healthLabel.position = CGPointMake(-screenMidX/4, 0)
+        healthLabel.text = "Health: "
+        miniBaseMenu.addChild(healthLabel)
+        
+        // displays currentHealth
+        let currentHealthLabel = SKLabelNode()
+        currentHealthLabel.name = "currentHealthLabel"
+        currentHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Center
+        currentHealthLabel.verticalAlignmentMode = .Center
+        currentHealthLabel.fontName = "Avenier-Light"
+        currentHealthLabel.fontSize = 20
+        currentHealthLabel.position = CGPointMake(0, 0)
+        currentHealthLabel.fontColor = customGreen
+        //        currentHealthLabel.text = String(currentHealth)
+        currentHealthLabel.text = " \(currentHealth)"
+        miniBaseMenu.addChild(currentHealthLabel)
+        
+        let totalHealthLabel = SKLabelNode()
+        totalHealthLabel.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.Left
+        totalHealthLabel.verticalAlignmentMode = .Center
+        totalHealthLabel.fontName = "Avenier-Light"
+        totalHealthLabel.fontSize = 20
+        totalHealthLabel.position = CGPointMake(10, 0)
+        totalHealthLabel.text = "/\(health)"
+        miniBaseMenu.addChild(totalHealthLabel)
+        
+        let cancelButton = SKSpriteNode(imageNamed: "cancel icon")
+        cancelButton.position = CGPointMake(screenMidX - 8, miniMenuHeight/2 - 8)
+        cancelButton.anchorPoint = CGPointMake(1.0, 1.0)
+        cancelButton.size = CGSize(width: 18, height: 18)
+        cancelButton.name = "cancel button"
+        miniBaseMenu.addChild(cancelButton)
+        
+//        let baseSpriteThumbnail = String(self.dynamicType).lowercaseString
+        var sprite = SKSpriteNode(imageNamed: "red base")
+        if(owner == 1) {
+            sprite = SKSpriteNode(imageNamed: "red base")
+        }
+        else if(owner == 2) {
+            sprite = SKSpriteNode(imageNamed: "blue base")
+        }
+        sprite.position = CGPointMake(-4.2/6*screenMidX, 0)
+        sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        sprite.size = CGSize(width: 1.9/6*screenMidX, height: 1.9/6*screenMidX)
+        miniBaseMenu.addChild(sprite)
+    }
+    
+    func updateBaseMenu() {
+        var healthLabelColor = SKColor()
+        if(currentHealth < health/3) {
+            healthLabelColor = customRed
+        }
+        else if(currentHealth < health/2) {
+            healthLabelColor = customYellow
+        }
+        else {
+            healthLabelColor = customGreen
+        }
+        
+        (baseMenu.childNodeWithName("currentHealthLabel") as! SKLabelNode).text = String(currentHealth)
+        (baseMenu.childNodeWithName("currentHealthLabel") as! SKLabelNode).fontColor = healthLabelColor
     }
     
     func getAvailableQueue() -> Queue? {

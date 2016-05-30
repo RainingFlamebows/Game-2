@@ -129,8 +129,8 @@ extension GameScene {
 			let pieceAtPos = world.board[gridLoc.row][gridLoc.col]
 
 			// touched either base
-			if gridLoc == (world.base1.row, world.base1.col) && world.mode == 1 ||
-				gridLoc == (world.base2.row, world.base2.col) && world.mode == 2 {
+			if gridLoc == (world.base1.row, world.base1.col) ||
+				gridLoc == (world.base2.row, world.base2.col) {
 
 				if selectedPiece != nil {
 					removeChildrenInArray(selectedPiece!.targets)
@@ -143,12 +143,24 @@ extension GameScene {
 				let baseMenu2 = world.base2.baseMenu
 
 				if world.mode == 1 && baseMenu1.parent == nil {
-					selectedMenu = baseMenu1
-					sceneCam.addChild(baseMenu1)
+                    if gridLoc == (world.base1.row, world.base1.col) {
+                        selectedMenu = baseMenu1
+                        sceneCam.addChild(baseMenu1)
+                    }
+                    else {    // if tapped enemy's base, show that base's miniBaseMenu
+                        selectedMenu = world.base2.miniBaseMenu
+                        sceneCam.addChild(selectedMenu!)
+                    }
 				}
 				else if world.mode == 2 && baseMenu2.parent == nil {
-					selectedMenu = baseMenu2
-					sceneCam.addChild(baseMenu2)
+                    if gridLoc == (world.base1.row, world.base1.col) {
+                        selectedMenu = baseMenu2
+                        sceneCam.addChild(baseMenu2)
+                    }
+                    else {
+                        selectedMenu = world.base1.miniBaseMenu
+                        sceneCam.addChild(selectedMenu!)
+                    }
 				}
 			}
 			else if selectedPiece != nil && selectedPiece!.canMove && selectedPiece!.owner == world.mode &&
@@ -172,17 +184,19 @@ extension GameScene {
 				}
 				else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
-                    if((world.base1.row, world.base1.col) == gridLoc && world.base1.owner != pieceAtPos!.owner) {
+                    if((world.base1.row, world.base1.col) == gridLoc && world.base1.owner != selectedPiece!.owner) {
 
                         world.attackBase(selectedPiece!, target: world.base1)
 						animateAttackBase(world.base1)
                         //***** need to updates status bar for base
+                        world.base1.updateBaseMenu()
                         // ***** animate attacking base?
                     }
                     else if ((world.base2.row, world.base2.col) == gridLoc && world.base2.owner != selectedPiece!.owner) {
 
                         world.attackBase(selectedPiece!, target: world.base2)
 						animateAttackBase(world.base2)
+                        world.base2.updateBaseMenu()
                         //***** need to updates status bar for base
                         //**** animate attacking base?
                     }

@@ -14,6 +14,10 @@ func == (lhs: Piece, rhs: Piece) -> Bool
     return lhs === rhs
 }
 
+let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
+let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
+let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
+
 class Piece: Equatable {
     var row: Int
     var column: Int
@@ -68,9 +72,6 @@ class Piece: Equatable {
         pieceMenu.zPosition = 10
         
         let menuHeight = pieceMenu.frame.height
-        
-        let customYellow = SKColor(red: 255.0/255, green: 225.0/255, blue: 0, alpha: 1)
-        let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
         
         createLabel("Health", position: CGPointMake(-2.6/6*screenMidX, menuHeight/5), color: customYellow,
                     horizontalAlignment: SKLabelHorizontalAlignmentMode.Left)
@@ -162,8 +163,6 @@ class Piece: Equatable {
     
     func updateStatusBar()
     {
-		let customRed = SKColor(red: 243.0/255, green: 41.0/255, blue: 75.0/255, alpha: 1)
-		let customGreen = SKColor(red: 87.0/255, green: 1, blue: 59.0/255, alpha: 1)
 
 		var healthLabelColor = SKColor()
 		if(currentHealth < health/3) {
