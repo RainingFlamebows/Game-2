@@ -16,6 +16,10 @@ extension GameScene {
         let scaledSize = CGSize(width: size.width * camera!.xScale, height: size.height * camera!.yScale)
         let boardContentRect = cellLayer.calculateAccumulatedFrame()
         let menuHeight = (selectedMenu?.frame.height ?? 0) * camera!.yScale
+		var doneButtonHeight = nextRoundButton.frame.height
+		if menuHeight != 0 {
+			doneButtonHeight = 0
+		}
         let xInset = min((scaledSize.width / 2) - margin, boardContentRect.width / 2)
         let yInset = min((scaledSize.height / 2) - margin, boardContentRect.height / 2)
         
@@ -24,7 +28,8 @@ extension GameScene {
         
         // Define an `SKRange` for each of the x and y axes to stay within the inset rectangle.
         let xRange = SKRange(lowerLimit: insetContentRect.minX, upperLimit: insetContentRect.maxX)
-        let yRange = SKRange(lowerLimit: insetContentRect.minY - menuHeight, upperLimit: insetContentRect.maxY)
+        let yRange = SKRange(lowerLimit: insetContentRect.minY - menuHeight -
+			doneButtonHeight, upperLimit: insetContentRect.maxY)
         
         // Constrain the camera within the inset rectangle.
         let levelEdgeConstraint = SKConstraint.positionX(xRange, y: yRange)

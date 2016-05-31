@@ -85,7 +85,6 @@ extension GameScene {
 			let tappedInMenu = selectedMenu!.containsPoint(locInCamera)
 
 			if tappedCancel == true {
-
 				hideSelectedMenu()
 			}
 			else if tappedInMenu == false {
@@ -309,11 +308,20 @@ extension GameScene {
 				selectedMenu = selectedPiece!.pieceMenu
 				sceneCam.addChild(selectedMenu!)
 			}
-
-			else if pieceAtPos == nil && selectedPiece == nil &&
+			else if pieceAtPos == nil && selectedPiece != nil && selectedMenu == nil {
+				if selectedPiece != nil {
+					removeChildrenInArray(selectedPiece!.targets)
+					selectedPiece = nil
+				}
+				hideSelectedMenu()
+			}
+			else if pieceAtPos == nil && selectedMenu == nil &&
                 gridLoc != (world.base1.row, world.base1.col) &&
                 gridLoc != (world.base2.row, world.base2.col) {
 
+				if selectedPiece != nil {
+					removeChildrenInArray(selectedPiece!.targets)
+				}
 				hideSelectedMenu()
 				selectedPiece = nil
 
