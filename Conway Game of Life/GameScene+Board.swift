@@ -362,8 +362,7 @@ extension GameScene {
 		for piece in base.pieces {
 			if(piece.containsPoint(locationInStatusBar)) {
 				var availableQueue = base.getAvailableQueue()
-				if(availableQueue != nil && availableQueue?.canChange == true) {
-
+				if(availableQueue != nil) {
 					availableQueue!.addPieceToQueue(piece)
 				}
 				else {
@@ -376,7 +375,7 @@ extension GameScene {
 
 		for q in base.trainingQueue {
 
-			if q.outerSprite.containsPoint(locationInStatusBar) && q.statusLabel.text == "ready!" {
+			if q.outerSprite.containsPoint(locationInStatusBar) && q.trainingTimeLeft <= 1 {
 				// user touched piece in trainingQueue for which training has finished
 				// add this piece onto board
 
@@ -415,10 +414,9 @@ extension GameScene {
 				world.board[base.row][base.col]?.sprite = newPiece
 				addChild(newPiece)
 
-				q.canChange = true
 				q.innerSprite.texture = nil
 				q.thePiece = nil
-
+                q.trainingTimeLeft = -1
 
 
 				break

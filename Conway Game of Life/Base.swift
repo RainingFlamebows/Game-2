@@ -302,16 +302,12 @@ class Base {
     }
     
     func getAvailableQueue() -> Queue? {
-        var index = 0
-        while(index < trainingQueue.count && (trainingQueue[index].trainingTimeLeft != -1 && trainingQueue[index].canChange == false)) {
-            index += 1
+        for queue in trainingQueue {
+            if((queue.isLocked == false) && queue.trainingTimeLeft == -1) {
+                return queue
+            }
         }
-        if(index >= trainingQueue.count || trainingQueue[index].canChange == false) {
-            return nil
-        }
-        else {
-            return trainingQueue[index]
-        }
+        return nil
     }
     
 	    
@@ -340,7 +336,7 @@ class Base {
         }
         
         for i in 0..<numQueue {
-            if(i <= numUnlockedQueues && trainingQueue[i].trainingTimeLeft == -1) {
+            if(i < numUnlockedQueues && trainingQueue[i].trainingTimeLeft == -1) {
                 trainingQueue[i].innerSprite.texture = nil
                 trainingQueue[i].isLocked = false
             }
@@ -350,13 +346,11 @@ class Base {
             if q.trainingTimeLeft > 1 {
                 q.trainingTimeLeft -= 1
                 q.timeLeftLabel.text = "\(q.trainingTimeLeft) turn(s) left"
-                q.canChange = false
             }
             else {
                 if q.isLocked == false {
                     q.statusLabel.text = "ready!"
                     q.timeLeftLabel.text = ""
-                    q.canChange = true
                 }
             }
         }
@@ -366,7 +360,6 @@ class Base {
 
 class Queue {
     var isLocked: Bool = false
-	var canChange: Bool = true
     var trainingTimeLeft: Int     // -1 means queue is not occupied
     var outerSprite: SKSpriteNode = SKSpriteNode(imageNamed: "dead")
     var innerSprite: SKSpriteNode = SKSpriteNode()
