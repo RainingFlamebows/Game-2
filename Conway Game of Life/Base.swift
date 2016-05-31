@@ -150,7 +150,6 @@ class Base {
 
         let numPieces = 5
         
-        //I know hardcoding this is really bad, but if you have any better ideas on how to do this feel free to change it
         var index = CGFloat(0)
         let warriorSprite = SKSpriteNode(imageNamed: "warrior sprite " + color)
         warriorSprite.name = "warrior"
@@ -219,8 +218,7 @@ class Base {
         pieces.append(defenderSprite)
         pieces.append(rangerSprite)
         pieces.append(mageSprite)
-        ///////////// END BAD PROGRAMMING
-        
+
     }
     
     func createMiniBaseMenu() {
@@ -316,31 +314,7 @@ class Base {
         }
     }
     
-	func touchedInsideBase(locationInStatusBar: CGPoint)
-	{
-        for piece in pieces {
-            if(piece.containsPoint(locationInStatusBar)) {
-                var availableQueue = getAvailableQueue()
-                if(availableQueue != nil && availableQueue?.canChange == true) {
-//                    availableQueue!.innerSprite.texture = piece.texture
-                    availableQueue!.addPieceToQueue(piece)
-                }
-                else {
-                    print("no more spaces left in queue")
-                }
-                availableQueue = nil
-                break // no point in iterating thru rest of queue if location where user touched queue already identified
-            }
-        }
-
-		for q in trainingQueue {
-			if q.innerSprite.containsPoint(locationInStatusBar) && q.statusLabel.text == "ready!" {
-				// user touched piece in trainingQueue for which training has finished
-				// add this piece onto board
-			}
-		}
-	}
-    
+	    
     func displayPiece(theSprite: SKSpriteNode, position: CGPoint, size: CGSize, menu: SKSpriteNode) {
         theSprite.size = size
         theSprite.position = position
@@ -399,6 +373,7 @@ class Queue {
 	var timeLeftLabel: SKLabelNode = SKLabelNode()
 	var statusLabel: SKLabelNode = SKLabelNode()
     var owner: Int
+	var thePiece: Piece?
 
     init(trainingTime: Int = -1, ownerIn: Int) {
         trainingTimeLeft = trainingTime
@@ -437,6 +412,8 @@ class Queue {
 			timeLeftLabel.text = "\(trainingTimeLeft) turn(s) left"
 			statusLabel.text = "training..."
 		}
+
+		self.thePiece = thePiece
     }
 }
 

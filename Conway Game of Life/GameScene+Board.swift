@@ -95,10 +95,10 @@ extension GameScene {
 				selectedPiece = nil
 			}
 			else if (world.mode == 1 && selectedMenu == world.base1.baseMenu) {
-				world.base1.touchedInsideBase(locationInStatusBar)
+				touchedInsideBase(world.base1, locationInStatusBar: locationInStatusBar)
 			}
 			else if (world.mode == 2 && selectedMenu == world.base2.baseMenu) {
-				world.base2.touchedInsideBase(locationInStatusBar)
+				touchedInsideBase(world.base2, locationInStatusBar: locationInStatusBar)
 			}
 
 		}
@@ -355,6 +355,54 @@ extension GameScene {
         selectedMenu?.removeFromParent()
         selectedMenu = nil
     }
+
+	func touchedInsideBase(base: Base, locationInStatusBar: CGPoint)
+	{
+		for piece in base.pieces {
+			if(piece.containsPoint(locationInStatusBar)) {
+				var availableQueue = base.getAvailableQueue()
+				if(availableQueue != nil && availableQueue?.canChange == true) {
+					//                    availableQueue!.innerSprite.texture = piece.texture
+					availableQueue!.addPieceToQueue(piece)
+				}
+				else {
+					print("no more spaces left in queue")
+				}
+				availableQueue = nil
+				break // no point in iterating thru rest of queue if location where user touched queue already identified
+			}
+		}
+
+		for q in base.trainingQueue {
+
+			if q.innerSprite.containsPoint(locationInStatusBar) && q.statusLabel.text == "ready!" {
+				// user touched piece in trainingQueue for which training has finished
+				// add this piece onto board
+
+				print("touched ready piece")
+				q.thePiece?.row = base.row
+				q.thePiece?.column = base.col
+
+				world.board[base.row][base.col] = q.thePiece
+				let newPiece = world.board[base.row][base.col]!.sprite
+				newPiece.position = CGPointMake(gridCoord[base.row][base.col].x + cellSize/2,
+				                                gridCoord[base.row][base.col].y - cellSize/2)
+				newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+				newPiece.anchorPoint = CGPointMake(0.5, 0.5)
+				world.board[base.row][base.col]?.sprite = newPiece
+				addChild(newPiece)
+
+				q.canChange = true
+				q.innerSprite.removeFromParent()
+				q.thePiece = nil
+
+
+
+				break
+			}
+		}
+	}
+
 
 	func animateHealthLabel(thePiece: Piece, healthLost: Int) {
 
