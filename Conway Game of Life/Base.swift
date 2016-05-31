@@ -115,6 +115,7 @@ class Base {
                 queue.innerSprite.texture = SKTexture(imageNamed: "lock")
                 queue.isLocked = true
             }
+			queue.outerSprite.addChild(queue.innerSprite)
 
 			let timeLeftLabel = SKLabelNode()
 			timeLeftLabel.name = "timeLeftLabel " + String(i)
@@ -135,7 +136,6 @@ class Base {
 			queue.statusLabel = statusLabel
 			baseMenu.addChild(statusLabel)
 
-            queue.outerSprite.addChild(queue.innerSprite)
             trainingQueue.append(queue)
         }
         
@@ -303,7 +303,7 @@ class Base {
     
     func getAvailableQueue() -> Queue? {
         var index = 0
-        while(index < trainingQueue.count && trainingQueue[index].trainingTimeLeft != -1 && trainingQueue[index].canChange == false) {
+        while(index < trainingQueue.count && (trainingQueue[index].trainingTimeLeft != -1 && trainingQueue[index].canChange == false)) {
             index += 1
         }
         if(index >= trainingQueue.count || trainingQueue[index].canChange == false) {
@@ -340,8 +340,8 @@ class Base {
         }
         
         for i in 0..<numQueue {
-            if(i < numUnlockedQueues && trainingQueue[i].trainingTimeLeft == -1) {
-                trainingQueue[i].innerSprite.texture = SKTexture(imageNamed: "dead")
+            if(i <= numUnlockedQueues && trainingQueue[i].trainingTimeLeft == -1) {
+                trainingQueue[i].innerSprite.texture = nil
                 trainingQueue[i].isLocked = false
             }
         }

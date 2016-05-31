@@ -358,11 +358,12 @@ extension GameScene {
 
 	func touchedInsideBase(base: Base, locationInStatusBar: CGPoint)
 	{
+		// selected piece types at bottom
 		for piece in base.pieces {
 			if(piece.containsPoint(locationInStatusBar)) {
 				var availableQueue = base.getAvailableQueue()
 				if(availableQueue != nil && availableQueue?.canChange == true) {
-					//                    availableQueue!.innerSprite.texture = piece.texture
+
 					availableQueue!.addPieceToQueue(piece)
 				}
 				else {
@@ -384,7 +385,29 @@ extension GameScene {
 				q.thePiece?.column = base.col
 
 				world.board[base.row][base.col] = q.thePiece
-				let newPiece = world.board[base.row][base.col]!.sprite
+
+				let redBlue: String!
+				if world.mode == 1 {
+					redBlue = "red"
+				}
+				else {
+					redBlue = "blue"
+				}
+
+				var newPiece = SKSpriteNode()
+				if(q.thePiece is Warrior) {
+					newPiece = SKSpriteNode(imageNamed: "warrior sprite " + redBlue)
+				}
+				else if(q.thePiece is Defender) {
+					newPiece = SKSpriteNode(imageNamed: "defender sprite " + redBlue)
+				}
+				else if q.thePiece is Ranger {
+					newPiece = SKSpriteNode(imageNamed: "ranger sprite " + redBlue)
+				}
+				else if q.thePiece is Mage {
+					newPiece = SKSpriteNode(imageNamed: "mage sprite " + redBlue)
+				}
+
 				newPiece.position = CGPointMake(gridCoord[base.row][base.col].x + cellSize/2,
 				                                gridCoord[base.row][base.col].y - cellSize/2)
 				newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
@@ -393,7 +416,7 @@ extension GameScene {
 				addChild(newPiece)
 
 				q.canChange = true
-				q.innerSprite.removeFromParent()
+				q.innerSprite.texture = nil
 				q.thePiece = nil
 
 
