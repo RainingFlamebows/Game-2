@@ -253,7 +253,7 @@ class World {
 
 	func updateTerritory(thePiece: Piece, territorySprites: [[SKSpriteNode]])
 	{
-		changeTerritory(thePiece, bounds: thePiece.movement, territorySprites: territorySprites)
+		changeTerritory(thePiece, bounds: 1, territorySprites: territorySprites)
 
 		var otherPlayer = 1
 		if thePiece.owner == 1 {
