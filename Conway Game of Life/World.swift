@@ -226,8 +226,13 @@ class World {
     
     func attackBase(attacker: Piece, target: Base) {
         let targetHealth = target.currentHealth - attacker.attack
-        if(targetHealth < 0) {
+        if(targetHealth <= 0) {
             // game over, attacker.owner wins
+            var redBlue = "red"
+            if(attacker.owner == 2) {
+                redBlue = "blue"
+            }
+            print("GAME OVER: \(redBlue) player wins!!")
         }
         else {
             target.currentHealth = targetHealth
