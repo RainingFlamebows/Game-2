@@ -382,7 +382,11 @@ extension GameScene {
 				print("touched ready piece")
 				q.thePiece?.row = base.row
 				q.thePiece?.column = base.col
-
+                
+                if(world.board[base.row][base.col] != nil) {
+                    print("can't place piece; piece already occupying position")
+                    break
+                }
 				world.board[base.row][base.col] = q.thePiece
 
 				let redBlue: String!
