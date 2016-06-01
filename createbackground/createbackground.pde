@@ -1,10 +1,9 @@
 PImage[] img = new PImage[16];
 
 void setup() {
-  int padding = 5;
   int imageWidth = 295;
   
-  size(3300, 6000);
+  size(3245, 4425);
   background(0);
   
   for(int i = 0; i < img.length; i++) {
