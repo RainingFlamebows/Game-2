@@ -20,10 +20,10 @@ extension GameScene {
         
         let gridWidth: CGFloat = widthScreen - margin*2
         
-        let image = UIImage(named: "11x20 background")
+        let image = UIImage(named: "11x15 background")
         let sizeBackground = image?.size
         
-        let gameBoard = SKSpriteNode(imageNamed: "11x20 background")
+        let gameBoard = SKSpriteNode(imageNamed: "11x15 background")
         gameBoard.size = CGSize(width: gridWidth, height: sizeBackground!.height*gridWidth/(sizeBackground!.width))
         gameBoard.anchorPoint = CGPointMake(0, 1.0)
         gameBoard.position = CGPointMake(margin, -upperSpace)

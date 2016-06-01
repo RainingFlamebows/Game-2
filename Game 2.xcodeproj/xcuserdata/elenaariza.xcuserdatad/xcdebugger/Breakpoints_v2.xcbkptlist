@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Conway Game of Life/GameScene+Board.swift"
-            timestampString = "486348848.358856"
+            timestampString = "486502136.321973"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "303"
-            endingLineNumber = "303"
+            startingLineNumber = "310"
+            endingLineNumber = "310"
             landmarkName = "tapped(_:)"
             landmarkType = "5">
          </BreakpointContent>

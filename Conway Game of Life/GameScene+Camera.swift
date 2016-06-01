@@ -28,8 +28,7 @@ extension GameScene {
         
         // Define an `SKRange` for each of the x and y axes to stay within the inset rectangle.
         let xRange = SKRange(lowerLimit: insetContentRect.minX, upperLimit: insetContentRect.maxX)
-        let yRange = SKRange(lowerLimit: insetContentRect.minY - menuHeight -
-			doneButtonHeight, upperLimit: insetContentRect.maxY)
+        let yRange = SKRange(lowerLimit: insetContentRect.minY - menuHeight, upperLimit: insetContentRect.maxY)
         
         // Constrain the camera within the inset rectangle.
         let levelEdgeConstraint = SKConstraint.positionX(xRange, y: yRange)

@@ -53,7 +53,7 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        let numRows = 20
+        let numRows = 15
         let numCols = 11
         world = World(numRowsIn: numRows, numColsIn: numCols)
         
