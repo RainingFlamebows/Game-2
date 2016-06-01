@@ -315,25 +315,25 @@ extension GameScene {
 				}
 				hideSelectedMenu()
 			}
-			else if pieceAtPos == nil && selectedMenu == nil &&
-                gridLoc != (world.base1.row, world.base1.col) &&
-                gridLoc != (world.base2.row, world.base2.col) {
-
-				if selectedPiece != nil {
-					removeChildrenInArray(selectedPiece!.targets)
-				}
-				hideSelectedMenu()
-				selectedPiece = nil
-
-				world.board[gridLoc.row][gridLoc.col] = Warrior(owner: world.mode, row: gridLoc.row, column: gridLoc.col)
-				let newPiece = world.board[gridLoc.row][gridLoc.col]!.sprite
-				newPiece.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
-				                                gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
-				newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
-				newPiece.anchorPoint = CGPointMake(0.5, 0.5)
-				world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
-				addChild(newPiece)
-			}
+//			else if pieceAtPos == nil && selectedMenu == nil &&
+//                gridLoc != (world.base1.row, world.base1.col) &&
+//                gridLoc != (world.base2.row, world.base2.col) {
+//
+//				if selectedPiece != nil {
+//					removeChildrenInArray(selectedPiece!.targets)
+//				}
+//				hideSelectedMenu()
+//				selectedPiece = nil
+//
+//				world.board[gridLoc.row][gridLoc.col] = Warrior(owner: world.mode, row: gridLoc.row, column: gridLoc.col)
+//				let newPiece = world.board[gridLoc.row][gridLoc.col]!.sprite
+//				newPiece.position = CGPointMake(gridCoord[gridLoc.row][gridLoc.col].x + cellSize/2,
+//				                                gridCoord[gridLoc.row][gridLoc.col].y - cellSize/2)
+//				newPiece.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+//				newPiece.anchorPoint = CGPointMake(0.5, 0.5)
+//				world.board[gridLoc.row][gridLoc.col]?.sprite = newPiece
+//				addChild(newPiece)
+//			}
 			else if pieceAtPos == nil && selectedMenu != nil {
 				if selectedPiece != nil {
 					removeChildrenInArray(selectedPiece!.targets)
