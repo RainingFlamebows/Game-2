@@ -47,6 +47,8 @@ extension GameScene {
             
             camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
         }
+
+		print("camera position \(camera?.position)")
     }
     
     func pinched(sender: UIPinchGestureRecognizer) {

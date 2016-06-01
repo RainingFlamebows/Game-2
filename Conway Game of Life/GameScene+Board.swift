@@ -68,6 +68,7 @@ extension GameScene {
     
     func tapped(sender: UITapGestureRecognizer)
     {
+		let prevMenuHeight = selectedMenu?.frame.height ?? 0
 
         let locationInView = sender.locationInView(self.view)
         let location = self.convertPointFromView(locationInView)
@@ -348,6 +349,16 @@ extension GameScene {
         addConstraints()
 		print("red territory: \(world.numRedTerritory)")
 		print("blue territory: \(world.numBlueTerritory)")
+
+		print("location.y \(location.y)")
+
+		
+		if location.y < frame.minY + (selectedMenu?.frame.height ?? 0) {
+			let cameraNewPos = CGPointMake(camera!.position.x, camera!.position.y - (selectedMenu?.frame.height ?? 0 - (-frame.minY + location.y)))
+			let moveCamera = SKAction.moveTo(cameraNewPos, duration: NSTimeInterval(0.2))
+			moveCamera.timingMode = .EaseOut
+			camera!.runAction(moveCamera)
+		}
 
     }
 
