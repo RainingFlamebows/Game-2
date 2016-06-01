@@ -242,6 +242,8 @@ class Mage: Piece {
         else {
             target.currentHealth = newHealth
         }
+        self.sprite.alpha = 0.55
+        canMove = false
     }
 }
 
