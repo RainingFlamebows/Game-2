@@ -224,7 +224,8 @@ class World {
 
 	}
     
-    func attackBase(attacker: Piece, target: Base) {
+    // returns whether the game has ended yet
+    func attackBase(attacker: Piece, target: Base) -> Bool {
         let targetHealth = target.currentHealth - attacker.attack
         if(targetHealth <= 0) {
             // game over, attacker.owner wins
@@ -233,11 +234,13 @@ class World {
                 redBlue = "blue"
             }
             print("GAME OVER: \(redBlue) player wins!!")
+            return true
         }
         else {
             target.currentHealth = targetHealth
             attacker.sprite.alpha = 0.55
             attacker.canMove = false
+            return false
         }
         
         //unlike attackPiece, bases cannot defend themselves

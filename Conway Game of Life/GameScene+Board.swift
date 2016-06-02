@@ -184,24 +184,34 @@ extension GameScene {
 					world.board[newRow][newCol] = selectedPiece
 				}
 				else if(world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)})) {
-
+                    var gameOverYet = false
                     if((world.base1.row, world.base1.col) == gridLoc && world.base1.owner != selectedPiece!.owner) {
-
-                        world.attackBase(selectedPiece!, target: world.base1)
+                        
+                        gameOverYet = world.attackBase(selectedPiece!, target: world.base1)
 						animateAttackBase(world.base1)
                         //***** need to updates status bar for base
                         world.base1.updateBaseMenu()
+                        world.base1.updateMiniBaseMenu()
                         // ***** animate attacking base?
+                        if(gameOverYet == true) {
+                            // game over animation
+                            gameOver(world.mode)
+                        }
                     }
                     else if ((world.base2.row, world.base2.col) == gridLoc && world.base2.owner != selectedPiece!.owner) {
 
 						print("attacked base 2")
-                        world.attackBase(selectedPiece!, target: world.base2)
+                        gameOverYet = world.attackBase(selectedPiece!, target: world.base2)
 						animateAttackBase(world.base2)
                         world.base2.updateBaseMenu()
+                        world.base2.updateMiniBaseMenu()
                         //***** need to updates status bar for base
                         //**** animate attacking base?
-
+                        
+                        if(gameOverYet == true) {
+                            // game over animation
+                            gameOver(world.mode)
+                        }
 
                     }
                     else {
