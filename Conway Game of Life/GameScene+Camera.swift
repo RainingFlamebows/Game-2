@@ -17,7 +17,6 @@ extension GameScene {
 
         let scaledSize = CGSize(width: size.width * camera!.xScale, height: size.height * camera!.yScale)
         let boardContentRect = cellLayer.calculateAccumulatedFrame()
-		print("cell layer accumulated frame \(cellLayer.calculateAccumulatedFrame())")
 		var doneButtonHeight = nextRoundButton.frame.height
 		if menuHeight != 0 {
 			doneButtonHeight = 0

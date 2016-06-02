@@ -168,7 +168,6 @@ extension GameScene {
 					world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)}) ||
 					world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
-				print("attacked")
 				// tapped one of the targets
 				// move selectedPiece
 				if(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
@@ -201,7 +200,6 @@ extension GameScene {
                     }
                     else if ((world.base2.row, world.base2.col) == gridLoc && world.base2.owner != selectedPiece!.owner) {
 
-						print("attacked base 2")
                         gameOverYet = world.attackBase(selectedPiece!, target: world.base2)
 						animateAttackBase(world.base2)
                         world.base2.updateBaseMenu()
@@ -376,13 +374,7 @@ extension GameScene {
 		}
 
         addConstraints()
-		print("red territory: \(world.numRedTerritory)")
-		print("blue territory: \(world.numBlueTerritory)")
-
-		print("location.y \(location.y)")
-
 		let bottomOfGrid = -cellLayer.calculateAccumulatedFrame().minY
-		print("bottomOfGrid \(bottomOfGrid)")
 		let difference = (selectedMenu?.frame.height ?? 0) - (frame.height - bottomOfGrid)
 		if selectedMenu?.frame.height > prevMenuHeight && location.y < frame.minY + (selectedMenu?.frame.height ?? 0) {
 			let cameraNewPos = CGPointMake(camera!.position.x, camera!.position.y - 3*difference)
@@ -408,7 +400,6 @@ extension GameScene {
 					availableQueue!.addPieceToQueue(piece)
 				}
 				else {
-					print("no more spaces left in queue")
 				}
 				availableQueue = nil
 				break // no point in iterating thru rest of queue if location where user touched queue already identified
@@ -421,12 +412,10 @@ extension GameScene {
 				// user touched piece in trainingQueue for which training has finished
 				// add this piece onto board
 
-				print("touched ready piece")
 				q.thePiece?.row = base.row
 				q.thePiece?.column = base.col
                 
                 if(world.board[base.row][base.col] != nil) {
-                    print("can't place piece; piece already occupying position")
                     break
                 }
 				world.board[base.row][base.col] = q.thePiece

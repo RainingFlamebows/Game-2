@@ -233,7 +233,7 @@ class World {
             if(attacker.owner == 2) {
                 redBlue = "blue"
             }
-            print("GAME OVER: \(redBlue) player wins!!")
+//            print("GAME OVER: \(redBlue) player wins!!")
             return true
         }
         else {
