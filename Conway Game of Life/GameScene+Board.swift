@@ -168,6 +168,7 @@ extension GameScene {
 					world.availableAttacks(selectedPiece!).contains({element in return (element == gridLoc)}) ||
 					world.availableHeals(selectedPiece!).contains({element in return (element == gridLoc)})) {
 
+				print("attacked")
 				// tapped one of the targets
 				// move selectedPiece
 				if(world.availableMoves(selectedPiece!).contains({element in return (element == gridLoc)})) {
@@ -194,11 +195,14 @@ extension GameScene {
                     }
                     else if ((world.base2.row, world.base2.col) == gridLoc && world.base2.owner != selectedPiece!.owner) {
 
+						print("attacked base 2")
                         world.attackBase(selectedPiece!, target: world.base2)
 						animateAttackBase(world.base2)
                         world.base2.updateBaseMenu()
                         //***** need to updates status bar for base
                         //**** animate attacking base?
+
+
                     }
                     else {
                         let prevAttackerHealth = selectedPiece!.currentHealth
@@ -344,7 +348,21 @@ extension GameScene {
 			}
 
 		}
-
+		else if selectedMenu != nil && !selectedMenu!.containsPoint(locInCamera)
+		{
+			if selectedPiece != nil {
+				removeChildrenInArray(selectedPiece!.targets)
+				selectedPiece = nil
+			}
+			hideSelectedMenu()
+		}
+		else if selectedPiece != nil && selectedMenu == nil {
+			if selectedPiece != nil {
+				removeChildrenInArray(selectedPiece!.targets)
+				selectedPiece = nil
+			}
+			hideSelectedMenu()
+		}
 
         addConstraints()
 		print("red territory: \(world.numRedTerritory)")
@@ -352,9 +370,11 @@ extension GameScene {
 
 		print("location.y \(location.y)")
 
-		
-		if location.y < frame.minY + (selectedMenu?.frame.height ?? 0) {
-			let cameraNewPos = CGPointMake(camera!.position.x, camera!.position.y - (selectedMenu?.frame.height ?? 0 - (-frame.minY + location.y)))
+		let bottomOfGrid = -cellLayer.calculateAccumulatedFrame().minY
+		print("bottomOfGrid \(bottomOfGrid)")
+		let difference = (selectedMenu?.frame.height ?? 0) - (frame.height - bottomOfGrid)
+		if selectedMenu?.frame.height > prevMenuHeight && location.y < frame.minY + (selectedMenu?.frame.height ?? 0) {
+			let cameraNewPos = CGPointMake(camera!.position.x, camera!.position.y - 3*difference)
 			let moveCamera = SKAction.moveTo(cameraNewPos, duration: NSTimeInterval(0.2))
 			moveCamera.timingMode = .EaseOut
 			camera!.runAction(moveCamera)

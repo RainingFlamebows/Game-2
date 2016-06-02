@@ -89,6 +89,7 @@ class GameScene: SKScene {
         addChild(cellLayer)
 
 		territorySprites = Array(count: numRows, repeatedValue: Array(count: numCols, repeatedValue: SKSpriteNode()))
+
 		for row in 0..<numRows {
 			for col in 0..<numCols {
 				let newTerritorySprite = SKSpriteNode()
@@ -119,11 +120,79 @@ class GameScene: SKScene {
         camera!.addChild(nextRoundButton)
         
         addConstraints()
-        
+		demoCode()
+
         let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
         view.addGestureRecognizer(pinch)
         
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapped))
         view.addGestureRecognizer(tap)
     }
+
+	func demoCode() {
+		world.board[2][5] = Mage(owner: 1, row: 2, column: 5)
+		world.updateTerritory(world.board[2][5]!, territorySprites: territorySprites)
+		let newPiece1 = SKSpriteNode(imageNamed: "mage sprite red")
+		newPiece1.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+		newPiece1.anchorPoint = CGPointMake(0.5, 0.5)
+		newPiece1.position = CGPointMake(gridCoord[2][5].x + cellSize/2,
+		                                gridCoord[2][5].y - cellSize/2)
+		world.board[2][5]?.sprite = newPiece1
+		cellLayer.addChild(newPiece1)
+
+
+		world.board[6][4] = Warrior(owner: 1, row: 6, column: 4)
+		world.updateTerritory(world.board[6][4]!, territorySprites: territorySprites)
+		let newPiece2 = SKSpriteNode(imageNamed: "warrior sprite red")
+		newPiece2.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+		newPiece2.anchorPoint = CGPointMake(0.5, 0.5)
+		newPiece2.position = CGPointMake(gridCoord[6][4].x + cellSize/2,
+		                                 gridCoord[6][4].y - cellSize/2)
+		world.board[6][4]?.sprite = newPiece2
+		cellLayer.addChild(newPiece2)
+
+
+		world.board[7][3] = Defender(owner: 2, row: 7, column: 3)
+		world.updateTerritory(world.board[7][3]!, territorySprites: territorySprites)
+		let newPiece3 = SKSpriteNode(imageNamed: "defender sprite blue")
+		newPiece3.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+		newPiece3.anchorPoint = CGPointMake(0.5, 0.5)
+		newPiece3.position = CGPointMake(gridCoord[7][3].x + cellSize/2,
+		                                 gridCoord[7][3].y - cellSize/2)
+		world.board[7][3]?.sprite = newPiece3
+		cellLayer.addChild(newPiece3)
+
+
+		world.board[13][5] = Warrior(owner: 1, row: 13, column: 5)
+		world.updateTerritory(world.board[13][5]!, territorySprites: territorySprites)
+		let newPiece4 = SKSpriteNode(imageNamed: "warrior sprite red")
+		newPiece4.size = CGSize(width: 0.9*cellSize, height: 0.9*cellSize)
+		newPiece4.anchorPoint = CGPointMake(0.5, 0.5)
+		newPiece4.position = CGPointMake(gridCoord[13][5].x + cellSize/2,
+		                                 gridCoord[13][5].y - cellSize/2)
+		world.board[13][5]?.sprite = newPiece4
+		cellLayer.addChild(newPiece4)
+
+		world.base2.currentHealth = 2
+		(world.base2.miniBaseMenu.childNodeWithName("currentHealthLabel") as! SKLabelNode).text = String(world.base2.currentHealth)
+		world.base2.updateBaseMenu()
+
+		world.territory =  [[0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,1,1,1,0,0,0,0],
+							[0,0,0,0,1,1,1,0,0,0,0],
+							[0,0,0,0,1,1,1,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,1,1,1,0,0,0,0,0],
+							[0,0,2,2,1,1,0,0,0,0,0],
+							[0,0,2,2,2,1,0,0,0,0,0],
+							[0,0,2,2,2,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,0,0,0,0,0,0,0],
+							[0,0,0,0,1,1,1,0,0,0,0],
+							[0,0,0,0,1,1,1,0,0,0,0],
+							[0,0,0,0,1,2,1,0,0,0,0]]
+
+
+	}
 }

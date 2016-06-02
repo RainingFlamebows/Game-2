@@ -13,9 +13,11 @@ extension GameScene {
     
     func addConstraints()
     {
+		let menuHeight = (selectedMenu?.frame.height ?? 0) * camera!.yScale
+
         let scaledSize = CGSize(width: size.width * camera!.xScale, height: size.height * camera!.yScale)
         let boardContentRect = cellLayer.calculateAccumulatedFrame()
-        let menuHeight = (selectedMenu?.frame.height ?? 0) * camera!.yScale
+		print("cell layer accumulated frame \(cellLayer.calculateAccumulatedFrame())")
 		var doneButtonHeight = nextRoundButton.frame.height
 		if menuHeight != 0 {
 			doneButtonHeight = 0
@@ -47,8 +49,6 @@ extension GameScene {
             
             camera!.position = CGPoint(x: camera!.position.x - translation.x, y: camera!.position.y - translation.y)
         }
-
-		print("camera position \(camera?.position)")
     }
     
     func pinched(sender: UIPinchGestureRecognizer) {
