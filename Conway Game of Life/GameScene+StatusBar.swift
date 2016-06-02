@@ -11,6 +11,67 @@ import Foundation
 import SpriteKit
 
 extension GameScene {
+    /* failed attempt to make everything blur*/
+    func blurEverything() {
+//        // Set up an effect node that will blur its children
+////        let blurNode = SKEffectNode()
+//        let blur = CIFilter(name: "CIGaussianBlur", withInputParameters: ["inputRadius": 20.0])
+//        self.filter = blur
+//        
+//        // Move everything in the scene into the blur node
+////        blurNode.addChild(cellLayer)
+//        print ("blurring")
+//        // Set up our blur to grow over the next two seconds
+//        let blurDuration = 2.0
+//        let blurMax: CGFloat = 100
+//        let blurAction = SKAction.customActionWithDuration(blurDuration, actionBlock: { (node:SKNode!, elapsed: CGFloat) -> Void in
+//            blur!.setValue((CGFloat(elapsed) / CGFloat(blurDuration))*blurMax, forKey: "inputRadius")
+//        })
+//        // Blur!
+//        self.runAction(blurAction)
+        // Create an effects node with a gaussian blur filter
+        let effectsNode = SKEffectNode()
+        let filter = CIFilter(name: "CIGaussianBlur")
+        // Set the blur amount. Adjust this to achieve the desired effect
+        let blurAmount = 10.0
+        filter!.setValue(blurAmount, forKey: kCIInputRadiusKey)
+        
+        effectsNode.filter = filter
+        effectsNode.position = self.view!.center
+        effectsNode.blendMode = .Alpha
+        
+        // Create a sprite
+//        let texture = SKTexture(imageNamed: "Spaceship")
+//        let sprite = SKSpriteNode(texture: texture)
+        
+        // Add the sprite to the effects node. Nodes added to the effects node
+        // will be blurred
+//        effectsNode.addChild(sprite)
+        // Add the effects node to the scene
+        self.addChild(effectsNode)
+        
+        // Create another sprite
+//        let sprite2 = SKSpriteNode(texture: texture)
+//        sprite2.position = self.view!.center
+//        sprite2.size = CGSizeMake(64, 64);
+//        sprite2.zPosition = 100
+        
+        // Add the sprite to the scene. Nodes added to the scene won't be blurred
+//        self.addChild(sprite2)
+    }
+    
+    func gameOver(winner: Int) {
+        var redBlue = "red"
+        if(winner == 2) {
+            redBlue = "blue"
+        }
+//        overBackground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+//        camera!.addChild(overBackground)
+        playerGlow.texture = SKTexture(imageNamed: "\(redBlue) wins")
+        playerGlow.zPosition = 6
+        
+        
+    }
     
     // creates a health bar using two rectangles whose widths correspond to amount of current health and amount of max health
     // color: the color the currentHealth part of the health bar should be

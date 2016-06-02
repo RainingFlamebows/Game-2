@@ -301,6 +301,22 @@ class Base {
         (baseMenu.childNodeWithName("currentHealthLabel") as! SKLabelNode).fontColor = healthLabelColor
     }
     
+    func updateMiniBaseMenu() {
+        var healthLabelColor = SKColor()
+        if(currentHealth < health/3) {
+            healthLabelColor = customRed
+        }
+        else if(currentHealth < health/2) {
+            healthLabelColor = customYellow
+        }
+        else {
+            healthLabelColor = customGreen
+        }
+        
+        (miniBaseMenu.childNodeWithName("currentHealthLabel") as! SKLabelNode).text = String(currentHealth)
+        (miniBaseMenu.childNodeWithName("currentHealthLabel") as! SKLabelNode).fontColor = healthLabelColor
+    }
+    
     func getAvailableQueue() -> Queue? {
         for queue in trainingQueue {
             if((queue.isLocked == false) && queue.trainingTimeLeft == -1) {
