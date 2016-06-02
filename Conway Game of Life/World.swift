@@ -188,7 +188,7 @@ class World {
 		let targetHealth = target.currentHealth - attacker.attack
 
 
-		if(targetHealth < 0) { // target dies
+		if(targetHealth <= 0) { // target dies
 			target.currentHealth = 0
 			target.isAlive = false
 			board[target.row][target.column] = nil
