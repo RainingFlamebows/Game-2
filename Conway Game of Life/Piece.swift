@@ -198,7 +198,7 @@ class Warrior: Piece {      // is there a more convenient way of declaring a new
 class Ranger: Piece {
     init(owner: Int, row: Int, column: Int) {
         
-        super.init(owner: owner, row: row, column: column, attack: 2, range: 3, health: 8, movement: 3, trainingTime: 2)
+        super.init(owner: owner, row: row, column: column, attack: 2, range: 3, health: 8, movement: 2, trainingTime: 2)
         if(owner == 1) {
             sprite = SKSpriteNode(imageNamed: "ranger sprite red")
         }

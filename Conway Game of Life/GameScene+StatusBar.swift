@@ -67,10 +67,11 @@ extension GameScene {
         }
 //        overBackground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 //        camera!.addChild(overBackground)
-        playerGlow.texture = SKTexture(imageNamed: "\(redBlue) wins")
-        playerGlow.zPosition = 6
-        
-        
+
+		playerGlow.zPosition = 6
+
+		playerGlow.runAction(SKAction.sequence([SKAction.waitForDuration(0.5), SKAction.setTexture(SKTexture(imageNamed: "\(redBlue) wins"))]))
+
     }
     
     // creates a health bar using two rectangles whose widths correspond to amount of current health and amount of max health

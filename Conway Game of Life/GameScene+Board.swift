@@ -195,6 +195,7 @@ extension GameScene {
                         // ***** animate attacking base?
                         if(gameOverYet == true) {
                             // game over animation
+
                             gameOver(world.mode)
                         }
                     }
