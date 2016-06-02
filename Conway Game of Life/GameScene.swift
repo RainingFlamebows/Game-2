@@ -120,7 +120,7 @@ class GameScene: SKScene {
         camera!.addChild(nextRoundButton)
         
         addConstraints()
-		demoCode()
+//		demoCode()
 
         let pinch:UIPinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
         view.addGestureRecognizer(pinch)

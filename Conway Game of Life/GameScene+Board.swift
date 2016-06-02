@@ -402,7 +402,7 @@ extension GameScene {
 	{
 		// selected piece types at bottom
 		for piece in base.pieces {
-			if(piece.containsPoint(locationInStatusBar)) {
+			if (piece.containsPoint(locationInStatusBar)) {
 				var availableQueue = base.getAvailableQueue()
 				if(availableQueue != nil) {
 					availableQueue!.addPieceToQueue(piece)
