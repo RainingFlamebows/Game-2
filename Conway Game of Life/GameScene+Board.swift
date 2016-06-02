@@ -417,7 +417,7 @@ extension GameScene {
 
 		for q in base.trainingQueue {
 
-			if q.outerSprite.containsPoint(locationInStatusBar) && q.trainingTimeLeft <= 1 {
+			if q.outerSprite.containsPoint(locationInStatusBar) && q.isLocked == false && q.trainingTimeLeft < 1 {
 				// user touched piece in trainingQueue for which training has finished
 				// add this piece onto board
 

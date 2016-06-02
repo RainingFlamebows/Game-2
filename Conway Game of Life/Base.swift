@@ -365,6 +365,7 @@ class Base {
             }
             else {
                 if q.isLocked == false {
+					q.trainingTimeLeft = -1
                     q.statusLabel.text = "ready!"
                     q.timeLeftLabel.text = ""
                 }
